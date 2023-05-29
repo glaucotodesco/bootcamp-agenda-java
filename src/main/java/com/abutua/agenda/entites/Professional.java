@@ -9,6 +9,12 @@ public class Professional extends Person{
     private List<Appointment> appointments = new ArrayList<Appointment>();
     private List<WorkScheduleItem> workSchedule = new ArrayList<WorkScheduleItem>();
 
+    
+    public Professional(Long id, String name, String phone, String email, String comments, Boolean active) {
+        super(id, name, phone, email, comments);
+        this.active = active;
+    }
+
     public List<Appointment> getAppointments() {
         return appointments;
     }

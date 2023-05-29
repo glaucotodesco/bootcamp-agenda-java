@@ -2,14 +2,45 @@ package com.abutua.agenda.entites;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person implements Serializable{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+    
     private String phone;
+
+    @Column(unique = true)
     private String email;
+
+    @Column(length = 1024)
     private String comments;
     
+
+    public Person(){
+
+    }
+    public Person(Long id, String name, String phone, String email, String comments) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.comments = comments;
+    }
+
     public Long getId() {
         return id;
     }
@@ -49,7 +80,7 @@ public class Person implements Serializable{
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

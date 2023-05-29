@@ -4,13 +4,33 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Transient;
+
+@Entity
+@PrimaryKeyJoinColumn(name = "person_id")
 public class Client extends Person {
+
     private LocalDate dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    public Client(){
+    }
+
+    public Client(Long id, String name, String phone, String email, String comments, LocalDate dateOfBirth, Gender gender) {
+        super(id, name, phone, email, comments);
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
+    @Transient
     private List<Appointment> appointments = new ArrayList<Appointment>();
 
-    
-    
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
