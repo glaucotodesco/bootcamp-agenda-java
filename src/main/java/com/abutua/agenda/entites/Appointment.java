@@ -5,15 +5,39 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
+
+@Entity
 public class Appointment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
+    private LocalTime startTime;
+    private LocalTime endTime;
+
+    @Transient
     private AppointmentStatus status;
+    
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
+    
+    @Transient
     private Professional professional;
+    
+    @Transient
     private AppointmentType type;
+    
+    @Transient
     private List<AppointementComment> comments = new ArrayList<AppointementComment>();
 
     public Long getId() {
@@ -28,17 +52,18 @@ public class Appointment {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public LocalTime getStart() {
-        return start;
+
+    public LocalTime getStartTime() {
+        return startTime;
     }
-    public void setStart(LocalTime start) {
-        this.start = start;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
-    public LocalTime getEnd() {
-        return end;
+    public LocalTime getEndTime() {
+        return endTime;
     }
-    public void setEnd(LocalTime end) {
-        this.end = end;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
     public AppointmentStatus getStatus() {
         return status;
@@ -76,12 +101,12 @@ public class Appointment {
         this.type = type;
     }
     
+
     @Override
     public String toString() {
-        return "Appointment [id=" + id + ", date=" + date + ", start=" + start + ", end=" + end + ", status=" + status
-                + "]";
+        return "Appointment [id=" + id + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime
+                + ", status=" + status + "]";
     }
-
     @Override
     public int hashCode() {
         final int prime = 31;

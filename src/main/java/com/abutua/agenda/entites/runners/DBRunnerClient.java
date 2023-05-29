@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.abutua.agenda.entites.Client;
@@ -12,6 +13,7 @@ import com.abutua.agenda.entites.Gender;
 import com.abutua.agenda.repositories.ClientRepository;
 
 @Component
+@Order(1)
 public class DBRunnerClient implements ApplicationRunner {
 
     @Autowired

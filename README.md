@@ -5,3 +5,5 @@
     3. Create Entities.
     4. Start Step-by-step mapping the entities using  @Transient
     5. Create Runners to Test Each new Mapping, test and refactoring each new mapping.
+    5.1 Client
+    5.2 Appointment

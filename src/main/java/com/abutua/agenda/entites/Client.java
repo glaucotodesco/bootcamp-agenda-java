@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Transient;
 
@@ -28,7 +29,7 @@ public class Client extends Person {
         this.gender = gender;
     }
 
-    @Transient
+    @OneToMany(mappedBy = "client")
     private List<Appointment> appointments = new ArrayList<Appointment>();
 
     public LocalDate getDateOfBirth() {
@@ -56,6 +57,5 @@ public class Client extends Person {
     public String toString() {
         return "Client [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
     }
-  
-       
+         
 }
