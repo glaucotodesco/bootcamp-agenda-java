@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Transient;
 
 @Entity
@@ -34,7 +35,8 @@ public class Appointment {
     @Transient
     private Professional professional;
     
-    @Transient
+    @OneToOne
+    @JoinColumn(name = "appointment_type_id")
     private AppointmentType type;
     
     @Transient

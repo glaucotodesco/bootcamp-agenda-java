@@ -1,8 +1,19 @@
 package com.abutua.agenda.entites;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class AppointmentType {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
     private String type;
+    
     public Integer getId() {
         return id;
     }

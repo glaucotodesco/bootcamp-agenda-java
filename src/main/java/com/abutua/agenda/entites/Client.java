@@ -9,7 +9,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Transient;
+
 
 @Entity
 @PrimaryKeyJoinColumn(name = "person_id")
