@@ -1,13 +1,38 @@
 package com.abutua.agenda.entites;
 
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
-public class AppointementComment {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class AppointmentComment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 1024)
     private String comment;
-    private LocalDateTime moment;
+
+    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private Instant moment;
+
     
+    public AppointmentComment() {
+    }
+
+    
+    public AppointmentComment(String comment, Instant moment) {
+        this.comment = comment;
+        this.moment = moment;
+    }
+
     public Long getId() {
         return id;
     }
@@ -20,12 +45,7 @@ public class AppointementComment {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    public LocalDateTime getMoment() {
-        return moment;
-    }
-    public void setMoment(LocalDateTime moment) {
-        this.moment = moment;
-    }
+
 
     
     @Override
@@ -48,13 +68,22 @@ public class AppointementComment {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        AppointementComment other = (AppointementComment) obj;
+        AppointmentComment other = (AppointmentComment) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+
+    public void setMoment(Instant moment) {
+        this.moment = moment;
     }
 
     

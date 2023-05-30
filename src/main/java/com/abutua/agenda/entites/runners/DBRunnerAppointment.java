@@ -1,6 +1,8 @@
 package com.abutua.agenda.entites.runners;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.abutua.agenda.entites.Appointment;
+import com.abutua.agenda.entites.AppointmentComment;
 import com.abutua.agenda.entites.AppointmentStatus;
 import com.abutua.agenda.entites.AppointmentType;
 import com.abutua.agenda.entites.Client;
@@ -43,6 +46,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         Client c1 = clientRepository.getReferenceById(1L);
         AppointmentType apty1 = appointmentTypeRepository.getReferenceById(1);
         Professional p1 = professionalRepository.getReferenceById(3L);
+        
 
         Appointment ap1 = new Appointment();
         ap1.setClient(c1);
@@ -51,7 +55,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         ap1.setEndTime(LocalTime.parse("10:30:00"));
         ap1.setType(apty1);
         ap1.setProfessional(p1);
-        
+        ap1.addComment(new AppointmentComment("Primeiro atendimento", Instant.now()));
 
         appointmentRepository.save(ap1);
 
@@ -67,6 +71,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         ap2.setEndTime(LocalTime.parse("11:30:00"));
         ap2.setType(apty2);
         ap2.setProfessional(p2);
+        ap2.addComment(new AppointmentComment("Parcelar em 3x", Instant.now()));
 
         appointmentRepository.save(ap2);
 

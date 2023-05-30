@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +26,13 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalDate date;
+    
+    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalTime startTime;
+
+    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
@@ -44,8 +50,9 @@ public class Appointment {
     @JoinColumn(name = "appointment_type_id")
     private AppointmentType type;
     
-    @Transient
-    private List<AppointementComment> comments = new ArrayList<AppointementComment>();
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="appointment_id")
+    private List<AppointmentComment> comments = new ArrayList<AppointmentComment>();
 
     public Long getId() {
         return id;
@@ -93,11 +100,11 @@ public class Appointment {
         this.professional = professional;
     }
     
-    public List<AppointementComment> getComments() {
+    public List<AppointmentComment> getComments() {
         return comments;
     }
 
-    public void addComment(AppointementComment comment){
+    public void addComment(AppointmentComment comment){
         this.comments.add(comment);
     }
 
