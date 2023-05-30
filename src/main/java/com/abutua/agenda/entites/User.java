@@ -4,7 +4,7 @@ public class User extends Person{
     private String password;
 
     public User(Long id, String name, String phone, String email, String comments, String password) {
-        super(id, name, phone, email, comments);
+        super(name, phone, email, comments);
         this.password = password;
     }
 

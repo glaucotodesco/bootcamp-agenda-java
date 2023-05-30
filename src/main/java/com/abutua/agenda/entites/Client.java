@@ -23,8 +23,8 @@ public class Client extends Person {
     public Client(){
     }
 
-    public Client(Long id, String name, String phone, String email, String comments, LocalDate dateOfBirth, Gender gender) {
-        super(id, name, phone, email, comments);
+    public Client(String name, String phone, String email, String comments, LocalDate dateOfBirth, Gender gender) {
+        super(name, phone, email, comments);
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
     }

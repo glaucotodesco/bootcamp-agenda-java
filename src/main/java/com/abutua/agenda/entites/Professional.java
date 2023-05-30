@@ -3,15 +3,31 @@ package com.abutua.agenda.entites;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Transient;
+
+@Entity
+@PrimaryKeyJoinColumn(name = "person_id")
 public class Professional extends Person{
+  
     private Boolean active;
-    private List<Area> areas = new ArrayList<Area>();
+
+    @OneToMany(mappedBy = "professional")    
     private List<Appointment> appointments = new ArrayList<Appointment>();
+
+    @Transient
+    private List<Area> areas = new ArrayList<Area>();
+
+    @Transient
     private List<WorkScheduleItem> workSchedule = new ArrayList<WorkScheduleItem>();
 
-    
-    public Professional(Long id, String name, String phone, String email, String comments, Boolean active) {
-        super(id, name, phone, email, comments);
+    public Professional(){
+    }
+
+    public Professional( String name, String phone, String email, String comments, Boolean active) {
+        super(name, phone, email, comments);
         this.active = active;
     }
 
