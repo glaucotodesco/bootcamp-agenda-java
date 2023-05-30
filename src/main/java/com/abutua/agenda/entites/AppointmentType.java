@@ -1,5 +1,6 @@
 package com.abutua.agenda.entites;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,7 @@ public class AppointmentType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
+    @Column(unique = true)
     private String type;
     
     public Integer getId() {
@@ -26,7 +28,6 @@ public class AppointmentType {
     public void setType(String type) {
         this.type = type;
     }
-
     
     @Override
     public String toString() {
