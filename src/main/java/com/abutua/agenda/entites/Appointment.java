@@ -5,7 +5,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,8 +28,8 @@ public class Appointment {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @Transient
-    private AppointmentStatus status;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status = AppointmentStatus.OPEN;
     
     @ManyToOne
     @JoinColumn(name = "client_id")

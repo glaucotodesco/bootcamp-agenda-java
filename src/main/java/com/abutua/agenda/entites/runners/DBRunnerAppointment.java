@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.abutua.agenda.entites.Appointment;
+import com.abutua.agenda.entites.AppointmentStatus;
 import com.abutua.agenda.entites.AppointmentType;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.repositories.AppointmentRepository;
@@ -42,6 +43,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         ap1.setStartTime(LocalTime.parse("10:00:00"));
         ap1.setEndTime(LocalTime.parse("10:30:00"));
         ap1.setType(apty1);
+        
 
         appointmentRepository.save(ap1);
 
