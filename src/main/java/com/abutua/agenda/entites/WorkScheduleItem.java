@@ -3,12 +3,41 @@ package com.abutua.agenda.entites;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Tbl_Work_Schedule_Item")
 public class WorkScheduleItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private DayOfWeek dayOfWeek;
-    private LocalTime starTime;
-    private LocalTime endTime;
     
+    @Column( columnDefinition = "TIME WITH TIME ZONE")
+    private LocalTime starTime;
+    
+    @Column( columnDefinition = "TIME WITH TIME ZONE")
+    private LocalTime endTime;
+
+    
+    public WorkScheduleItem() {
+    }
+
+    
+    public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime starTime, LocalTime endTime) {
+        this.dayOfWeek = dayOfWeek;
+        this.starTime = starTime;
+        this.endTime = endTime;
+    }
+
     public Long getId() {
         return id;
     }

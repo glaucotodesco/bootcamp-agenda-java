@@ -1,8 +1,44 @@
 package com.abutua.agenda.entites;
 
-public class Area {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Tbl_Area")
+public class Area implements Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(length = 40)
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "Tbl_Area_Professional",
+        joinColumns = @JoinColumn(name = "area_id"),
+        inverseJoinColumns = @JoinColumn(name = "professional_id")
+    )
+    private List<Professional> professionals = new ArrayList<Professional>();
+
+    public Area() {
+    }
+
+    public Area(String name) {
+        this.name = name;
+    }
     
     public Integer getId() {
         return id;

@@ -3,15 +3,16 @@ package com.abutua.agenda.entites;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
 
 @Entity
+@Table(name = "Tbl_Client")
 @PrimaryKeyJoinColumn(name = "person_id")
 public class Client extends Person {
 

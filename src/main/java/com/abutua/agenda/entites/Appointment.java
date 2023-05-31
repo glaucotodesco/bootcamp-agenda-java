@@ -1,5 +1,6 @@
 package com.abutua.agenda.entites;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -17,9 +18,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
+import jakarta.persistence.Table;
+
 
 @Entity
+@Table(name = "Tbl_Appointment")
 public class Appointment {
 
     @Id
@@ -29,10 +32,10 @@ public class Appointment {
     @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalDate date;
     
-    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column( columnDefinition = "TIME WITH TIME ZONE")
     private LocalTime startTime;
 
-    @Column( columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column( columnDefinition = "TIME WITH TIME ZONE")
     private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
@@ -99,13 +102,9 @@ public class Appointment {
     public void setProfessional(Professional professional) {
         this.professional = professional;
     }
-    
-    public List<AppointmentComment> getComments() {
-        return comments;
-    }
 
-    public void addComment(AppointmentComment comment){
-        this.comments.add(comment);
+    public void addComment(String comment){
+        this.comments.add(new AppointmentComment(comment, Instant.now()));
     }
 
     public AppointmentType getType() {

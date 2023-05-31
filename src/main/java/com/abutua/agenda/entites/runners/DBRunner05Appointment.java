@@ -8,7 +8,9 @@ import java.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.abutua.agenda.entites.Appointment;
@@ -23,8 +25,9 @@ import com.abutua.agenda.repositories.ClientRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
 
 @Component
-@Order(10)
-public class DBRunnerAppointment implements ApplicationRunner {
+@Order(5)
+@Profile("runner")
+public class DBRunner05Appointment implements ApplicationRunner {
 
     @Autowired
     private ClientRepository clientRepository;
@@ -39,6 +42,8 @@ public class DBRunnerAppointment implements ApplicationRunner {
     @Autowired
     private AppointmentTypeRepository appointmentTypeRepository;
 
+    
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -46,6 +51,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         Client c1 = clientRepository.getReferenceById(1L);
         AppointmentType apty1 = appointmentTypeRepository.getReferenceById(1);
         Professional p1 = professionalRepository.getReferenceById(3L);
+        
         
 
         Appointment ap1 = new Appointment();
@@ -55,7 +61,7 @@ public class DBRunnerAppointment implements ApplicationRunner {
         ap1.setEndTime(LocalTime.parse("10:30:00"));
         ap1.setType(apty1);
         ap1.setProfessional(p1);
-        ap1.addComment(new AppointmentComment("Primeiro atendimento", Instant.now()));
+        ap1.addComment("Primeiro atendimento");
 
         appointmentRepository.save(ap1);
 
@@ -71,10 +77,9 @@ public class DBRunnerAppointment implements ApplicationRunner {
         ap2.setEndTime(LocalTime.parse("11:30:00"));
         ap2.setType(apty2);
         ap2.setProfessional(p2);
-        ap2.addComment(new AppointmentComment("Parcelar em 3x", Instant.now()));
+        ap2.addComment("Parcelar em 3x");
 
         appointmentRepository.save(ap2);
-
     }
 
 }

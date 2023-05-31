@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Tbl_Appointment_Type")
 public class AppointmentType {
 
     @Id
@@ -16,6 +18,13 @@ public class AppointmentType {
     @Column(unique = true)
     private String type;
     
+    public AppointmentType() {
+    }
+    
+    public AppointmentType(String type) {
+        this.type = type;
+    }
+
     public Integer getId() {
         return id;
     }

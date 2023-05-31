@@ -9,8 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Tbl_Person")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person implements Serializable{
 
@@ -18,12 +20,13 @@ public class Person implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 40)
     private String name;
     
+    @Column(length = 20)
     private String phone;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 40)
     private String email;
 
     @Column(length = 1024)

@@ -2,15 +2,15 @@ package com.abutua.agenda.entites;
 
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "Tbl_Appointment_Comment")
 public class AppointmentComment {
 
     @Id

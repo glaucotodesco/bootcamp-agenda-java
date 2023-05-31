@@ -1,7 +1,19 @@
 package com.abutua.agenda.entites;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Tbl_Role")
 public class Role {
+
+    @Id
     private Integer id;
+
+    @Enumerated(EnumType.STRING)
     private RoleName role;
 
     public Integer getId() {
