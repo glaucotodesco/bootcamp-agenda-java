@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.abutua.agenda.dao.AreaDAO;
+import com.abutua.agenda.dao.ProfessionalDAO;
+import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,7 +54,7 @@ public class Professional extends Person{
     public Professional(){
     }
 
-    public Professional( String name, String phone, String email, String comments, Boolean active) {
+    public Professional( String name, String phone, String email, String comments, boolean active) {
         super(name, phone, email, comments);
         this.active = active;
     }
@@ -87,6 +92,20 @@ public class Professional extends Person{
         return "Professional [active=" + active + "]";
     }
 
+    public ProfessionalDAO toDAO() {
+        return new ProfessionalDAO(getId(),getName(),getPhone(),getEmail(),getComments(), getActive());    
+    }
+
+    public ProfessionalWithAreaDAO toDAOWithAreas() {
+        ProfessionalWithAreaDAO dao = new ProfessionalWithAreaDAO(getId(),getName(),getPhone(),getEmail(),getComments(), getActive());
+
+        dao.setAreas(
+            areas.stream()
+                         .map( a -> new AreaDAO(a.getId(), a.getName()))
+                         .collect(Collectors.toList()));
+        
+        return dao;
+    }
    
     
 }

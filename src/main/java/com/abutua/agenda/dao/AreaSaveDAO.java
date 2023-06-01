@@ -45,4 +45,8 @@ public class AreaSaveDAO {
         this.professionalsDAO = professionals;
     }
 
+    public Iterable<Long> getProfessionalsId() {
+        return professionalsDAO.stream().map( p -> Long.valueOf(p.getId())).collect(Collectors.toList());
+    }
+
 }

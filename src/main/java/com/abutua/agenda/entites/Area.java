@@ -43,6 +43,10 @@ public class Area implements Serializable{
     public Area() {
     }
 
+    public Area(int id) {
+        this.id = id;
+    }
+
     public Area(String name) {
         this.name = name;
     }
@@ -65,7 +69,7 @@ public class Area implements Serializable{
         AreaWithProfessionalDAO dao = new AreaWithProfessionalDAO(id, name);
         dao.setProfessionals(
             professionals.stream()
-                         .map( p -> new ProfessionalDAO(p.getId(), p.getName()))
+                         .map( p -> new ProfessionalDAO(p.getId(),p.getName(),p.getPhone(),p.getEmail(),p.getComments(), p.getActive()))
                          .collect(Collectors.toList()));
         
         return dao;
