@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,10 +37,18 @@ public class AreaService {
                 .collect(Collectors.toList());
     }
 
-    public AreaWithProfessionalDAO save(AreaSaveDAO areaSaveDAO) {
-        Area area = areaSaveDAO.toEntity();
-        area = areaRepository.save(area);
-        return area.toDAOWithProfessionals();
+    public AreaDAO save(AreaSaveDAO areaSaveDAO) {
+        Area area; 
+
+        try {
+            area = areaSaveDAO.toEntity();
+            area = areaRepository.save(area);
+        }catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
+        }catch(InvalidDataAccessApiUsageException e){
+            throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
+        }
+        return area.toDAO();
     }
 
     public void deleteById(int id) {
@@ -50,17 +59,25 @@ public class AreaService {
                 throw new EntityNotFoundException("Area not found");
             }
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation, area can't delete");
+            throw new DatabaseException("Constrain violation, area can't delete", HttpStatus.BAD_REQUEST);
         }
     }
 
     public void update(int id, AreaSaveDAO areaSaveDAO) {
         try {
             Area area = areaRepository.getReferenceById(id);
+
             area.setName(areaSaveDAO.getName());
+            area.getProfessionals().clear();
+            area.getProfessionals().addAll(areaSaveDAO.toEntity().getProfessionals());
+
             areaRepository.save(area);
+
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Area not found");
+        }
+        catch(InvalidDataAccessApiUsageException e){
+            throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -1,7 +1,12 @@
 package com.abutua.agenda.dao;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class ProfessionalDAO {
+
+    @NotBlank(message = "Id can not be blank")
     private Long id;
+    
     private String name;
     
     public ProfessionalDAO(Long id, String name) {

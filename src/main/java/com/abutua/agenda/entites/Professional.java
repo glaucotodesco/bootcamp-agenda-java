@@ -3,7 +3,9 @@ package com.abutua.agenda.entites;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,7 +35,7 @@ public class Professional extends Person{
         joinColumns = @JoinColumn(name = "professional_id"),
         inverseJoinColumns = @JoinColumn(name = "area_id")
     )
-    private List<Area> areas = new ArrayList<Area>();
+    private Set<Area> areas = new HashSet<Area>();
 
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -68,7 +70,7 @@ public class Professional extends Person{
         this.active = active;
     }
 
-    public List<Area> getAreas() {
+    public Set<Area> getAreas() {
         return areas;
     }
    

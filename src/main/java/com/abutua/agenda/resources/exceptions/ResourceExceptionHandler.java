@@ -40,7 +40,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> databaseException(DatabaseException exception, HttpServletRequest request){
         
         StandardError error = new StandardError();
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = exception.getStatus();
 
         error.setError("Database exception");
         error.setMessage(exception.getMessage());

@@ -2,7 +2,9 @@ package com.abutua.agenda.entites;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.abutua.agenda.dao.AreaDAO;
@@ -36,7 +38,7 @@ public class Area implements Serializable{
         joinColumns = @JoinColumn(name = "area_id"),
         inverseJoinColumns = @JoinColumn(name = "professional_id")
     )
-    private List<Professional> professionals = new ArrayList<Professional>();
+    private Set<Professional> professionals = new HashSet<Professional>();
 
     public Area() {
     }
@@ -69,7 +71,7 @@ public class Area implements Serializable{
         return dao;
     }
 
-    public List<Professional> getProfessionals() {
+    public Set<Professional> getProfessionals() {
         return professionals;
     }
     
