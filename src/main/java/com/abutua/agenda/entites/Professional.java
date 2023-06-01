@@ -40,6 +40,10 @@ public class Professional extends Person{
     @JoinColumn(name = "professional_id")
     private List<WorkScheduleItem> workSchedule = new ArrayList<WorkScheduleItem>();
 
+    public Professional(Long id){
+        super(id);
+    }
+
     public Professional(){
     }
 

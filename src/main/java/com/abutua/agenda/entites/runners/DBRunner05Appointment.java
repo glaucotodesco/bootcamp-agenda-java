@@ -1,21 +1,15 @@
 package com.abutua.agenda.entites.runners;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
 import com.abutua.agenda.entites.Appointment;
-import com.abutua.agenda.entites.AppointmentComment;
-import com.abutua.agenda.entites.AppointmentStatus;
 import com.abutua.agenda.entites.AppointmentType;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.entites.Professional;

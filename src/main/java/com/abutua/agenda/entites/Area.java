@@ -3,6 +3,11 @@ package com.abutua.agenda.entites;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.abutua.agenda.dao.AreaDAO;
+import com.abutua.agenda.dao.AreaWithProfessionalDAO;
+import com.abutua.agenda.dao.ProfessionalDAO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,6 +58,26 @@ public class Area implements Serializable{
         this.name = name;
     }
 
+    
+    public AreaWithProfessionalDAO toDAOWithProfessionals(){
+        AreaWithProfessionalDAO dao = new AreaWithProfessionalDAO(id, name);
+        dao.setProfessionals(
+            professionals.stream()
+                         .map( p -> new ProfessionalDAO(p.getId(), p.getName()))
+                         .collect(Collectors.toList()));
+        
+        return dao;
+    }
+
+    public List<Professional> getProfessionals() {
+        return professionals;
+    }
+    
+    public AreaDAO toDAO(){
+        AreaDAO dao = new AreaDAO(id, name);
+        return dao;
+    }
+
     @Override
     public String toString() {
         return "Area [id=" + id + ", name=" + name + "]";
@@ -82,6 +107,8 @@ public class Area implements Serializable{
             return false;
         return true;
     }
+
+  
 
     
     

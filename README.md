@@ -13,8 +13,8 @@
 
     8. Test Both Profile
 
-    9. Create AreaController get /areas and test.
+    9. Create AreaController get /areas and test. (Copy All from other project!!!)
 
     10. Create Talent API Test Project.
-    
+
     11. Create Environment and Variable Host
