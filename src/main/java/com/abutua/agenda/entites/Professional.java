@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.ProfessionalDAO;
 import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
+import com.abutua.agenda.dao.WorkScheduleDAO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,8 +44,7 @@ public class Professional extends Person{
     private Set<Area> areas = new HashSet<Area>();
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "professional_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "professional")
     private List<WorkScheduleItem> workSchedule = new ArrayList<WorkScheduleItem>();
 
     public Professional(Long id){
@@ -107,5 +107,16 @@ public class Professional extends Person{
         return dao;
     }
    
+    public WorkScheduleDAO toWorkScheduleDAO() {
+        WorkScheduleDAO workScheduleDAO = new WorkScheduleDAO();
+
+        workScheduleDAO.setId(getId());
+        workScheduleDAO.setName(getName());
+        workScheduleDAO.setWorkshedule(workSchedule.stream().map( wsi -> wsi.toDAO()).collect(Collectors.toList()));
+
+        return workScheduleDAO;
+    }
+
+
     
 }

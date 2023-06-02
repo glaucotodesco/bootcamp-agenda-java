@@ -53,7 +53,7 @@ public class AreaController {
     }
 
     @PostMapping
-    public ResponseEntity<AreaDAO> save(@Validated @RequestBody AreaSaveDAO areaSaveDAO) {
+    public ResponseEntity<AreaDAO> saveArea(@Validated @RequestBody AreaSaveDAO areaSaveDAO) {
         AreaDAO areaDAO = areaService.save(areaSaveDAO);
 
         URI location = ServletUriComponentsBuilder

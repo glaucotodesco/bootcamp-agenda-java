@@ -49,7 +49,7 @@ public class Appointment {
     @JoinColumn(name ="professional_id")
     private Professional professional;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "appointment_type_id")
     private AppointmentType type;
     

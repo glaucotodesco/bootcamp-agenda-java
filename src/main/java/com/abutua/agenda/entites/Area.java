@@ -1,16 +1,12 @@
 package com.abutua.agenda.entites;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.AreaWithProfessionalDAO;
 import com.abutua.agenda.dao.ProfessionalDAO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

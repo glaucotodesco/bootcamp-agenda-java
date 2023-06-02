@@ -2,12 +2,14 @@ package com.abutua.agenda.entites;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-
+import com.abutua.agenda.dao.WorkScheduleItemDAO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,19 +24,43 @@ public class WorkScheduleItem {
     private DayOfWeek dayOfWeek;
     
     @Column( columnDefinition = "TIME WITH TIME ZONE")
-    private LocalTime starTime;
+    private LocalTime startTime;
     
     @Column( columnDefinition = "TIME WITH TIME ZONE")
     private LocalTime endTime;
+    
+    private Integer slots;
+
+
+    @ManyToOne
+    @JoinColumn(name = "professional_id")
+    private Professional professional;
+    
+
 
     
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+
+    public Professional getProfessional() {
+        return professional;
+    }
+
+
+    public void setProfessional(Professional professional) {
+        this.professional = professional;
+    }
+
+
     public WorkScheduleItem() {
     }
 
     
-    public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime starTime, LocalTime endTime) {
+    public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
         this.dayOfWeek = dayOfWeek;
-        this.starTime = starTime;
+        this.startTime = startTime;
         this.endTime = endTime;
     }
 
@@ -50,11 +76,11 @@ public class WorkScheduleItem {
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
-    public LocalTime getStarTime() {
-        return starTime;
+    public LocalTime getStartTime() {
+        return startTime;
     }
-    public void setStarTime(LocalTime starTime) {
-        this.starTime = starTime;
+    public void setStarTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
     public LocalTime getEndTime() {
         return endTime;
@@ -62,10 +88,23 @@ public class WorkScheduleItem {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
+    public WorkScheduleItemDAO toDAO(){
+        return new WorkScheduleItemDAO(id,dayOfWeek, startTime, endTime);
+        
+    }
+
+    public Integer getSlots() {
+        return slots;
+    }
+
+    public void setSlots(Integer slots) {
+        this.slots = slots;
+    }
     
     @Override
     public String toString() {
-        return "WorkSchedule [id=" + id + ", dayOfWeek=" + dayOfWeek + ", starTime=" + starTime + ", endTime=" + endTime
+        return "WorkSchedule [id=" + id + ", dayOfWeek=" + dayOfWeek + ", startTime=" + startTime + ", endTime=" + endTime
                 + "]";
     }
     
@@ -95,5 +134,5 @@ public class WorkScheduleItem {
     }
 
     
-    
+   
 }

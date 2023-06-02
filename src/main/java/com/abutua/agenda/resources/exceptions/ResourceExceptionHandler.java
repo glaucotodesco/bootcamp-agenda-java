@@ -53,11 +53,24 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<StandardError> entityNotFoundException(EntityNotFoundException exception, HttpServletRequest request){
-        exception.printStackTrace();
         StandardError error = new StandardError();
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         error.setError("Resource not found");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+        error.setStatus(status.value());
+        error.setTimeStamp(Instant.now());
+         
+        return ResponseEntity.status(status).body(error);
+    }
+    
+    @ExceptionHandler(ParameterException.class)
+    public ResponseEntity<StandardError> illegalArgumentException(ParameterException exception, HttpServletRequest request){
+        StandardError error = new StandardError();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        error.setError("Parameters are invalid!");
         error.setMessage(exception.getMessage());
         error.setPath(request.getRequestURI());
         error.setStatus(status.value());
