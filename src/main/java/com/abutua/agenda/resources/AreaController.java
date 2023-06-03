@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,23 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.agenda.dao.AreaWithProfessionalDAO;
+import com.abutua.agenda.dao.ProfessionalDAO;
+import com.abutua.agenda.entites.Professional;
+import com.abutua.agenda.repositories.ProfessionalRepository;
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.AreaSaveDAO;
 import com.abutua.agenda.services.AreaService;
+import com.abutua.agenda.services.ProfessionalService;
 
 @RestController
 @RequestMapping("areas")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AreaController {
 
     @Autowired
     private AreaService areaService;
 
-
+    
     @GetMapping("{id}")
     public ResponseEntity<AreaWithProfessionalDAO> getArea(@PathVariable int id) {
         AreaWithProfessionalDAO areaDAO = areaService.getById(id);
         return ResponseEntity.ok(areaDAO);
     }
+
+    @GetMapping("{id}/professionals")
+    public ResponseEntity<List<ProfessionalDAO>> getProfessionalsByArea(@PathVariable int id) {
+        return ResponseEntity.ok(areaService.getProfessionalsByArea(id));
+    }
+
 
     @GetMapping
     public ResponseEntity<List<AreaDAO>> getAreas() {

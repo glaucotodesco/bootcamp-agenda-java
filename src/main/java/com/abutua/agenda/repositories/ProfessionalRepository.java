@@ -18,4 +18,7 @@ public interface ProfessionalRepository extends JpaRepository<Professional,Long>
            "WHERE w.professional.id = :professionalId " + 
            "GROUP BY w.dayOfWeek")
     List<ProfessionalWeekDaysSlot> findDistinctDaysOfWeekAndTotalSlotsByProfessionalId(Long professionalId);
+
+    
+
 }

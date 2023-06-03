@@ -5,6 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -156,7 +157,7 @@ public class ProfessionalService {
         if (year < LocalDate.now().getYear()) {
             throw new ParameterException(
                     "Invalid parameter year value. Year must be greater than or equal to the current year.");
-        } else if (month < LocalDate.now().getDayOfMonth() && year == LocalDate.now().getYear()) {
+        } else if (month < LocalDate.now().getMonthValue() && year == LocalDate.now().getYear()) {
             throw new ParameterException(
                     "Invalid parameter month value. Month and Year must be greater than or equal to the current date.");
         }
@@ -176,7 +177,7 @@ public class ProfessionalService {
         ProfessionalAvailabilityDaysDAO dao = new ProfessionalAvailabilityDaysDAO();
         dao.setId(professional.getId());
         dao.setName(professional.getName());
-        dao.setYear(year);
+        dao.setMonth(month);
         dao.setYear(year);
         dao.setAvailabilityDays(availiabilyDays);
 
@@ -291,8 +292,9 @@ public class ProfessionalService {
      * @return
      */
     private List<TimeSlot> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        
         List<TimeSlot> availableSlots = new ArrayList<>();
-
         LocalTime startTime = workScheduleItem.getStartTime();
         Integer slots = workScheduleItem.getSlots();
         Integer slotSize = workScheduleItem.getSlotSize();
@@ -320,7 +322,10 @@ public class ProfessionalService {
 
             if (isSlotAvailable) {
                 // O slot está disponível
-                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime));
+                availableSlots.add(new TimeSlot(slotStartTime.format(formatter), slotEndTime.format(formatter), true));
+            }
+            else{
+                availableSlots.add(new TimeSlot(slotStartTime.format(formatter), slotEndTime.format(formatter), false));
             }
         }
 

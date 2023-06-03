@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.abutua.agenda.dao.AreaWithProfessionalDAO;
+import com.abutua.agenda.dao.ProfessionalDAO;
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.AreaSaveDAO;
 import com.abutua.agenda.entites.Area;
@@ -24,12 +25,9 @@ public class AreaService {
     @Autowired
     private AreaRepository areaRepository;
 
-
-    
     @Autowired
     private ProfessionalRepository professionalRepository;
 
- 
     public AreaWithProfessionalDAO getById(int id) {
         Area area = areaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area not found"));
@@ -45,14 +43,13 @@ public class AreaService {
     }
 
     public AreaDAO save(AreaSaveDAO areaSaveDAO) {
-        Area area; 
+        Area area;
 
         try {
             area = areaRepository.save(areaSaveDAO.toEntity());
-        }
-        catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
-        }catch(InvalidDataAccessApiUsageException e){
+        } catch (InvalidDataAccessApiUsageException e) {
             throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
         }
         return area.toDAO();
@@ -74,29 +71,29 @@ public class AreaService {
         try {
             Area area = areaRepository.getReferenceById(id);
 
-        
-
             List<Professional> professionals = professionalRepository.findAllById(areaSaveDAO.getProfessionalsId());
 
-            if (professionals.size() != areaSaveDAO.getProfessionals().size() ) {
+            if (professionals.size() != areaSaveDAO.getProfessionals().size()) {
                 throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
-            }
-            else {
+            } else {
                 area.setName(areaSaveDAO.getName());
                 area.getProfessionals().clear();
                 area.getProfessionals().addAll(areaSaveDAO.toEntity().getProfessionals());
                 areaRepository.save(area);
             }
-        } 
-        catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
-        }
-        catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Area not found");
-        }
-        catch(InvalidDataAccessApiUsageException e){
+        } catch (InvalidDataAccessApiUsageException e) {
             throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public List<ProfessionalDAO> getProfessionalsByArea(int id) {
+        return areaRepository.findProfessionalsByAreaId(id).stream()
+                .map(p -> p.toDAO())
+                .collect(Collectors.toList());
     }
 
 }

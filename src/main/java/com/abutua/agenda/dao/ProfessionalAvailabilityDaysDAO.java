@@ -9,7 +9,6 @@ public class ProfessionalAvailabilityDaysDAO {
     private String name;
     private int month;
     private int year;
-    
     private List<Integer> availabilityDays = new ArrayList<Integer>();
   
     public long getId() {
