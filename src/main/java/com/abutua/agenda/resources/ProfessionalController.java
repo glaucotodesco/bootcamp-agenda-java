@@ -1,6 +1,7 @@
 package com.abutua.agenda.resources;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.abutua.agenda.dao.ProfessionalAvailabilityDaysDAO;
 import com.abutua.agenda.dao.ProfessionalDAO;
 import com.abutua.agenda.dao.ProfessionalSaveDAO;
 import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
+import com.abutua.agenda.dao.TimeSlot;
 import com.abutua.agenda.dao.WorkScheduleDAO;
 import com.abutua.agenda.services.ProfessionalService;
 
@@ -47,11 +49,16 @@ public class ProfessionalController {
 
 
     
-    @GetMapping("{id}/availability")
+    @GetMapping("{id}/availability-days")
     public ResponseEntity<ProfessionalAvailabilityDaysDAO> getProfessinalAvailabitiyDays(@PathVariable long id, @RequestParam int month, @RequestParam int year) {
-        return ResponseEntity.ok(professionalService.getAvailabilityDays(id,month,year));
+        return ResponseEntity.ok(professionalService.getAvailableDaysInMonth(id,month,year));
     }
 
+    @GetMapping("{id}/availability-times")
+    public ResponseEntity<List<TimeSlot>> getProfessinalAvailabitiyTimes(@PathVariable Long id, @RequestParam String date) {
+        List <TimeSlot> slots = professionalService.getAvailableTimeSlots(LocalDate.parse(date),id);
+        return ResponseEntity.ok(slots);
+    }
 
     @GetMapping
     public ResponseEntity<List<ProfessionalDAO>> getProfessionals() {

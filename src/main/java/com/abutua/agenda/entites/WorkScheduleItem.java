@@ -31,6 +31,8 @@ public class WorkScheduleItem {
     
     private Integer slots;
 
+    private Integer slotSize;
+
 
     @ManyToOne
     @JoinColumn(name = "professional_id")
@@ -131,6 +133,16 @@ public class WorkScheduleItem {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+
+    public Integer getSlotSize() {
+        return slotSize;
+    }
+
+
+    public void setSlotSize(Integer slotSize) {
+        this.slotSize = slotSize;
     }
 
     

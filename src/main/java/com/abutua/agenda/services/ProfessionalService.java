@@ -3,33 +3,34 @@ package com.abutua.agenda.services;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.abutua.agenda.dao.ProfessionalAvailabilityDaysDAO;
 import com.abutua.agenda.dao.ProfessionalDAO;
 import com.abutua.agenda.dao.ProfessionalSaveDAO;
 import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
+import com.abutua.agenda.dao.TimeSlot;
 import com.abutua.agenda.dao.WorkScheduleDAO;
+import com.abutua.agenda.entites.Appointment;
 import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.entites.ProfessionalScheduleDays;
 import com.abutua.agenda.entites.ProfessionalWeekDaysSlot;
+import com.abutua.agenda.entites.WorkScheduleItem;
 import com.abutua.agenda.repositories.AppointmentRepository;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
+import com.abutua.agenda.repositories.WorkScheduleItemRepository;
 import com.abutua.agenda.resources.exceptions.ParameterException;
 import com.abutua.agenda.services.exceptions.DatabaseException;
 
@@ -46,6 +47,9 @@ public class ProfessionalService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private WorkScheduleItemRepository workScheduleItemRepository;
 
     public ProfessionalWithAreaDAO getById(long id) {
         Professional professional = professionalRepository.findById(id)
@@ -122,75 +126,113 @@ public class ProfessionalService {
         return professional.toWorkScheduleDAO();
     }
 
-    public ProfessionalAvailabilityDaysDAO getAvailabilityDays(long id, int month, int year) {
+    /**
+     * 
+     * @param professionalId
+     * @param month          Valid value and now or future
+     * @param year           Now or future
+     * 
+     * @return
+     *
+     * @throws ParameterException("Invalid parameter month value.");
+     * @throws ParameterException("Invalid parameter year value. Year must be
+     *                                     greater than or equal to the current
+     *                                     year.")
+     * @throws ParameterException("Invalid parameter month value. Month and Year
+     *                                     must be greater than or equal to the curr
+     */
+    public ProfessionalAvailabilityDaysDAO getAvailableDaysInMonth(long professionalId, int month, int year) {
 
-        Professional professional = professionalRepository.findById(id)
+        Professional professional = professionalRepository.findById(professionalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional not found"));
+
+       
+        try {
+            Month.of(month);
+        } catch (DateTimeException e) {
+            throw new ParameterException("Invalid parameter month value.");
+        }
+
+        if (year < LocalDate.now().getYear()) {
+            throw new ParameterException(
+                    "Invalid parameter year value. Year must be greater than or equal to the current year.");
+        } else if (month < LocalDate.now().getDayOfMonth() && year == LocalDate.now().getYear()) {
+            throw new ParameterException(
+                    "Invalid parameter month value. Month and Year must be greater than or equal to the current date.");
+        }
+
+        // Em quais dias da semana o profissional trabalha e em quais horários?
+        List<ProfessionalWeekDaysSlot> professionalWeekDaysSlots = professionalRepository
+                .findDistinctDaysOfWeekAndTotalSlotsByProfessionalId(professional.getId());
+
+        // Quais atendimentos estao agendados para o profissional no mes/ano
+        List<ProfessionalScheduleDays> schedule = appointmentRepository
+                .countAppointmentsByDayForProfessionalInMonthAndYear(professional.getId(), month, year);
+
+        // Quais dias na agenda do profissional estão disponíveis
+        List<Integer> availiabilyDays = createAvailableDaysList(month, year, professionalWeekDaysSlots, schedule,
+                professional);
 
         ProfessionalAvailabilityDaysDAO dao = new ProfessionalAvailabilityDaysDAO();
         dao.setId(professional.getId());
         dao.setName(professional.getName());
-
-        try {
-            Month.of(month);
-            dao.setMonth(month);
-        } catch (DateTimeException e) {
-            throw new ParameterException("Invalid parameter month value");
-        }
-
-        if (year < LocalDate.now().getYear()) {
-            throw new ParameterException("Invalid parameter year value. Year must be greater than or equal to the current year");
-        }
-        else{
-            dao.setYear(year);
-        }
-        //Quantos atendimentos por dia da semana estão disponíveis
-        List<ProfessionalWeekDaysSlot> professionalWeekDaysSlots = professionalRepository.findDistinctDaysOfWeekAndTotalSlotsByProfessionalId(professional.getId());
-
-        //Quais atendimentos estao agendados
-        List<ProfessionalScheduleDays> schedule = appointmentRepository.countAppointmentsByDayForProfessionalInMonthAndYear(professional.getId(), month, year);
-
-        //Dias disponíveis
-        List<Integer> availiabilyDays = getWorksDays(month, year,professionalWeekDaysSlots, schedule);
-
-
+        dao.setYear(year);
+        dao.setYear(year);
         dao.setAvailabilityDays(availiabilyDays);
-
-        
 
         return dao;
     }
 
-    private List<Integer> getWorksDays(int month, int year, List<ProfessionalWeekDaysSlot> slotsWeekDays, List<ProfessionalScheduleDays> schedule) {
+    /**
+     * 
+     * @param month
+     * @param year
+     * @param slotsWeekDays
+     * @param schedule
+     * @param professional
+     * 
+     * @return
+     */
+    private List<Integer> createAvailableDaysList(int month, int year, List<ProfessionalWeekDaysSlot> slotsWeekDays,
+            List<ProfessionalScheduleDays> schedule, Professional professional) {
         List<Integer> daysOfMonth = new ArrayList<Integer>();
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         LocalDate currentDate = startDate;
 
+        // Varre todos os dias do mes
         while (!currentDate.isAfter(endDate)) {
-            
-            //Exclui Sabado e Domingo
-            if (currentDate.getDayOfWeek() != DayOfWeek.SATURDAY && currentDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
 
-                //Recuperar os slots desse dia da semana.
-                final int dayOfWeek  = currentDate.getDayOfWeek().getValue();
-                
-                //Recuperar o dia do mes
+            // Exclui feriados e dias bloqueados
+            if (!isHoliday(currentDate) && !isBlockedDay(currentDate, professional)) {
+
+                // Recuperar o dia da semmana
+                DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
+
+                // Recuperar o dia do mes
                 final int dayOfMonth = currentDate.getDayOfMonth();
 
-                Optional<ProfessionalWeekDaysSlot> slot = slotsWeekDays.stream().filter( s -> s.getWeekDay() == dayOfWeek ).findFirst();
-                if(slot.isPresent()){
-                    int total = slot.get().getTotalSlots();
+                Optional<ProfessionalWeekDaysSlot> slot = slotsWeekDays.stream()
+                        .filter(s -> s.getWeekDay().equals(dayOfWeek)).findFirst();
 
-                    Optional<ProfessionalScheduleDays> day = schedule.stream().filter( s -> s.getDay() == dayOfMonth).findFirst();
- 
-                    if(day.isPresent()){
-                        if(day.get().getTotal() < total) {
+                // O profissional trabalha nesse dia da semana?
+                if (slot.isPresent()) {
+
+                    // Recupera a quantidade de atendimentos possiveis do professional no dia da
+                    // semana
+                    int totalSlots = slot.get().getTotalSlots();
+
+                    // Recupera quantos atendimentos já estão agendados para esse dia
+                    Optional<ProfessionalScheduleDays> day = schedule.stream().filter(s -> s.getDay() == dayOfMonth)
+                            .findFirst();
+
+                    if (day.isPresent()) {
+                        // Verifica se existem vagas (slots) disponiveis para esse dia.
+                        if (day.get().getTotal() < totalSlots) {
                             daysOfMonth.add(currentDate.getDayOfMonth());
                         }
-                    }
-                    else{
+                    } else {
                         daysOfMonth.add(currentDate.getDayOfMonth());
                     }
                 }
@@ -198,7 +240,90 @@ public class ProfessionalService {
             currentDate = currentDate.plusDays(1);
         }
 
-        
         return daysOfMonth;
+    }
+
+    // TODO Implements this in future
+    private boolean isHoliday(LocalDate currentDate) {
+        return false;
+    }
+
+    // TODO Implements this in future
+    private boolean isBlockedDay(LocalDate currentDate, Professional professional) {
+        return false;
+    }
+
+    /**
+     * 
+     * @param date
+     * @param professionalId
+     * @return
+     */
+    public List<TimeSlot> getAvailableTimeSlots(LocalDate date, Long professionalId) {
+        List<TimeSlot> availableTimeSlots = new ArrayList<>();
+
+        // Obter os horários possiveis de trabalho do profissional para o dia da semana
+        // especificado
+        List<WorkScheduleItem> workScheduleItemsInWeekDay = workScheduleItemRepository
+                .findByProfessionalIdAndDayOfWeek(professionalId, date.getDayOfWeek());
+
+        // Obter os agendamentos do profissional para o dia especificado
+        List<Appointment> appointmentsInDate = appointmentRepository.findByProfessionalIdAndDate(professionalId, date);
+
+        // Processar os horários de trabalho e encontrar os slots disponíveis
+        for (WorkScheduleItem workScheduleItem : workScheduleItemsInWeekDay) {
+
+            // Calcular os slots disponíveis com base nos horários de trabalho e
+            // agendamentos existentes
+            List<TimeSlot> availableSlots = calculateAvailableSlots(workScheduleItem, appointmentsInDate);
+
+            // Adicionar os slots disponíveis à lista final
+            availableTimeSlots.addAll(availableSlots);
+        }
+
+        return availableTimeSlots;
+    }
+
+    /**
+     * 
+     * @param workScheduleItem
+     * @param appointments
+     * @return
+     */
+    private List<TimeSlot> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
+        List<TimeSlot> availableSlots = new ArrayList<>();
+
+        LocalTime startTime = workScheduleItem.getStartTime();
+        Integer slots = workScheduleItem.getSlots();
+        Integer slotSize = workScheduleItem.getSlotSize();
+
+        // Verificar se há agendamentos nos horários de trabalho e ajustar os slots
+        // disponíveis
+        for (int i = 0; i < slots; i++) {
+
+            LocalTime slotStartTime = startTime.plusMinutes(i * slotSize);
+            LocalTime slotEndTime = slotStartTime.plusMinutes(slotSize);
+
+            boolean isSlotAvailable = true;
+
+            for (Appointment appointment : appointments) {
+
+                LocalTime appointmentStartTime = appointment.getStartTime();
+                LocalTime appointmentEndTime = appointment.getEndTime();
+
+                if (appointmentStartTime.isBefore(slotEndTime) && appointmentEndTime.isAfter(slotStartTime)) {
+                    // O slot está ocupado por um agendamento existente
+                    isSlotAvailable = false;
+                    break;
+                }
+            }
+
+            if (isSlotAvailable) {
+                // O slot está disponível
+                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime));
+            }
+        }
+
+        return availableSlots;
     }
 }

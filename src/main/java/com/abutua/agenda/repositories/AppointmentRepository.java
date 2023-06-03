@@ -1,5 +1,6 @@
 package com.abutua.agenda.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "AND EXTRACT(YEAR FROM date) = :year " +
             "GROUP BY DATE_TRUNC('day', a.date)")
     List<ProfessionalScheduleDays> countAppointmentsByDayForProfessionalInMonthAndYear(Long professionalId, int month, int year);
+
+
+    List<Appointment> findByProfessionalIdAndDate(Long professionalId, LocalDate date);
 
 }

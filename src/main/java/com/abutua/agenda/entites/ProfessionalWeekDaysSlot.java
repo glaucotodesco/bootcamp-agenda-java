@@ -1,6 +1,8 @@
 package com.abutua.agenda.entites;
 
+import java.time.DayOfWeek;
+
 public interface ProfessionalWeekDaysSlot {
-    int getWeekDay();
+    DayOfWeek getWeekDay();
     int getTotalSlots();
 }
