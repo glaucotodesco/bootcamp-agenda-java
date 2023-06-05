@@ -30,7 +30,7 @@ public class Person implements Serializable{
     private String email;
 
     @Column(length = 1024)
-    private String comments;
+    private String comment;
     
 
     public Person(){
@@ -41,11 +41,11 @@ public class Person implements Serializable{
         this.id = id;
     }
     
-    public Person(String name, String phone, String email, String comments) {
+    public Person(String name, String phone, String email, String comment) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.comments = comments;
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -72,11 +72,11 @@ public class Person implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     
@@ -106,8 +106,8 @@ public class Person implements Serializable{
     }
     @Override
     public String toString() {
-        return "Person [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", comments="
-                + comments + "]";
+        return "Person [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", comment="
+                + comment + "]";
     }
 
     

@@ -1,12 +1,10 @@
 package com.abutua.agenda.entites;
 
-import java.time.Instant;
+
+import com.abutua.agenda.dao.AppointmentDAO;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -39,6 +36,10 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status = AppointmentStatus.OPEN;
+
+    @ManyToOne
+    @JoinColumn(name ="area_id")
+    private Area area;
     
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -52,9 +53,8 @@ public class Appointment {
     @JoinColumn(name = "appointment_type_id")
     private AppointmentType type;
     
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="appointment_id")
-    private List<AppointmentComment> comments = new ArrayList<AppointmentComment>();
+    @Column(length = 1024)
+    private String comment;
 
     public Long getId() {
         return id;
@@ -102,10 +102,6 @@ public class Appointment {
         this.professional = professional;
     }
 
-    public void addComment(String comment){
-        this.comments.add(new AppointmentComment(comment, Instant.now()));
-    }
-
     public AppointmentType getType() {
         return type;
     }
@@ -113,12 +109,28 @@ public class Appointment {
         this.type = type;
     }
     
-
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comments) {
+        this.comment = comments;
+    }
+    public AppointmentDAO toDAO() {
+        return new AppointmentDAO(id,date,startTime,endTime,status,client.toDAO(),professional.toDAO(),type.toDAO(),comment,area.toDAO());
+    }
+    public Area getArea() {
+        return area;
+    }
+    public void setArea(Area area) {
+        this.area = area;
+    }
+  
     @Override
     public String toString() {
         return "Appointment [id=" + id + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime
-                + ", status=" + status + "]";
+                + ", status=" + status + ", type=" + type + ", comment=" + comment + "]";
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -143,6 +155,7 @@ public class Appointment {
             return false;
         return true;
     }
+
    
  
   

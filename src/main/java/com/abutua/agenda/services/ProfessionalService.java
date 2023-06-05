@@ -292,7 +292,7 @@ public class ProfessionalService {
      * @return
      */
     private List<TimeSlot> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         
         List<TimeSlot> availableSlots = new ArrayList<>();
         LocalTime startTime = workScheduleItem.getStartTime();

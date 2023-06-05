@@ -1,5 +1,7 @@
 package com.abutua.agenda.entites;
 
+import com.abutua.agenda.dao.AppointmentTypeDAO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,11 @@ public class AppointmentType {
         this.type = type;
     }
 
+    public AppointmentType(Integer id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -41,6 +48,10 @@ public class AppointmentType {
     @Override
     public String toString() {
         return "AppointmentType [id=" + id + ", type=" + type + "]";
+    }
+
+    public AppointmentTypeDAO toDAO(){
+        return new AppointmentTypeDAO(id, type);
     }
 
     @Override

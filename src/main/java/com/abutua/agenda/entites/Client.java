@@ -3,6 +3,9 @@ package com.abutua.agenda.entites;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.abutua.agenda.dao.ClientDAO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +31,10 @@ public class Client extends Person {
         super(name, phone, email, comments);
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public Client(Long id) {
+        setId(id);
     }
 
     @OneToMany(mappedBy = "client")
@@ -57,6 +64,10 @@ public class Client extends Person {
     @Override
     public String toString() {
         return "Client [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
+    }
+
+    public ClientDAO toDAO(){
+        return new ClientDAO(getId(),getName(),getPhone(),getEmail(),getComment(),dateOfBirth,gender);
     }
          
 }

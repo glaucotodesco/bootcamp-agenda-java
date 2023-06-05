@@ -24,7 +24,7 @@ import com.abutua.agenda.repositories.ProfessionalRepository;
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.AreaSaveDAO;
 import com.abutua.agenda.services.AreaService;
-import com.abutua.agenda.services.ProfessionalService;
+
 
 @RestController
 @RequestMapping("areas")

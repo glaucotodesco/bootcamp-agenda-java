@@ -1,17 +1,27 @@
 package com.abutua.agenda.dao;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jakarta.validation.constraints.Min;
+
+
+@JsonInclude(Include.NON_NULL)
 public class ProfessionalDAO {
 
+  
+    @Min(value=1, message = "Professional id must be greater than or equal to 1.")
     private long id;
+
+    
     private String name;
     private String phone;
     private String email;
     private String comments;
-    private boolean active;
+    private Boolean active;
 
-    public ProfessionalDAO(long id, String name, String phone, String email, String comments, boolean active) {
+    public ProfessionalDAO(long id, String name, String phone, String email, String comments, Boolean active) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -60,11 +70,11 @@ public class ProfessionalDAO {
         this.comments = comments;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 

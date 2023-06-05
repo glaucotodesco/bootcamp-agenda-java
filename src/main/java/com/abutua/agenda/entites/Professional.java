@@ -93,11 +93,11 @@ public class Professional extends Person{
     }
 
     public ProfessionalDAO toDAO() {
-        return new ProfessionalDAO(getId(),getName(),getPhone(),getEmail(),getComments(), getActive());    
+        return new ProfessionalDAO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());    
     }
 
     public ProfessionalWithAreaDAO toDAOWithAreas() {
-        ProfessionalWithAreaDAO dao = new ProfessionalWithAreaDAO(getId(),getName(),getPhone(),getEmail(),getComments(), getActive());
+        ProfessionalWithAreaDAO dao = new ProfessionalWithAreaDAO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());
 
         dao.setAreas(
             areas.stream()
