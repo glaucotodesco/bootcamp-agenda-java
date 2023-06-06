@@ -196,8 +196,8 @@ public class ProfessionalService {
      */
     private List<Integer> createAvailableDaysList(int month, int year, List<ProfessionalWeekDaysSlot> slotsWeekDays,
             List<ProfessionalScheduleDays> schedule, Professional professional) {
-        List<Integer> daysOfMonth = new ArrayList<Integer>();
 
+        List<Integer> daysOfMonth = new ArrayList<Integer>();
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         LocalDate currentDate = startDate;
@@ -292,8 +292,6 @@ public class ProfessionalService {
      * @return
      */
     private List<TimeSlot> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        
         List<TimeSlot> availableSlots = new ArrayList<>();
         LocalTime startTime = workScheduleItem.getStartTime();
         Integer slots = workScheduleItem.getSlots();
@@ -322,10 +320,10 @@ public class ProfessionalService {
 
             if (isSlotAvailable) {
                 // O slot está disponível
-                availableSlots.add(new TimeSlot(slotStartTime.format(formatter), slotEndTime.format(formatter), true));
+                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime, true));
             }
             else{
-                availableSlots.add(new TimeSlot(slotStartTime.format(formatter), slotEndTime.format(formatter), false));
+                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime, false));
             }
         }
 

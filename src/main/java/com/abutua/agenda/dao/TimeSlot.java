@@ -1,37 +1,42 @@
 package com.abutua.agenda.dao;
 
-
+import java.time.LocalTime;
 
 public class TimeSlot {
-    private String startTime;
-    private String endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private boolean available;
 
-    public TimeSlot(String startTime, String endTime, boolean available) {
+    public TimeSlot(LocalTime startTime, LocalTime endTime, boolean available) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.available = available;
     }
 
     
-    public String getStartTime() {
+
+    public LocalTime getStartTime() {
         return startTime;
     }
 
 
-    public void setStartTime(String startTime) {
+
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
 
-    public String getEndTime() {
+
+    public LocalTime getEndTime() {
         return endTime;
     }
 
 
-    public void setEndTime(String endTime) {
+
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
 
 
     public boolean isAvailable() {

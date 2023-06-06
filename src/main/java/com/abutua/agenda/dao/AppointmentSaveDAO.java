@@ -35,10 +35,12 @@ public class AppointmentSaveDAO {
     @Valid
     private ProfessionalDAO professional;
 
+    
     @NotNull(message = "Type can not be null")
     @Valid
     private AppointmentTypeDAO type;
     
+
     private String comment;
     
     public LocalDate getDate() {

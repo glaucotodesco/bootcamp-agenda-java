@@ -11,5 +11,5 @@ public interface WorkScheduleItemRepository extends JpaRepository<WorkScheduleIt
     
     @Query("SELECT w FROM WorkScheduleItem w WHERE w.professional.id = :professionalId AND w.dayOfWeek = :dayOfWeek ORDER BY w.startTime")
     List<WorkScheduleItem> findByProfessionalIdAndDayOfWeek(Long professionalId, DayOfWeek dayOfWeek);
-
+    
 }

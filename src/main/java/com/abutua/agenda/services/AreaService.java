@@ -29,8 +29,9 @@ public class AreaService {
     private ProfessionalRepository professionalRepository;
 
     public AreaWithProfessionalDAO getById(int id) {
+
         Area area = areaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area with " + id + " not found"));
 
         return area.toDAOWithProfessionals();
     }
