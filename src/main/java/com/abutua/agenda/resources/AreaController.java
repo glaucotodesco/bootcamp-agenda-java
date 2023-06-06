@@ -19,8 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.agenda.dao.AreaWithProfessionalDAO;
 import com.abutua.agenda.dao.ProfessionalDAO;
-import com.abutua.agenda.entites.Professional;
-import com.abutua.agenda.repositories.ProfessionalRepository;
 import com.abutua.agenda.dao.AreaDAO;
 import com.abutua.agenda.dao.AreaSaveDAO;
 import com.abutua.agenda.services.AreaService;

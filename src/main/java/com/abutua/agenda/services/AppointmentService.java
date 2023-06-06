@@ -1,7 +1,6 @@
 package com.abutua.agenda.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +13,13 @@ import com.abutua.agenda.dao.AppointmentSaveDAO;
 import com.abutua.agenda.dao.AppointmentTypeDAO;
 import com.abutua.agenda.dao.TimeSlot;
 import com.abutua.agenda.entites.Appointment;
-import com.abutua.agenda.entites.AppointmentType;
-import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.entites.Professional;
-import com.abutua.agenda.entites.WorkScheduleItem;
 import com.abutua.agenda.repositories.AppointmentRepository;
 import com.abutua.agenda.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ClientRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
-import com.abutua.agenda.repositories.WorkScheduleItemRepository;
 
 @Service
 public class AppointmentService {
@@ -57,6 +52,7 @@ public class AppointmentService {
 
     public AppointmentDAO save(AppointmentSaveDAO appointmentSaveDAO) {
 
+        
         areaRepository.findById(appointmentSaveDAO.getArea().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area id not found"));
 
