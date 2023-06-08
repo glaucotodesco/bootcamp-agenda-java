@@ -43,7 +43,7 @@ public class ListProfessionalAvailabilityTimesUseCase {
         for (WorkScheduleItem workScheduleItem : workScheduleInWeekDay) {
             // Calcular os slots disponíveis com base nos horários de trabalho e
             // agendamentos existentes
-            List<TimeSlotDTO> availableSlots = calculateAvailableSlots(workScheduleItem, appointmentsInDate);
+            List<TimeSlotDTO> availableSlots = calculateAvailableSlots(workScheduleItem, appointmentsInDate, date);
 
             // Adicionar os slots disponíveis à lista final
             availableTimeSlots.addAll(availableSlots);
@@ -58,7 +58,7 @@ public class ListProfessionalAvailabilityTimesUseCase {
      * @param appointments
      * @return
      */
-    private List<TimeSlotDTO> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
+    private List<TimeSlotDTO> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments, LocalDate date) {
         List<TimeSlotDTO> availableSlots = new ArrayList<>();
         LocalTime startTime = workScheduleItem.getStartTime();
         Integer slots = workScheduleItem.getSlots();
@@ -73,17 +73,24 @@ public class ListProfessionalAvailabilityTimesUseCase {
 
             boolean isSlotAvailable = true;
 
-            for (Appointment appointment : appointments) {
+            //Check if time and date is greater than now
+            if (slotStartTime.isBefore(LocalTime.now()) && date.getDayOfMonth() == LocalDate.now().getDayOfMonth()) {
+                isSlotAvailable = false;
+            }
+            else {
+                for (Appointment appointment : appointments) {
 
-                LocalTime appointmentStartTime = appointment.getStartTime();
-                LocalTime appointmentEndTime = appointment.getEndTime();
-
-                if (appointmentStartTime.isBefore(slotEndTime) && appointmentEndTime.isAfter(slotStartTime)) {
-                    // O slot está ocupado por um agendamento existente
-                    isSlotAvailable = false;
-                    break;
+                    LocalTime appointmentStartTime = appointment.getStartTime();
+                    LocalTime appointmentEndTime = appointment.getEndTime();
+    
+                    if (appointmentStartTime.isBefore(slotEndTime) && appointmentEndTime.isAfter(slotStartTime)) {
+                        // O slot está ocupado por um agendamento existente
+                        isSlotAvailable = false;
+                        break;
+                    }
                 }
             }
+            
 
             if (isSlotAvailable) {
                 // O slot está disponível

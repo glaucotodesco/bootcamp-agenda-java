@@ -64,7 +64,7 @@ public class AreaController {
 
     @PostMapping
     public ResponseEntity<AreaDTO> saveArea(@Validated @RequestBody AreaSaveDTO areaSavedto) {
-        AreaDTO areadto = areaService.save(areaSavedto);
+        var areadto = areaService.save(areaSavedto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

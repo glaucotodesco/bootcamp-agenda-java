@@ -9,21 +9,16 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import jakarta.validation.constraints.Min;
 
-
 @JsonInclude(Include.NON_NULL)
 public record ClientDTO(
-    @Min(value=1, message = "Client id must be greater than or equal to 1.")
-    long id,
+        @Min(value = 1, message = "Client id must be greater than or equal to 1.") long id,
+        String name,
+        String phone,
+        String email,
+        String comment,
+        LocalDate dateOfBirth,
+        Gender gender
 
-    String name,
-    String phone,
-    String email,
-    String comment,
-    LocalDate dateOfBirth,
-    Gender gender
-    
 ) {
 
 }
-
-    

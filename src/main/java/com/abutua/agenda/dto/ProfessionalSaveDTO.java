@@ -9,17 +9,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record ProfessionalSaveDTO(
-
         @NotBlank(message = "Name can not be blank") @Size(min = 3, max = 40, message = "Name length min=3 and max=40") String name,
-
         @Size(max = 40) String phone,
-
         @Email @Size(max = 40) String email,
-
         @Size(max = 1024) String comments,
-
         boolean active,
-
         Set<AreaDTO> areasdto) {
 
     public Professional toEntity() {

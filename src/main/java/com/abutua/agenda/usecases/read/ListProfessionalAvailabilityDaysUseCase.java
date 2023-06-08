@@ -94,7 +94,15 @@ public class ListProfessionalAvailabilityDaysUseCase {
             List<ProfessionalScheduleDays> schedule, Professional professional) {
 
         List<Integer> daysOfMonth = new ArrayList<Integer>();
-        LocalDate startDate = LocalDate.of(year, month, 1);
+
+        var now = LocalDate.now();
+        int startDay=1;
+        
+        if(year == now.getYear() && month == now.getMonth().getValue()){
+            	startDay = LocalDate.now().getDayOfMonth();
+        }        
+
+        LocalDate startDate = LocalDate.of(year, month, startDay);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         LocalDate currentDate = startDate;
 

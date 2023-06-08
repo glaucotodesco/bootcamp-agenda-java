@@ -81,7 +81,7 @@ public class ProfessionalController {
 
     @PostMapping
     public ResponseEntity<ProfessionalDTO> saveProfessional(@Validated @RequestBody ProfessionalSaveDTO professioanalSavedto) {
-        ProfessionalDTO professionaldto = professionalService.save(professioanalSavedto);
+        var professionaldto = professionalService.save(professioanalSavedto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

@@ -28,7 +28,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<AppointmentDTO> createAppointment(@Validated @RequestBody AppointmentSaveDTO appointmentSavedto) {
         
-        AppointmentDTO appointmentdto = appointmentService.save(appointmentSavedto);
+        var appointmentdto = appointmentService.save(appointmentSavedto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
