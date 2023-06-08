@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.abutua.agenda.dao.ClientDAO;
+import com.abutua.agenda.dto.ClientDTO;
 import com.abutua.agenda.repositories.ClientRepository;
 
 @Service
@@ -17,11 +17,11 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public List<ClientDAO> findByNameContaining(String name,int limit){
+    public List<ClientDTO> findByNameContaining(String name,int limit){
         Pageable pageable = PageRequest.of(0, 10);
         return clientRepository.findByNameContainingIgnoreCase(name, pageable)
         .stream()
-        .map(c -> c.toDAO())
+        .map(c -> c.toDTO())
         .collect(Collectors.toList());
     }
     

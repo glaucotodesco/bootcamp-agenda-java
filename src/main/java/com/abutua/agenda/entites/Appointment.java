@@ -1,10 +1,11 @@
 package com.abutua.agenda.entites;
 
 
-import com.abutua.agenda.dao.AppointmentDAO;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import com.abutua.agenda.dto.AppointmentDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -115,8 +116,9 @@ public class Appointment {
     public void setComment(String comments) {
         this.comment = comments;
     }
-    public AppointmentDAO toDAO() {
-        return new AppointmentDAO(id,date,startTime,endTime,status,client.toDAO(),professional.toDAO(),type.toDAO(),comment,area.toDAO());
+
+    public AppointmentDTO toDTO() {
+        return new AppointmentDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comment);
     }
     public Area getArea() {
         return area;

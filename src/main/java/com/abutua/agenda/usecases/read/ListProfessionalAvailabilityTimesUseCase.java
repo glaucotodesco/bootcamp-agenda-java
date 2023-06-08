@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.abutua.agenda.dao.TimeSlot;
+import com.abutua.agenda.dto.TimeSlotDTO;
 import com.abutua.agenda.entites.Appointment;
 import com.abutua.agenda.entites.WorkScheduleItem;
 import com.abutua.agenda.repositories.AppointmentRepository;
@@ -29,9 +29,9 @@ public class ListProfessionalAvailabilityTimesUseCase {
      * @param professionalId
      * @return
      */
-    public List<TimeSlot> executeUseCase(LocalDate date, Long professionalId) {
+    public List<TimeSlotDTO> executeUseCase(LocalDate date, Long professionalId) {
 
-        List<TimeSlot> availableTimeSlots = new ArrayList<>();
+        List<TimeSlotDTO> availableTimeSlots = new ArrayList<>();
 
         //Step 1
         List<WorkScheduleItem> workScheduleInWeekDay = workScheduleItemRepository.findWorkSchedulesByProfessionalAndDayOfWeekOrderByStartTime(professionalId, date.getDayOfWeek());
@@ -43,7 +43,7 @@ public class ListProfessionalAvailabilityTimesUseCase {
         for (WorkScheduleItem workScheduleItem : workScheduleInWeekDay) {
             // Calcular os slots disponíveis com base nos horários de trabalho e
             // agendamentos existentes
-            List<TimeSlot> availableSlots = calculateAvailableSlots(workScheduleItem, appointmentsInDate);
+            List<TimeSlotDTO> availableSlots = calculateAvailableSlots(workScheduleItem, appointmentsInDate);
 
             // Adicionar os slots disponíveis à lista final
             availableTimeSlots.addAll(availableSlots);
@@ -58,8 +58,8 @@ public class ListProfessionalAvailabilityTimesUseCase {
      * @param appointments
      * @return
      */
-    private List<TimeSlot> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
-        List<TimeSlot> availableSlots = new ArrayList<>();
+    private List<TimeSlotDTO> calculateAvailableSlots(WorkScheduleItem workScheduleItem, List<Appointment> appointments) {
+        List<TimeSlotDTO> availableSlots = new ArrayList<>();
         LocalTime startTime = workScheduleItem.getStartTime();
         Integer slots = workScheduleItem.getSlots();
         Integer slotSize = workScheduleItem.getSlotSize();
@@ -87,10 +87,10 @@ public class ListProfessionalAvailabilityTimesUseCase {
 
             if (isSlotAvailable) {
                 // O slot está disponível
-                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime, true));
+                availableSlots.add(new TimeSlotDTO(slotStartTime, slotEndTime, true));
             }
             else{
-                availableSlots.add(new TimeSlot(slotStartTime, slotEndTime, false));
+                availableSlots.add(new TimeSlotDTO(slotStartTime, slotEndTime, false));
             }
         }
 

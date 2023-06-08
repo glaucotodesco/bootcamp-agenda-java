@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.abutua.agenda.dao.ClientDAO;
+import com.abutua.agenda.dto.ClientDTO;
 import com.abutua.agenda.services.ClientService;
 
 @RestController
@@ -21,7 +21,7 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientDAO>> getClients(@RequestParam(name = "name_like", defaultValue = "") String name_like,
+    public ResponseEntity<List<ClientDTO>> getClients(@RequestParam(name = "name_like", defaultValue = "") String name_like,
                                                       @RequestParam(name = "limit", defaultValue = "10") int limit
                                                      ){
 

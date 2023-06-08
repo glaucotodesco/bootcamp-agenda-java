@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.abutua.agenda.dao.ProfessionalAvailabilityDaysDAO;
-import com.abutua.agenda.dao.ProfessionalDAO;
-import com.abutua.agenda.dao.ProfessionalSaveDAO;
-import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
-import com.abutua.agenda.dao.TimeSlot;
-import com.abutua.agenda.dao.WorkScheduleDAO;
+import com.abutua.agenda.dto.ProfessionalAvailabilityDaysDTO;
+import com.abutua.agenda.dto.ProfessionalDTO;
+import com.abutua.agenda.dto.ProfessionalSaveDTO;
+import com.abutua.agenda.dto.ProfessionalWithAreaDTO;
+import com.abutua.agenda.dto.TimeSlotDTO;
+import com.abutua.agenda.dto.WorkScheduleDTO;
 import com.abutua.agenda.services.ProfessionalService;
 
 @RestController
@@ -37,33 +37,33 @@ public class ProfessionalController {
 
 
     @GetMapping("{id}")
-    public ResponseEntity<ProfessionalWithAreaDAO> getProfessional(@PathVariable long id) {
-        ProfessionalWithAreaDAO professionalDAO = professionalService.getById(id);
-        return ResponseEntity.ok(professionalDAO);
+    public ResponseEntity<ProfessionalWithAreaDTO> getProfessional(@PathVariable long id) {
+        ProfessionalWithAreaDTO professionaldto = professionalService.getById(id);
+        return ResponseEntity.ok(professionaldto);
     }
 
     
     @GetMapping("{id}/workshedules")
-    public ResponseEntity<WorkScheduleDAO> getProfessinalWorkSchedule(@PathVariable long id) {
-        WorkScheduleDAO workScheduleDAO = professionalService.getWorkSchedule(id);
-        return ResponseEntity.ok(workScheduleDAO);
+    public ResponseEntity<WorkScheduleDTO> getProfessinalWorkSchedule(@PathVariable long id) {
+        WorkScheduleDTO workScheduledto = professionalService.getWorkSchedule(id);
+        return ResponseEntity.ok(workScheduledto);
     }
 
 
     
     @GetMapping("{id}/availability-days")
-    public ResponseEntity<ProfessionalAvailabilityDaysDAO> getProfessinalAvailabitiyDays(@PathVariable long id, @RequestParam int month, @RequestParam int year) {
+    public ResponseEntity<ProfessionalAvailabilityDaysDTO> getProfessinalAvailabitiyDays(@PathVariable long id, @RequestParam int month, @RequestParam int year) {
         return ResponseEntity.ok(professionalService.getAvailableDaysInMonth(id,month,year));
     }
 
     @GetMapping("{id}/availability-times")
-    public ResponseEntity<List<TimeSlot>> getProfessinalAvailabitiyTimes(@PathVariable Long id, @RequestParam String date) {
-        List <TimeSlot> slots = professionalService.getAvailableTimeSlots(LocalDate.parse(date),id);
+    public ResponseEntity<List<TimeSlotDTO>> getProfessinalAvailabitiyTimes(@PathVariable Long id, @RequestParam String date) {
+        List <TimeSlotDTO> slots = professionalService.getAvailableTimeSlots(LocalDate.parse(date),id);
         return ResponseEntity.ok(slots);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProfessionalDAO>> getProfessionals() {
+    public ResponseEntity<List<ProfessionalDTO>> getProfessionals() {
         return ResponseEntity.ok(professionalService.getAll());
     }
 
@@ -74,22 +74,22 @@ public class ProfessionalController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateProfessional(@PathVariable long id, @Validated @RequestBody ProfessionalSaveDAO professionalSaveDAO) {
-        professionalService.update(id, professionalSaveDAO);
+    public ResponseEntity<Void> updateProfessional(@PathVariable long id, @Validated @RequestBody ProfessionalSaveDTO professionalSavedto) {
+        professionalService.update(id, professionalSavedto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<ProfessionalDAO> saveProfessional(@Validated @RequestBody ProfessionalSaveDAO professioanalSaveDAO) {
-        ProfessionalDAO professionalDAO = professionalService.save(professioanalSaveDAO);
+    public ResponseEntity<ProfessionalDTO> saveProfessional(@Validated @RequestBody ProfessionalSaveDTO professioanalSavedto) {
+        ProfessionalDTO professionaldto = professionalService.save(professioanalSavedto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(professionalDAO.getId())
+                .buildAndExpand(professionaldto.id())
                 .toUri();
 
-        return ResponseEntity.created(location).body(professionalDAO);
+        return ResponseEntity.created(location).body(professionaldto);
     }
 
 

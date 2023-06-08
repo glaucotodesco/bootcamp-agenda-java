@@ -2,11 +2,14 @@ package com.abutua.agenda.entites;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import com.abutua.agenda.dao.AreaDAO;
-import com.abutua.agenda.dao.AreaWithProfessionalDAO;
-import com.abutua.agenda.dao.ProfessionalDAO;
+
+import com.abutua.agenda.dto.AreaDTO;
+import com.abutua.agenda.dto.AreaWithProfessionalDTO;
+import com.abutua.agenda.dto.ProfessionalDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +22,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Tbl_Area")
-public class Area implements Serializable{
+public class Area implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +32,7 @@ public class Area implements Serializable{
     private String name;
 
     @ManyToMany
-    @JoinTable(
-        name = "Tbl_Area_Professional",
-        joinColumns = @JoinColumn(name = "area_id"),
-        inverseJoinColumns = @JoinColumn(name = "professional_id")
-    )
+    @JoinTable(name = "Tbl_Area_Professional", joinColumns = @JoinColumn(name = "area_id"), inverseJoinColumns = @JoinColumn(name = "professional_id"))
     private Set<Professional> professionals = new HashSet<Professional>();
 
     public Area() {
@@ -46,45 +45,45 @@ public class Area implements Serializable{
     public Area(String name) {
         this.name = name;
     }
-    
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    
-    public AreaWithProfessionalDAO toDAOWithProfessionals(){
-        AreaWithProfessionalDAO dao = new AreaWithProfessionalDAO(id, name);
-        dao.setProfessionals(
-            professionals.stream()
-                         .map( p -> new ProfessionalDAO(p.getId(),p.getName(),p.getPhone(),p.getEmail(),p.getComment(), p.getActive()))
-                         .collect(Collectors.toList()));
-        
-        return dao;
+    public AreaWithProfessionalDTO toDTOWithProfessionals() {
+        List<ProfessionalDTO> professionals = this.professionals.stream()
+                .map(p -> new ProfessionalDTO(p.getId(), p.getName(), p.getPhone(), p.getEmail(), p.getComment(),  p.getActive()))
+                .collect(Collectors.toList());
+
+        return new AreaWithProfessionalDTO(id, name, professionals);
     }
 
     public Set<Professional> getProfessionals() {
         return professionals;
     }
-    
-    public AreaDAO toDAO(){
-        AreaDAO dao = new AreaDAO(id, name);
-        return dao;
+
+    public AreaDTO toDTO() {
+        AreaDTO dto = new AreaDTO(id, name);
+        return dto;
     }
 
     @Override
     public String toString() {
         return "Area [id=" + id + ", name=" + name + "]";
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -110,9 +109,4 @@ public class Area implements Serializable{
         return true;
     }
 
-  
-
-    
-    
-    
 }

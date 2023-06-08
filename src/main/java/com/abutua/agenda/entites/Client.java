@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.abutua.agenda.dao.ClientDAO;
+import com.abutua.agenda.dto.ClientDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -66,8 +66,8 @@ public class Client extends Person {
         return "Client [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
     }
 
-    public ClientDAO toDAO(){
-        return new ClientDAO(getId(),getName(),getPhone(),getEmail(),getComment(),dateOfBirth,gender);
+    public ClientDTO toDTO(){
+        return new ClientDTO(getId(),getName(),getPhone(),getEmail(),getComment(),dateOfBirth,gender);
     }
          
 }

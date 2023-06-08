@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.abutua.agenda.dao.AreaDAO;
-import com.abutua.agenda.dao.ProfessionalDAO;
-import com.abutua.agenda.dao.ProfessionalWithAreaDAO;
-import com.abutua.agenda.dao.WorkScheduleDAO;
+import com.abutua.agenda.dto.AreaDTO;
+import com.abutua.agenda.dto.ProfessionalDTO;
+import com.abutua.agenda.dto.ProfessionalWithAreaDTO;
+import com.abutua.agenda.dto.WorkScheduleDTO;
+import com.abutua.agenda.dto.WorkScheduleItemDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -92,29 +93,22 @@ public class Professional extends Person{
         return "Professional [active=" + active + "]";
     }
 
-    public ProfessionalDAO toDAO() {
-        return new ProfessionalDAO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());    
+    public ProfessionalDTO toDTO() {
+        return new ProfessionalDTO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());    
     }
 
-    public ProfessionalWithAreaDAO toDAOWithAreas() {
-        ProfessionalWithAreaDAO dao = new ProfessionalWithAreaDAO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());
-
-        dao.setAreas(
-            areas.stream()
-                         .map( a -> new AreaDAO(a.getId(), a.getName()))
-                         .collect(Collectors.toList()));
+    public ProfessionalWithAreaDTO toDTOWithAreas() {
+        List<AreaDTO> areas = this.areas.stream()
+                         .map( a -> new AreaDTO(a.getId(), a.getName()))
+                         .collect(Collectors.toList());
         
-        return dao;
+        ProfessionalWithAreaDTO dto = new ProfessionalWithAreaDTO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive(), areas);
+        return dto;
     }
    
-    public WorkScheduleDAO toWorkScheduleDAO() {
-        WorkScheduleDAO workScheduleDAO = new WorkScheduleDAO();
-
-        workScheduleDAO.setId(getId());
-        workScheduleDAO.setName(getName());
-        workScheduleDAO.setWorkshedule(workSchedule.stream().map( wsi -> wsi.toDAO()).collect(Collectors.toList()));
-
-        return workScheduleDAO;
+    public WorkScheduleDTO toWorkScheduledto() {
+        List<WorkScheduleItemDTO> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
+        return new WorkScheduleDTO(getId(), getName(),workScheduleList);
     }
 
 

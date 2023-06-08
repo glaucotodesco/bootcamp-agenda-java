@@ -8,10 +8,11 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import com.abutua.agenda.dao.AreaWithProfessionalDAO;
-import com.abutua.agenda.dao.ProfessionalDAO;
-import com.abutua.agenda.dao.AreaDAO;
-import com.abutua.agenda.dao.AreaSaveDAO;
+
+import com.abutua.agenda.dto.AreaDTO;
+import com.abutua.agenda.dto.AreaSaveDTO;
+import com.abutua.agenda.dto.AreaWithProfessionalDTO;
+import com.abutua.agenda.dto.ProfessionalDTO;
 import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.repositories.AreaRepository;
@@ -28,32 +29,32 @@ public class AreaService {
     @Autowired
     private ProfessionalRepository professionalRepository;
 
-    public AreaWithProfessionalDAO getById(int id) {
+    public AreaWithProfessionalDTO getById(int id) {
 
         Area area = areaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area with " + id + " not found"));
 
-        return area.toDAOWithProfessionals();
+        return area.toDTOWithProfessionals();
     }
 
-    public List<AreaDAO> getAll() {
+    public List<AreaDTO> getAll() {
         return areaRepository.findAll()
                 .stream()
-                .map(a -> a.toDAO())
+                .map(a -> a.toDTO())
                 .collect(Collectors.toList());
     }
 
-    public AreaDAO save(AreaSaveDAO areaSaveDAO) {
+    public AreaDTO save(AreaSaveDTO areaSavedto) {
         Area area;
 
         try {
-            area = areaRepository.save(areaSaveDAO.toEntity());
+            area = areaRepository.save(areaSavedto.toEntity());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
         } catch (InvalidDataAccessApiUsageException e) {
             throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
         }
-        return area.toDAO();
+        return area.toDTO();
     }
 
     public void deleteById(int id) {
@@ -68,18 +69,18 @@ public class AreaService {
         }
     }
 
-    public void update(int id, AreaSaveDAO areaSaveDAO) {
+    public void update(int id, AreaSaveDTO areaSavedto) {
         try {
             Area area = areaRepository.getReferenceById(id);
 
-            List<Professional> professionals = professionalRepository.findAllById(areaSaveDAO.getProfessionalsId());
+            List<Professional> professionals = professionalRepository.findAllById(areaSavedto.getProfessionalsId());
 
-            if (professionals.size() != areaSaveDAO.getProfessionals().size()) {
+            if (professionals.size() != areaSavedto.professionalsdto().size()) {
                 throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
             } else {
-                area.setName(areaSaveDAO.getName());
+                area.setName(areaSavedto.name());
                 area.getProfessionals().clear();
-                area.getProfessionals().addAll(areaSaveDAO.toEntity().getProfessionals());
+                area.getProfessionals().addAll(areaSavedto.toEntity().getProfessionals());
                 areaRepository.save(area);
             }
         } catch (DataIntegrityViolationException e) {
@@ -91,9 +92,9 @@ public class AreaService {
         }
     }
 
-    public List<ProfessionalDAO> getProfessionalsByArea(int id) {
+    public List<ProfessionalDTO> getProfessionalsByArea(int id) {
         return areaRepository.findProfessionalsByAreaId(id).stream()
-                .map(p -> p.toDAO())
+                .map(p -> p.toDTO())
                 .collect(Collectors.toList());
     }
 

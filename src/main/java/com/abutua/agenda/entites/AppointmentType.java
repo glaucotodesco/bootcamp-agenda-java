@@ -1,6 +1,6 @@
 package com.abutua.agenda.entites;
 
-import com.abutua.agenda.dao.AppointmentTypeDAO;
+import com.abutua.agenda.dto.AppointmentTypeDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,8 +50,8 @@ public class AppointmentType {
         return "AppointmentType [id=" + id + ", type=" + type + "]";
     }
 
-    public AppointmentTypeDAO toDAO(){
-        return new AppointmentTypeDAO(id, type);
+    public AppointmentTypeDTO toDTO(){
+        return new AppointmentTypeDTO(id, type);
     }
 
     @Override

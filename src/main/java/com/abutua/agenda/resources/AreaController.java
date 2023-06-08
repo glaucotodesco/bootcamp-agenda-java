@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.abutua.agenda.dao.AreaWithProfessionalDAO;
-import com.abutua.agenda.dao.ProfessionalDAO;
-import com.abutua.agenda.dao.AreaDAO;
-import com.abutua.agenda.dao.AreaSaveDAO;
+import com.abutua.agenda.dto.AreaDTO;
+import com.abutua.agenda.dto.AreaSaveDTO;
+import com.abutua.agenda.dto.AreaWithProfessionalDTO;
+import com.abutua.agenda.dto.ProfessionalDTO;
 import com.abutua.agenda.services.AreaService;
 
 
@@ -34,19 +34,19 @@ public class AreaController {
 
     
     @GetMapping("{id}")
-    public ResponseEntity<AreaWithProfessionalDAO> getArea(@PathVariable int id) {
-        AreaWithProfessionalDAO areaDAO = areaService.getById(id);
-        return ResponseEntity.ok(areaDAO);
+    public ResponseEntity<AreaWithProfessionalDTO> getArea(@PathVariable int id) {
+        AreaWithProfessionalDTO areadto = areaService.getById(id);
+        return ResponseEntity.ok(areadto);
     }
 
     @GetMapping("{id}/professionals")
-    public ResponseEntity<List<ProfessionalDAO>> getProfessionalsByArea(@PathVariable int id) {
+    public ResponseEntity<List<ProfessionalDTO>> getProfessionalsByArea(@PathVariable int id) {
         return ResponseEntity.ok(areaService.getProfessionalsByArea(id));
     }
 
 
     @GetMapping
-    public ResponseEntity<List<AreaDAO>> getAreas() {
+    public ResponseEntity<List<AreaDTO>> getAreas() {
         return ResponseEntity.ok(areaService.getAll());
     }
 
@@ -57,21 +57,21 @@ public class AreaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateArea(@PathVariable int id, @Validated @RequestBody AreaSaveDAO areaSaveDAO) {
-        areaService.update(id, areaSaveDAO);
+    public ResponseEntity<Void> updateArea(@PathVariable int id, @Validated @RequestBody AreaSaveDTO areaSavedto) {
+        areaService.update(id, areaSavedto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<AreaDAO> saveArea(@Validated @RequestBody AreaSaveDAO areaSaveDAO) {
-        AreaDAO areaDAO = areaService.save(areaSaveDAO);
+    public ResponseEntity<AreaDTO> saveArea(@Validated @RequestBody AreaSaveDTO areaSavedto) {
+        AreaDTO areadto = areaService.save(areaSavedto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(areaDAO.getId())
+                .buildAndExpand(areadto.id())
                 .toUri();
 
-        return ResponseEntity.created(location).body(areaDAO);
+        return ResponseEntity.created(location).body(areadto);
     }
 }

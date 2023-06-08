@@ -2,7 +2,9 @@ package com.abutua.agenda.entites;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import com.abutua.agenda.dao.WorkScheduleItemDAO;
+
+import com.abutua.agenda.dto.WorkScheduleItemDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -91,8 +93,8 @@ public class WorkScheduleItem {
         this.endTime = endTime;
     }
 
-    public WorkScheduleItemDAO toDAO(){
-        return new WorkScheduleItemDAO(id,dayOfWeek, startTime, endTime);
+    public WorkScheduleItemDTO toDTO(){
+        return new WorkScheduleItemDTO(id,dayOfWeek, startTime, endTime);
         
     }
 
