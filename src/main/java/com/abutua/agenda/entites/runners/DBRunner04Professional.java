@@ -30,8 +30,8 @@ public class DBRunner04Professional implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception { 
-        Professional p1= new Professional("Marco Nunes", "11 90232322","marco@gmail.com","",true);
-        Professional p2= new Professional("Marcelo Silva", "13 99921212","marcelo@gmail.com","Só Particular",true);
+        Professional p1= new Professional("Marco Nunes", "11 90232322",true);
+        Professional p2= new Professional("Marcelo Silva", "13 99921212",true);
 
         
         Area a1 = areaRepository.findById(1).get();

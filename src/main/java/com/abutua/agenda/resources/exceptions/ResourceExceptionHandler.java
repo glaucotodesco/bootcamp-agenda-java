@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import com.abutua.agenda.services.exceptions.DatabaseException;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -96,4 +94,6 @@ public class ResourceExceptionHandler {
          
         return ResponseEntity.status(status).body(error);
     }
+
+    
 }

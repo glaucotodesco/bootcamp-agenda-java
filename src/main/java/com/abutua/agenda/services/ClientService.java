@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.abutua.agenda.dto.ClientDTO;
@@ -17,12 +16,13 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public List<ClientDTO> findByNameContaining(String name,int limit){
-        Pageable pageable = PageRequest.of(0, 10);
+    public List<ClientDTO> findByNameContaining(String name, int limit) {
+        var pageable = PageRequest.of(0, limit);
+
         return clientRepository.findByNameContainingIgnoreCase(name, pageable)
-        .stream()
-        .map(c -> c.toDTO())
-        .collect(Collectors.toList());
+                .stream()
+                .map(c -> c.toDTO())
+                .collect(Collectors.toList());
     }
-    
+
 }

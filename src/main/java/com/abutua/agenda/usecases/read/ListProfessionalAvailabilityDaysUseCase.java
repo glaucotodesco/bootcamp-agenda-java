@@ -48,20 +48,20 @@ public class ListProfessionalAvailabilityDaysUseCase {
     public List<Integer> executeUseCase(long professionalId, int month, int year) {
 
         Professional professional = professionalRepository.findById(professionalId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id ={"+ professionalId +"} não encontrado."));
 
         try {
             Month.of(month);
         } catch (DateTimeException e) {
-            throw new ParameterException("Invalid parameter month value.");
+            throw new ParameterException("Valor para o mês inválido.");
         }
 
         if (year < LocalDate.now().getYear()) {
             throw new ParameterException(
-                    "Invalid parameter year value. Year must be greater than or equal to the current year.");
+                    "Valor para o ano inválido. O ano deve ser maior ou igual ao ano corrente.");
         } else if (month < LocalDate.now().getMonthValue() && year == LocalDate.now().getYear()) {
             throw new ParameterException(
-                    "Invalid parameter month value. Month and Year must be greater than or equal to the current date.");
+                    "Valor para o mês inválido. Mês e ano deve ser maior ou igual a data corrente.");
         }
 
         // Em quais dias da semana o profissional trabalha e em quais horários?

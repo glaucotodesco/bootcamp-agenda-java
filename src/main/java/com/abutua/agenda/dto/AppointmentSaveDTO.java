@@ -12,13 +12,13 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 public record AppointmentSaveDTO(
-        @FutureOrPresent(message = "Date must be equal to or later than the current date.") LocalDate date,
+        @FutureOrPresent(message = "A data deve ser maior ou igual a data corrente.") LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
-        @NotNull(message = "Area can not be null") @Valid AreaDTO area,
-        @NotNull(message = "Client can not be null") @Valid ClientDTO client,
-        @NotNull(message = "Professional can not be null") @Valid ProfessionalDTO professional,
-        @NotNull(message = "Type can not be null") @Valid AppointmentTypeDTO type,
+        @NotNull(message = "Area não pode ser nula.") @Valid AreaDTO area,
+        @NotNull(message = "Cliente não pode ser nulo.") @Valid ClientDTO client,
+        @NotNull(message = "Profissonal não pode ser nulo.") @Valid ProfessionalDTO professional,
+        @NotNull(message = "Tipo do atendimento não pode ser nulo.") @Valid AppointmentTypeDTO type,
         String comment
 
 ) {

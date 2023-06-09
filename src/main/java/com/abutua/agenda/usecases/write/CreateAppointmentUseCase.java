@@ -49,44 +49,38 @@ public class CreateAppointmentUseCase {
     private ListProfessionalAvailabilityTimesUseCase listProfessionalAvailabilityTimesUseCase;
 
     
-    public Appointment executeUseCase(AppointmentSaveDTO appointmentSavedto) {
-        // Step 1
-        checkIfAreaExistsOrThrowsException(appointmentSavedto.area());
-
-        // Step 2
-        checkIfAppointmentTypeExistsOrThrowsException(appointmentSavedto.type());
-
-        // Step 3
-        Client client = getClientIfExistsOrThrowsException(appointmentSavedto.client());
+    public Appointment executeUseCase(AppointmentSaveDTO appointmentSaveDAO) {
         
-        //Step 4
+        checkIfAreaExistsOrThrowsException(appointmentSaveDAO.area());
+
+        checkIfAppointmentTypeExistsOrThrowsException(appointmentSaveDAO.type());
+
+        Client client = getClientIfExistsOrThrowsException(appointmentSaveDAO.client());
+        
         checkIfClientHasDateAndTimeAvailableOrThrowsException(
                                                              client,
-                                                             appointmentSavedto.date(),
-                                                             appointmentSavedto.startTime(),
-                                                             appointmentSavedto.endTime()
+                                                             appointmentSaveDAO.date(),
+                                                             appointmentSaveDAO.startTime(),
+                                                             appointmentSaveDAO.endTime()
                                                              );
-        // Step 5
-        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentSavedto.professional());
 
-        // Step 6
+        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentSaveDAO.professional());
+        
         checkIfProfessionalIsActiveOrThrowsException(professional);
 
-        // Step 7
         checkIfProfessionalHasDateAndTimeAvaliableOrThrowsException(professional, 
-                                                                    appointmentSavedto.date(),
-                                                                    appointmentSavedto.startTime(),
-                                                                    appointmentSavedto.endTime()
+                                                                    appointmentSaveDAO.date(),
+                                                                    appointmentSaveDAO.startTime(),
+                                                                    appointmentSaveDAO.endTime()
                                                                    );
-        // Step 8
+
         checkProfessionalAvaliableScheduleOrThrowsException(professional, 
-                                                            appointmentSavedto.date(),
-                                                            appointmentSavedto.startTime(), 
-                                                            appointmentSavedto.endTime()
+                                                            appointmentSaveDAO.date(),
+                                                            appointmentSaveDAO.startTime(), 
+                                                            appointmentSaveDAO.endTime()
                                                            );
 
-        // Step 9
-        return appointmentRepository.save(appointmentSavedto.toEntity());
+        return appointmentRepository.save(appointmentSaveDAO.toEntity());
     }
 
 
@@ -100,8 +94,7 @@ public class CreateAppointmentUseCase {
 
         if (slots.size() == 0) {
             // The professional does not work in the day of week
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "O professional não trabalha no dia da semana selecionado.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"O professional não trabalha no dia da semana selecionado.");
         } else {
             // The start and end time belongs a valid slot?
             slots.stream().filter(s -> s.startTime().equals(startTime) &&
@@ -128,7 +121,7 @@ public class CreateAppointmentUseCase {
 
     private Professional getProfessionalIfExistsOrThrowsException(ProfessionalDTO professional) {
         return professionalRepository.findById(professional.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional não encontradto."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional não encontradao."));
     }
 
     private void checkIfClientHasDateAndTimeAvailableOrThrowsException(Client client, LocalDate date,

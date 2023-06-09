@@ -64,7 +64,7 @@ public class Area implements Serializable {
 
     public AreaWithProfessionalDTO toDTOWithProfessionals() {
         List<ProfessionalDTO> professionals = this.professionals.stream()
-                .map(p -> new ProfessionalDTO(p.getId(), p.getName(), p.getPhone(), p.getEmail(), p.getComment(),  p.getActive()))
+                .map(p -> new ProfessionalDTO(p.getId(), p.getName(), p.getPhone(), p.getActive()))
                 .collect(Collectors.toList());
 
         return new AreaWithProfessionalDTO(id, name, professionals);

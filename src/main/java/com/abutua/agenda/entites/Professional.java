@@ -55,8 +55,8 @@ public class Professional extends Person{
     public Professional(){
     }
 
-    public Professional( String name, String phone, String email, String comments, boolean active) {
-        super(name, phone, email, comments);
+    public Professional( String name, String phone, boolean active) {
+        super(name, phone);
         this.active = active;
     }
 
@@ -94,7 +94,7 @@ public class Professional extends Person{
     }
 
     public ProfessionalDTO toDTO() {
-        return new ProfessionalDTO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive());    
+        return new ProfessionalDTO(getId(),getName(),getPhone(), getActive());    
     }
 
     public ProfessionalWithAreaDTO toDTOWithAreas() {
@@ -102,7 +102,7 @@ public class Professional extends Person{
                          .map( a -> new AreaDTO(a.getId(), a.getName()))
                          .collect(Collectors.toList());
         
-        ProfessionalWithAreaDTO dto = new ProfessionalWithAreaDTO(getId(),getName(),getPhone(),getEmail(),getComment(), getActive(), areas);
+        ProfessionalWithAreaDTO dto = new ProfessionalWithAreaDTO(getId(),getName(),getPhone(),active,areas);
         return dto;
     }
    

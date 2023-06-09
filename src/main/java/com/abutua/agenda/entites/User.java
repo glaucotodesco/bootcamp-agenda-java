@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 @Table(name = "Tbl_User")
 public class User extends Person{
 
+    private String email;
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -22,8 +23,9 @@ public class User extends Person{
     
 
     public User(Long id, String name, String phone, String email, String comments, String password) {
-        super(name, phone, email, comments);
+        super(name, phone);
         this.password = password;
+        this.email = email;
     }
 
     public String getPassword() {
@@ -33,10 +35,29 @@ public class User extends Person{
     public void setPassword(String password) {
         this.password = password;
     }
+    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {
-        return "User [password=" + password + "]";
+        return "User [email=" + email + ", password=" + password + "]";
     }
+
+  
    
 }

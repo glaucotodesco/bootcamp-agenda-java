@@ -14,7 +14,6 @@ import com.abutua.agenda.dto.AreaSaveDTO;
 import com.abutua.agenda.dto.AreaWithProfessionalDTO;
 import com.abutua.agenda.dto.ProfessionalDTO;
 import com.abutua.agenda.entites.Area;
-import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
 import com.abutua.agenda.services.exceptions.DatabaseException;
@@ -31,8 +30,8 @@ public class AreaService {
 
     public AreaWithProfessionalDTO getById(int id) {
 
-        Area area = areaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area with " + id + " not found"));
+        var area = areaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area com id={" + id + "} não encontrada."));
 
         return area.toDTOWithProfessionals();
     }
@@ -50,9 +49,9 @@ public class AreaService {
         try {
             area = areaRepository.save(areaSavedto.toEntity());
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
+            throw new DatabaseException("Não existe o professional informado.", HttpStatus.CONFLICT);
         } catch (InvalidDataAccessApiUsageException e) {
-            throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Professional com id é requerido", HttpStatus.BAD_REQUEST);
         }
         return area.toDTO();
     }
@@ -62,21 +61,21 @@ public class AreaService {
             if (areaRepository.existsById(id))
                 areaRepository.deleteById(id);
             else {
-                throw new EntityNotFoundException("Area not found");
+                throw new EntityNotFoundException("Area com id={" + id + "} não encontrada.");
             }
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation, area can't delete", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Conflito ao remover a Area", HttpStatus.BAD_REQUEST);
         }
     }
 
     public void update(int id, AreaSaveDTO areaSavedto) {
         try {
-            Area area = areaRepository.getReferenceById(id);
+            var area = areaRepository.getReferenceById(id);
 
-            List<Professional> professionals = professionalRepository.findAllById(areaSavedto.getProfessionalsId());
+            var professionals = professionalRepository.findAllById(areaSavedto.getProfessionalsId());
 
             if (professionals.size() != areaSavedto.professionalsdto().size()) {
-                throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
+                throw new DatabaseException("Profissional não cadastrado", HttpStatus.CONFLICT);
             } else {
                 area.setName(areaSavedto.name());
                 area.getProfessionals().clear();
@@ -84,11 +83,11 @@ public class AreaService {
                 areaRepository.save(area);
             }
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation, id professional doesn't exist", HttpStatus.CONFLICT);
+            throw new DatabaseException("Conflito, violação do banco de dados.", HttpStatus.CONFLICT);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Area not found");
+            throw new EntityNotFoundException("Area com id={" + id + "} não encontrada.");
         } catch (InvalidDataAccessApiUsageException e) {
-            throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Informar o professional", HttpStatus.BAD_REQUEST);
         }
     }
 

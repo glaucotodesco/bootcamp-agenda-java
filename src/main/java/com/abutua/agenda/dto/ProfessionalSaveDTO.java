@@ -4,20 +4,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Professional;
-import jakarta.validation.constraints.Email;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record ProfessionalSaveDTO(
-        @NotBlank(message = "Name can not be blank") @Size(min = 3, max = 40, message = "Name length min=3 and max=40") String name,
-        @Size(max = 40) String phone,
-        @Email @Size(max = 40) String email,
-        @Size(max = 1024) String comments,
+        
+        @NotBlank(message = "Nome requirido.") @Size(min = 3, max = 40, message = "Name deve ter no mínimo 3 e no máximo 40 caracteres") 
+        String name,
+        
+        @Size(max = 40)
+        String phone,
+        
         boolean active,
+        
         Set<AreaDTO> areasdto) {
 
     public Professional toEntity() {
-        Professional professional = new Professional(name, phone, email, comments, active);
+        Professional professional = new Professional(name, phone, active);
 
         professional.getAreas().addAll(areasdto
                 .stream()

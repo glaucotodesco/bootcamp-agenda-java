@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.abutua.agenda.entites.Client;
-import com.abutua.agenda.entites.Gender;
 import com.abutua.agenda.repositories.ClientRepository;
 
 @Component
@@ -23,8 +22,8 @@ public class DBRunner01Client implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception { 
-        Client c1 = new Client("Ana Maria","15 997079576","ana@gmail.com","Cliente Vip",LocalDate.parse("2000-08-02"),Gender.FEMALE);
-        Client c2 = new Client("Pedro Silva","15 923233212","pedro@gmail.com","",LocalDate.parse("1998-01-22"),Gender.MALE);
+        Client c1 = new Client("Ana Maria","15 997079576",LocalDate.parse("2000-08-02"));
+        Client c2 = new Client("Pedro Silva","15 923233212",LocalDate.parse("1998-01-22"));
 
         clientRepository.save(c1);
         clientRepository.save(c2);

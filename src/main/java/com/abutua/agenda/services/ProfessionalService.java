@@ -31,23 +31,19 @@ public class ProfessionalService {
 
     @Autowired
     private ProfessionalRepository professionalRepository;
-    
+
     @Autowired
     private AreaRepository areaRepository;
 
     @Autowired
     private ListProfessionalAvailabilityTimesUseCase listProfessionalAvailabilityTimesUseCase;
- 
-
-   
-
 
     @Autowired
     private ListProfessionalAvailabilityDaysUseCase listProfessionalAvailabilityUseCase;
 
     public ProfessionalWithAreaDTO getById(long id) {
         Professional professional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id = {"+ id + "} não encontrado"));
 
         return professional.toDTOWithAreas();
     }
@@ -64,10 +60,10 @@ public class ProfessionalService {
         try {
             professional = professionalRepository.save(professionalSavedto.toEntity());
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation. Tips: Check for valid areas id or unique email ",
+            throw new DatabaseException("Erro ao salvar. Dicas: Verefique se a área é válida ou se o email é único",
                     HttpStatus.CONFLICT);
         } catch (InvalidDataAccessApiUsageException e) {
-            throw new DatabaseException("Id professional is required", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Profissional é requirido", HttpStatus.BAD_REQUEST);
         }
         return professional.toDTO();
     }
@@ -77,37 +73,35 @@ public class ProfessionalService {
             if (professionalRepository.existsById(id))
                 professionalRepository.deleteById(id);
             else {
-                throw new EntityNotFoundException("Professional not found");
+                throw new EntityNotFoundException("Profissional com id = {"+ id + "} não encontrado");
             }
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation, professional can't delete", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Erro ao remover o professional do banco de dados", HttpStatus.BAD_REQUEST);
         }
     }
 
     public void update(long id, ProfessionalSaveDTO professionalSavedto) {
         try {
-            Professional professional = professionalRepository.getReferenceById(id);
+            var professional = professionalRepository.getReferenceById(id);
 
-            List<Area> areas = areaRepository.findAllById(professionalSavedto.getAreasId());
+            var areas = areaRepository.findAllById(professionalSavedto.getAreasId());
 
             if (areas.size() != professionalSavedto.areasdto().size()) {
-                throw new DatabaseException("Constrain violation, id area doesn't exist", HttpStatus.CONFLICT);
+                throw new DatabaseException("Área com id={"+ id +"} não existe", HttpStatus.CONFLICT);
             } else {
                 professional.setName(professionalSavedto.name());
-                professional.setEmail(professionalSavedto.email());
                 professional.setPhone(professionalSavedto.phone());
-                professional.setName(professionalSavedto.name());
                 professional.setActive(professionalSavedto.active());
                 professional.getAreas().clear();
                 professional.getAreas().addAll(professionalSavedto.toEntity().getAreas());
                 professionalRepository.save(professional);
             }
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Professional not found");
+            throw new EntityNotFoundException("Profissional não cadastrado!");
         } catch (InvalidDataAccessApiUsageException e) {
-            throw new DatabaseException("Id area is required", HttpStatus.BAD_REQUEST);
+            throw new DatabaseException("Área é requirida!", HttpStatus.BAD_REQUEST);
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Constrain violation. Tips: Check for valid areas id or unique email ",
+            throw new DatabaseException("Erro ao salvar. Dicas: Verefique se a área é válida ou se o email é único",
                     HttpStatus.CONFLICT);
         }
     }
@@ -115,16 +109,14 @@ public class ProfessionalService {
     public WorkScheduleDTO getWorkSchedule(long id) {
 
         Professional professional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "Profissional com id = {"+ id + "} não encontrado"));
 
         return professional.toWorkScheduledto();
     }
 
-
- 
     public ProfessionalAvailabilityDaysDTO getAvailableDaysInMonth(long professionalId, int month, int year) {
         List<Integer> availiabilyDays = listProfessionalAvailabilityUseCase.executeUseCase(professionalId, month, year);
-        ProfessionalAvailabilityDaysDTO dto = new ProfessionalAvailabilityDaysDTO(month,year,availiabilyDays);
+        ProfessionalAvailabilityDaysDTO dto = new ProfessionalAvailabilityDaysDTO(month, year, availiabilyDays);
         return dto;
     }
 
@@ -132,5 +124,4 @@ public class ProfessionalService {
         return listProfessionalAvailabilityTimesUseCase.executeUseCase(date, id);
     }
 
-    
 }

@@ -21,16 +21,13 @@ public class Client extends Person {
 
     private LocalDate dateOfBirth;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
+ 
     public Client(){
     }
 
-    public Client(String name, String phone, String email, String comments, LocalDate dateOfBirth, Gender gender) {
-        super(name, phone, email, comments);
+    public Client(String name, String phone, LocalDate dateOfBirth) {
+        super(name, phone);
         this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
     }
 
     public Client(Long id) {
@@ -46,13 +43,7 @@ public class Client extends Person {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    public Gender getGender() {
-        return gender;
-    }
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
+  
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -60,14 +51,9 @@ public class Client extends Person {
     public void addAppointment(Appointment appointment){
         this.appointments.add(appointment);
     }
-
-    @Override
-    public String toString() {
-        return "Client [dateOfBirth=" + dateOfBirth + ", gender=" + gender + "]";
-    }
-
+    
     public ClientDTO toDTO(){
-        return new ClientDTO(getId(),getName(),getPhone(),getEmail(),getComment(),dateOfBirth,gender);
+        return new ClientDTO(getId(),getName(),getPhone(),dateOfBirth);
     }
          
 }

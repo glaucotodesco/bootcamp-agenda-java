@@ -5,14 +5,14 @@ INSERT INTO TBL_APPOINTMENT_TYPE (type) VALUES('Particular');
 INSERT INTO TBL_APPOINTMENT_TYPE (type) VALUES('Convênio');  
 
 
-INSERT INTO TBL_PERSON (phone,email,name,comment) VALUES('15 992231122', 'ana@gmail.com', 'Ana Maria', 'Cliente Vip');
-INSERT INTO TBL_PERSON (phone,email,name,comment) VALUES('15 923233212', 'pedro@gmail.com', 'Pedro Silva', '');
-INSERT INTO TBL_PERSON (phone,email,name,comment) VALUES('11 902324322', 'marco@gmail.com', 'Marco Nunes', '');
-INSERT INTO TBL_PERSON (phone,email,name,comment) VALUES('13 999216212', 'marcelo@gmail.com', 'Marcelo Silva', 'Particular');
-INSERT INTO TBL_PERSON (phone,email,name,comment) VALUES('13 999216212', 'fernanda@gmail.com', 'Fernanda Cruz', '');
+INSERT INTO TBL_PERSON (phone,name) VALUES('15 992231122', 'Ana Maria');
+INSERT INTO TBL_PERSON (phone,name) VALUES('15 923233212', 'Pedro Silva');
+INSERT INTO TBL_PERSON (phone,name) VALUES('11 902324322', 'Marco Nunes');
+INSERT INTO TBL_PERSON (phone,name) VALUES('13 999216212', 'Marcelo Silva');
+INSERT INTO TBL_PERSON (phone,name) VALUES('13 999216212', 'Fernanda Cruz');
 
-INSERT INTO TBL_CLIENT VALUES(DATE '2000-08-02', 1, 'FEMALE');
-INSERT INTO TBL_CLIENT VALUES(DATE '1998-01-22', 2, 'MALE');
+INSERT INTO TBL_CLIENT VALUES(DATE '2000-08-02', 1);
+INSERT INTO TBL_CLIENT VALUES(DATE '1998-01-22', 2);
 
 INSERT INTO TBL_PROFESSIONAL VALUES(TRUE, 3);
 INSERT INTO TBL_PROFESSIONAL VALUES(FALSE, 4);
