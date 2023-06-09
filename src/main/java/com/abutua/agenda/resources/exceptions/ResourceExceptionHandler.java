@@ -24,7 +24,7 @@ public class ResourceExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         error.setError("Error to convert a date or time");
-        error.setMessage(exception.getMessage());
+        error.setMessage("Data inválida!");
         error.setPath(request.getRequestURI());
         error.setStatus(status.value());
         error.setTimeStamp(Instant.now());

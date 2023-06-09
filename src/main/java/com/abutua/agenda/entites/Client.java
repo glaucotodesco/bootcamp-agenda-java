@@ -7,8 +7,6 @@ import java.util.List;
 import com.abutua.agenda.dto.ClientDTO;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -23,6 +21,11 @@ public class Client extends Person {
 
  
     public Client(){
+    }
+    
+    public Client(Long id, String name, String phone, LocalDate dateOfBirth) {
+        super(id,name, phone);
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Client(String name, String phone, LocalDate dateOfBirth) {
