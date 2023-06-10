@@ -9,7 +9,7 @@ public record ProfessionalDTO(
                 long id,
                 String name,
                 String phone,
-                Boolean active
+                boolean active
 
 ) {
 

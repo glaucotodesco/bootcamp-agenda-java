@@ -16,7 +16,6 @@ import com.abutua.agenda.dto.ProfessionalSaveDTO;
 import com.abutua.agenda.dto.ProfessionalWithAreaDTO;
 import com.abutua.agenda.dto.TimeSlotDTO;
 import com.abutua.agenda.dto.WorkScheduleDTO;
-import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;

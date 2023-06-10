@@ -74,7 +74,7 @@ public class AreaService {
 
             var professionals = professionalRepository.findAllById(areaSavedto.getProfessionalsId());
 
-            if (professionals.size() != areaSavedto.professionalsdto().size()) {
+            if (professionals.size() != areaSavedto.professionals().size()) {
                 throw new DatabaseException("Profissional não cadastrado", HttpStatus.CONFLICT);
             } else {
                 area.setName(areaSavedto.name());

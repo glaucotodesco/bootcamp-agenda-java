@@ -12,11 +12,11 @@ public record AreaSaveDTO(
         @NotBlank(message = "Nome requirido")
         String name,
         
-        Set<ProfessionalDTO> professionalsdto) {
+        Set<ProfessionalDTO> professionals) {
 
     public Area toEntity() {
         Area area = new Area(name);
-        area.getProfessionals().addAll(professionalsdto
+        area.getProfessionals().addAll(professionals
                 .stream()
                 .map(p -> new Professional(p.id()))
                 .collect(Collectors.toList()));
@@ -24,7 +24,7 @@ public record AreaSaveDTO(
     }
 
     public Iterable<Long> getProfessionalsId() {
-        return professionalsdto.stream().map(p -> Long.valueOf(p.id())).collect(Collectors.toList());
+        return professionals.stream().map(p -> Long.valueOf(p.id())).collect(Collectors.toList());
     }
 
 }

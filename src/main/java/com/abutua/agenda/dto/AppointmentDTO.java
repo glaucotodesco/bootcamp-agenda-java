@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public record AppointmentDTO(
-        Long id,
+        long id,
         LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
