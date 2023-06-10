@@ -18,6 +18,6 @@ public record AppointmentDTO(
         AreaDTO area,
         ProfessionalDTO professional,
         AppointmentTypeDTO type,
-        String comment) {
+        String comments) {
 
 }

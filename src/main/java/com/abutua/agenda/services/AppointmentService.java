@@ -10,7 +10,7 @@ import com.abutua.agenda.dto.AppointmentDTO;
 import com.abutua.agenda.dto.AppointmentSaveDTO;
 import com.abutua.agenda.dto.AppointmentTypeDTO;
 import com.abutua.agenda.repositories.AppointmentTypeRepository;
-import com.abutua.agenda.usecases.write.CreateAppointmentUseCase;
+import com.abutua.agenda.services.usecases.write.CreateAppointmentUseCase;
 
 @Service
 public class AppointmentService {

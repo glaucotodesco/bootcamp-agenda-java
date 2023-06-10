@@ -20,8 +20,8 @@ import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
 import com.abutua.agenda.services.exceptions.DatabaseException;
-import com.abutua.agenda.usecases.read.ListProfessionalAvailabilityDaysUseCase;
-import com.abutua.agenda.usecases.read.ListProfessionalAvailabilityTimesUseCase;
+import com.abutua.agenda.services.usecases.read.ListProfessionalAvailabilityDaysUseCase;
+import com.abutua.agenda.services.usecases.read.ListProfessionalAvailabilityTimesUseCase;
 
 import jakarta.persistence.EntityNotFoundException;
 

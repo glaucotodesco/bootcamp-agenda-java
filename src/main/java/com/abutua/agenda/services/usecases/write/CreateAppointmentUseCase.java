@@ -1,4 +1,4 @@
-package com.abutua.agenda.usecases.write;
+package com.abutua.agenda.services.usecases.write;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,7 +23,7 @@ import com.abutua.agenda.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ClientRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
-import com.abutua.agenda.usecases.read.ListProfessionalAvailabilityTimesUseCase;
+import com.abutua.agenda.services.usecases.read.ListProfessionalAvailabilityTimesUseCase;
 
 
  // @formatter:off
@@ -79,7 +79,7 @@ public class CreateAppointmentUseCase {
                                                             appointmentSaveDAO.startTime(), 
                                                             appointmentSaveDAO.endTime()
                                                            );
-
+                                                           
         return appointmentRepository.save(appointmentSaveDAO.toEntity());
     }
 

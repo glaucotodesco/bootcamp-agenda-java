@@ -35,7 +35,7 @@ public record AppointmentSaveDTO(
         @Valid 
         AppointmentTypeDTO type,
         
-        String comment
+        String comments
 
 ) {
 
@@ -45,7 +45,7 @@ public record AppointmentSaveDTO(
         appointment.setDate(date);
         appointment.setStartTime(startTime);
         appointment.setEndTime(endTime);
-        appointment.setComment(comment);
+        appointment.setComments(comments);
         appointment.setType(type.toEntity());
         appointment.setStatus(AppointmentStatus.OPEN);
         appointment.setClient(new Client(client.id()));

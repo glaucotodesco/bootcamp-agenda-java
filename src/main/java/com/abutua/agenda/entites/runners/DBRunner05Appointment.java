@@ -55,7 +55,7 @@ public class DBRunner05Appointment implements ApplicationRunner {
         ap1.setEndTime(LocalTime.parse("10:30:00"));
         ap1.setType(apty1);
         ap1.setProfessional(p1);
-        ap1.setComment("Primeiro atendimento");
+        ap1.setComments("Primeiro atendimento");
 
         appointmentRepository.save(ap1);
 
@@ -71,7 +71,7 @@ public class DBRunner05Appointment implements ApplicationRunner {
         ap2.setEndTime(LocalTime.parse("11:30:00"));
         ap2.setType(apty2);
         ap2.setProfessional(p2);
-        ap2.setComment("Parcelar em 3x");
+        ap2.setComments("Parcelar em 3x");
 
         appointmentRepository.save(ap2);
     }

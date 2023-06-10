@@ -1,4 +1,4 @@
-package com.abutua.agenda.usecases.read;
+package com.abutua.agenda.services.usecases.read;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -55,7 +55,7 @@ public class Appointment {
     private AppointmentType type;
     
     @Column(length = 1024)
-    private String comment;
+    private String comments;
 
     public Long getId() {
         return id;
@@ -110,15 +110,15 @@ public class Appointment {
         this.type = type;
     }
     
-    public String getComment() {
-        return comment;
+    public String getComments() {
+        return comments;
     }
-    public void setComment(String comments) {
-        this.comment = comments;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public AppointmentDTO toDTO() {
-        return new AppointmentDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comment);
+        return new AppointmentDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comments);
     }
     public Area getArea() {
         return area;
@@ -130,7 +130,7 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment [id=" + id + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime
-                + ", status=" + status + ", type=" + type + ", comment=" + comment + "]";
+                + ", status=" + status + ", type=" + type + ", comments=" + comments+ "]";
     }
 
     @Override

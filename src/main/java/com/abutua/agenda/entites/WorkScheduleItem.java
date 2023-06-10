@@ -41,8 +41,6 @@ public class WorkScheduleItem {
     private Professional professional;
     
 
-
-    
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
