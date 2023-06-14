@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.abutua.agenda.dto.AppointmentDTO;
-import com.abutua.agenda.dto.AppointmentSaveDTO;
-import com.abutua.agenda.dto.AppointmentTypeDTO;
+import com.abutua.agenda.dto.AppointmentResponseDTO;
+import com.abutua.agenda.dto.AppointmentRequestDTO;
+import com.abutua.agenda.dto.AppointmentTypeResponseDTO;
 import com.abutua.agenda.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.services.usecases.write.CreateAppointmentUseCase;
 
@@ -22,7 +22,7 @@ public class AppointmentService {
     private CreateAppointmentUseCase createAppointmentUseCase;
     
 
-    public List<AppointmentTypeDTO> getAllTypes() {
+    public List<AppointmentTypeResponseDTO> getAllTypes() {
         return appointmentTypeRepository.findAll()
                 .stream()
                 .map(a -> a.toDTO())
@@ -30,7 +30,7 @@ public class AppointmentService {
     }
 
 
-    public AppointmentDTO save(AppointmentSaveDTO appointmentSavedto) {
+    public AppointmentResponseDTO save(AppointmentRequestDTO appointmentSavedto) {
         var newAppointment = createAppointmentUseCase.executeUseCase(appointmentSavedto);
         return newAppointment.toDTO();
     }

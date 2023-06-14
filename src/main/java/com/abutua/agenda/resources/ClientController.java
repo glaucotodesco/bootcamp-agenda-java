@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.abutua.agenda.dto.ClientDTO;
-import com.abutua.agenda.dto.ClientSaveDTO;
+import com.abutua.agenda.dto.ClientResponseDTO;
+import com.abutua.agenda.dto.ClientRequestDTO;
 import com.abutua.agenda.services.ClientService;
 
 @RestController
@@ -31,7 +31,7 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<Page<ClientDTO>> getClients(
+    public ResponseEntity<Page<ClientResponseDTO>> getClients(
             @RequestParam(name = "name_like", defaultValue = "") String nameLike,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit
@@ -41,8 +41,8 @@ public class ClientController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ClientDTO> getClient(@PathVariable long id) {
-        ClientDTO areadto = clientService.getById(id);
+    public ResponseEntity<ClientResponseDTO> getClient(@PathVariable long id) {
+        ClientResponseDTO areadto = clientService.getById(id);
         return ResponseEntity.ok(areadto);
     }
 
@@ -54,13 +54,13 @@ public class ClientController {
 
     @PutMapping("{id}")
     public ResponseEntity<Void> updateClient(@PathVariable int id,
-            @Validated @RequestBody ClientSaveDTO clientSaveDTO) {
+            @Validated @RequestBody ClientRequestDTO clientSaveDTO) {
         clientService.update(id, clientSaveDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> saveClient(@Validated @RequestBody ClientSaveDTO clientSaveDTO) {
+    public ResponseEntity<ClientResponseDTO> saveClient(@Validated @RequestBody ClientRequestDTO clientSaveDTO) {
         var clientDTO = clientService.save(clientSaveDTO);
 
         URI location = ServletUriComponentsBuilder

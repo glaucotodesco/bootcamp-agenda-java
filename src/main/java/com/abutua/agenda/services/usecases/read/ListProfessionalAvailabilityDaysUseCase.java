@@ -1,9 +1,7 @@
 package com.abutua.agenda.services.usecases.read;
 
-import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,11 +46,10 @@ public class ListProfessionalAvailabilityDaysUseCase {
     public List<Integer> executeUseCase(long professionalId, int month, int year) {
 
         Professional professional = professionalRepository.findById(professionalId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id ={"+ professionalId +"} não encontrado."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Profissional com id ={" + professionalId + "} não encontrado."));
 
-        try {
-            Month.of(month);
-        } catch (DateTimeException e) {
+        if (month < 1 || month > 12) {
             throw new ParameterException("Valor para o mês inválido.");
         }
 
@@ -73,11 +70,7 @@ public class ListProfessionalAvailabilityDaysUseCase {
                 .countAppointmentsByDayForProfessionalInMonthAndYear(professional.getId(), month, year);
 
         // Quais dias na agenda do profissional estão disponíveis
-        List<Integer> availiabilyDays = createAvailableDaysList(month, year, professionalWeekDaysSlots, schedule,
-                professional);
-
-        return availiabilyDays;
-
+        return createAvailableDaysList(month, year, professionalWeekDaysSlots, schedule);
     }
 
     /**
@@ -91,16 +84,16 @@ public class ListProfessionalAvailabilityDaysUseCase {
      * @return
      */
     private List<Integer> createAvailableDaysList(int month, int year, List<ProfessionalWeekDaysSlot> slotsWeekDays,
-            List<ProfessionalScheduleDays> schedule, Professional professional) {
+            List<ProfessionalScheduleDays> schedule) {
 
-        List<Integer> daysOfMonth = new ArrayList<Integer>();
+        var daysOfMonth = new ArrayList<Integer>();
 
         var now = LocalDate.now();
-        int startDay=1;
-        
-        if(year == now.getYear() && month == now.getMonth().getValue()){
-            	startDay = LocalDate.now().getDayOfMonth();
-        }        
+        int startDay = 1;
+
+        if (year == now.getYear() && month == now.getMonth().getValue()) {
+            startDay = LocalDate.now().getDayOfMonth();
+        }
 
         LocalDate startDate = LocalDate.of(year, month, startDay);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
@@ -109,52 +102,40 @@ public class ListProfessionalAvailabilityDaysUseCase {
         // Varre todos os dias do mes
         while (!currentDate.isAfter(endDate)) {
 
-            // Exclui feriados e dias bloqueados
-            if (!isHoliday(currentDate) && !isBlockedDay(currentDate, professional)) {
+            // Recuperar o dia da semmana
+            DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
 
-                // Recuperar o dia da semmana
-                DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
+            // Recuperar o dia do mes
+            final int dayOfMonth = currentDate.getDayOfMonth();
 
-                // Recuperar o dia do mes
-                final int dayOfMonth = currentDate.getDayOfMonth();
+            Optional<ProfessionalWeekDaysSlot> slot = slotsWeekDays.stream()
+                    .filter(s -> s.getWeekDay().equals(dayOfWeek)).findFirst();
 
-                Optional<ProfessionalWeekDaysSlot> slot = slotsWeekDays.stream()
-                        .filter(s -> s.getWeekDay().equals(dayOfWeek)).findFirst();
+            // O profissional trabalha nesse dia da semana?
+            if (slot.isPresent()) {
 
-                // O profissional trabalha nesse dia da semana?
-                if (slot.isPresent()) {
+                // Recupera a quantidade de atendimentos possiveis do professional no dia da
+                // semana
+                int totalSlots = slot.get().getTotalSlots();
 
-                    // Recupera a quantidade de atendimentos possiveis do professional no dia da
-                    // semana
-                    int totalSlots = slot.get().getTotalSlots();
+                // Recupera quantos atendimentos já estão agendados para esse dia
+                Optional<ProfessionalScheduleDays> day = schedule.stream().filter(s -> s.getDay() == dayOfMonth)
+                        .findFirst();
 
-                    // Recupera quantos atendimentos já estão agendados para esse dia
-                    Optional<ProfessionalScheduleDays> day = schedule.stream().filter(s -> s.getDay() == dayOfMonth)
-                            .findFirst();
-
-                    if (day.isPresent()) {
-                        // Verifica se existem vagas (slots) disponiveis para esse dia.
-                        if (day.get().getTotal() < totalSlots) {
-                            daysOfMonth.add(currentDate.getDayOfMonth());
-                        }
-                    } else {
+                if (day.isPresent()) {
+                    // Verifica se existem vagas (slots) disponiveis para esse dia.
+                    if (day.get().getTotal() < totalSlots) {
                         daysOfMonth.add(currentDate.getDayOfMonth());
                     }
+                } else {
+                    daysOfMonth.add(currentDate.getDayOfMonth());
                 }
             }
+
             currentDate = currentDate.plusDays(1);
         }
 
         return daysOfMonth;
     }
 
-    // TODO Implements this in future check issue #1
-    private boolean isHoliday(LocalDate currentDate) {
-        return false;
-    }
-
-    // TODO Implements this in future check issue #2
-    private boolean isBlockedDay(LocalDate currentDate, Professional professional) {
-        return false;
-    }
 }

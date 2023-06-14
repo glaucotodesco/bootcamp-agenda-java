@@ -2,7 +2,7 @@ package com.abutua.agenda.dto;
 
 import java.time.LocalTime;
 
-public record TimeSlotDTO(
+public record TimeSlotResponseDTO(
         LocalTime startTime,
         LocalTime endTime,
         boolean available) {

@@ -9,12 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.abutua.agenda.dto.AppointmentSaveDTO;
-import com.abutua.agenda.dto.AppointmentTypeDTO;
-import com.abutua.agenda.dto.AreaDTO;
-import com.abutua.agenda.dto.ClientDTO;
-import com.abutua.agenda.dto.ProfessionalDTO;
-import com.abutua.agenda.dto.TimeSlotDTO;
+import com.abutua.agenda.dto.AppointmentRequestDTO;
+import com.abutua.agenda.dto.TimeSlotResponseDTO;
 import com.abutua.agenda.entites.Appointment;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.entites.Professional;
@@ -49,13 +45,13 @@ public class CreateAppointmentUseCase {
     private ListProfessionalAvailabilityTimesUseCase listProfessionalAvailabilityTimesUseCase;
 
     
-    public Appointment executeUseCase(AppointmentSaveDTO appointmentSaveDAO) {
+    public Appointment executeUseCase(AppointmentRequestDTO appointmentSaveDAO) {
         
-        checkIfAreaExistsOrThrowsException(appointmentSaveDAO.area());
+        checkIfAreaExistsOrThrowsException(appointmentSaveDAO.area().id());
 
-        checkIfAppointmentTypeExistsOrThrowsException(appointmentSaveDAO.type());
+        checkIfAppointmentTypeExistsOrThrowsException(appointmentSaveDAO.type().id());
 
-        Client client = getClientIfExistsOrThrowsException(appointmentSaveDAO.client());
+        Client client = getClientIfExistsOrThrowsException(appointmentSaveDAO.client().id());
         
         checkIfClientHasDateAndTimeAvailableOrThrowsException(
                                                              client,
@@ -64,7 +60,7 @@ public class CreateAppointmentUseCase {
                                                              appointmentSaveDAO.endTime()
                                                              );
 
-        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentSaveDAO.professional());
+        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentSaveDAO.professional().id());
         
         checkIfProfessionalIsActiveOrThrowsException(professional);
 
@@ -90,18 +86,19 @@ public class CreateAppointmentUseCase {
                                                                      LocalTime startTime, 
                                                                      LocalTime endTime) {
 
-        List<TimeSlotDTO> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
+        List<TimeSlotResponseDTO> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
 
-        if (slots.size() == 0) {
+        if (slots.isEmpty()) {
             // The professional does not work in the day of week
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"O professional não trabalha no dia da semana selecionado.");
         } else {
             // The start and end time belongs a valid slot?
-            slots.stream().filter(s -> s.startTime().equals(startTime) &&
-                    s.endTime().equals(endTime))
-                    .findFirst()
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN,
-                            "O horário selecionado não corresponde a um horário disponível."));
+            var slot = slots.stream().filter(s -> s.startTime().equals(startTime) &&  s.endTime().equals(endTime))
+                                                   .findFirst();
+
+            if(slot.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "O horário selecionado não corresponde a um horário disponível.");
+            }         
         }
     }
 
@@ -119,8 +116,8 @@ public class CreateAppointmentUseCase {
         }
     }
 
-    private Professional getProfessionalIfExistsOrThrowsException(ProfessionalDTO professional) {
-        return professionalRepository.findById(professional.id())
+    private Professional getProfessionalIfExistsOrThrowsException(Long professionalId) {
+        return professionalRepository.findById(professionalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Professional não encontradao."));
     }
 
@@ -132,20 +129,25 @@ public class CreateAppointmentUseCase {
         }
     }
 
-    private Client getClientIfExistsOrThrowsException(ClientDTO client) {
-        return clientRepository.findById(client.id())
+    private Client getClientIfExistsOrThrowsException(Long clientId) {
+        return clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
     }
 
-    private void checkIfAppointmentTypeExistsOrThrowsException(AppointmentTypeDTO type) {
-        appointmentTypeRepository.findById(type.id())
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tipo de consulta não encontrada."));
+    private void checkIfAppointmentTypeExistsOrThrowsException(Integer typeId) {
+        var apppointment = appointmentTypeRepository.findById(typeId);
+
+        if(apppointment.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tipo de consulta não encontrada.");
+        }
+            
     }
 
-    private void checkIfAreaExistsOrThrowsException(AreaDTO area) {
-        areaRepository.findById(area.id())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Área não encontrada."));
+    private void checkIfAreaExistsOrThrowsException(Integer areaId) {
+        var area = areaRepository.findById(areaId);
+        if(area.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Área não encontrada.");
+        }
     }
 }
 // @formatter:on

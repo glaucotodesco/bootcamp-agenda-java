@@ -31,8 +31,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
                         "AND a.date = :date " +
                         "AND a.startTime < :endTime " +
                         "AND a.endTime > :startTime")
-        boolean existsAppointmentForProfessional(Professional professional, LocalDate date, LocalTime startTime,
-                        LocalTime endTime);
+        boolean existsAppointmentForProfessional(Professional professional, LocalDate date, LocalTime startTime,  LocalTime endTime);
 
 
         @Query("SELECT COUNT(a) > 0 FROM Appointment a " +

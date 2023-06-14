@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.abutua.agenda.dto.AppointmentDTO;
-import com.abutua.agenda.dto.AppointmentSaveDTO;
+import com.abutua.agenda.dto.AppointmentResponseDTO;
+import com.abutua.agenda.dto.AppointmentRequestDTO;
 import com.abutua.agenda.services.AppointmentService;
 
 @RestController
@@ -26,9 +26,8 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<AppointmentDTO> createAppointment(@Validated @RequestBody AppointmentSaveDTO appointmentSavedto) {
-        
-        var appointmentdto = appointmentService.save(appointmentSavedto);
+    public ResponseEntity<AppointmentResponseDTO> createAppointment(@Validated @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
+        var appointmentdto = appointmentService.save(appointmentRequestDTO);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

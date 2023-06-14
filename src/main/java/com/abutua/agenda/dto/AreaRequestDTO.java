@@ -7,12 +7,12 @@ import com.abutua.agenda.entites.Professional;
 import jakarta.validation.constraints.NotBlank;
 
 
-public record AreaSaveDTO(
+public record AreaRequestDTO(
         
         @NotBlank(message = "Nome requirido")
         String name,
         
-        Set<ProfessionalDTO> professionals) {
+        Set<ProfessionalResponseDTO> professionals) {
 
     public Area toEntity() {
         Area area = new Area(name);

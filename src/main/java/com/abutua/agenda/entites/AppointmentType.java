@@ -1,6 +1,6 @@
 package com.abutua.agenda.entites;
 
-import com.abutua.agenda.dto.AppointmentTypeDTO;
+import com.abutua.agenda.dto.AppointmentTypeResponseDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +32,10 @@ public class AppointmentType {
         this.type = type;
     }
 
+    public AppointmentType(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -50,8 +54,8 @@ public class AppointmentType {
         return "AppointmentType [id=" + id + ", type=" + type + "]";
     }
 
-    public AppointmentTypeDTO toDTO(){
-        return new AppointmentTypeDTO(id, type);
+    public AppointmentTypeResponseDTO toDTO(){
+        return new AppointmentTypeResponseDTO(id, type);
     }
 
     @Override

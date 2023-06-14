@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import com.abutua.agenda.entites.Client;
 import jakarta.validation.constraints.NotBlank;
 
-public record ClientSaveDTO(
+public record ClientRequestDTO(
         
         @NotBlank(message = "Nome requirido")
         String name,

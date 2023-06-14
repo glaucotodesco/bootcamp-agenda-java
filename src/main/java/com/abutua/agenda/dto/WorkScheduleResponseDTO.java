@@ -2,10 +2,10 @@ package com.abutua.agenda.dto;
 
 import java.util.List;
 
-public record WorkScheduleDTO(
+public record WorkScheduleResponseDTO(
         Long id,
         String name,
-        List<WorkScheduleItemDTO> workshedule
+        List<WorkScheduleItemResponseDTO> workshedule
 
 ) {
 }

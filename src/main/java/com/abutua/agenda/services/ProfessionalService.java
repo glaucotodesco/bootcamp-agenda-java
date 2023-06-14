@@ -10,12 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.abutua.agenda.dto.ProfessionalAvailabilityDaysDTO;
-import com.abutua.agenda.dto.ProfessionalDTO;
-import com.abutua.agenda.dto.ProfessionalSaveDTO;
-import com.abutua.agenda.dto.ProfessionalWithAreaDTO;
-import com.abutua.agenda.dto.TimeSlotDTO;
-import com.abutua.agenda.dto.WorkScheduleDTO;
+import com.abutua.agenda.dto.ProfessionalAvailabilityDaysResponseDTO;
+import com.abutua.agenda.dto.ProfessionalResponseDTO;
+import com.abutua.agenda.dto.ProfessionalRequestDTO;
+import com.abutua.agenda.dto.ProfessionalWithAreasResponseDTO;
+import com.abutua.agenda.dto.TimeSlotResponseDTO;
+import com.abutua.agenda.dto.WorkScheduleResponseDTO;
 import com.abutua.agenda.entites.Professional;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
@@ -40,21 +40,21 @@ public class ProfessionalService {
     @Autowired
     private ListProfessionalAvailabilityDaysUseCase listProfessionalAvailabilityUseCase;
 
-    public ProfessionalWithAreaDTO getById(long id) {
+    public ProfessionalWithAreasResponseDTO getById(long id) {
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id = {"+ id + "} não encontrado"));
 
         return professional.toDTOWithAreas();
     }
 
-    public List<ProfessionalDTO> getAll() {
+    public List<ProfessionalResponseDTO> getAll() {
         return professionalRepository.findAll()
                 .stream()
                 .map(p -> p.toDTO())
                 .collect(Collectors.toList());
     }
 
-    public ProfessionalDTO save(ProfessionalSaveDTO professionalSavedto) {
+    public ProfessionalResponseDTO save(ProfessionalRequestDTO professionalSavedto) {
         Professional professional;
         try {
             professional = professionalRepository.save(professionalSavedto.toEntity());
@@ -79,13 +79,13 @@ public class ProfessionalService {
         }
     }
 
-    public void update(long id, ProfessionalSaveDTO professionalSavedto) {
+    public void update(long id, ProfessionalRequestDTO professionalSavedto) {
         try {
             var professional = professionalRepository.getReferenceById(id);
 
             var areas = areaRepository.findAllById(professionalSavedto.getAreasId());
 
-            if (areas.size() != professionalSavedto.areasdto().size()) {
+            if (areas.size() != professionalSavedto.areas().size()) {
                 throw new DatabaseException("Área com id={"+ id +"} não existe", HttpStatus.CONFLICT);
             } else {
                 professional.setName(professionalSavedto.name());
@@ -105,7 +105,7 @@ public class ProfessionalService {
         }
     }
 
-    public WorkScheduleDTO getWorkSchedule(long id) {
+    public WorkScheduleResponseDTO getWorkSchedule(long id) {
 
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "Profissional com id = {"+ id + "} não encontrado"));
@@ -113,13 +113,13 @@ public class ProfessionalService {
         return professional.toWorkScheduledto();
     }
 
-    public ProfessionalAvailabilityDaysDTO getAvailableDaysInMonth(long professionalId, int month, int year) {
+    public ProfessionalAvailabilityDaysResponseDTO getAvailableDaysInMonth(long professionalId, int month, int year) {
         List<Integer> availiabilyDays = listProfessionalAvailabilityUseCase.executeUseCase(professionalId, month, year);
-        ProfessionalAvailabilityDaysDTO dto = new ProfessionalAvailabilityDaysDTO(month, year, availiabilyDays);
+        ProfessionalAvailabilityDaysResponseDTO dto = new ProfessionalAvailabilityDaysResponseDTO(month, year, availiabilyDays);
         return dto;
     }
 
-    public List<TimeSlotDTO> getAvailableTimeSlots(LocalDate date, Long id) {
+    public List<TimeSlotResponseDTO> getAvailableTimeSlots(LocalDate date, Long id) {
         return listProfessionalAvailabilityTimesUseCase.executeUseCase(date, id);
     }
 

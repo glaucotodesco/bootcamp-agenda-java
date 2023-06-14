@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableMethodSecurity
@@ -21,9 +22,17 @@ public class ResourceServerConfig {
     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+         
+        http.csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()));
+        http.headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions
+                        .disable()));
+        
         return http
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers(toH2Console()).permitAll()
+                                .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation("http://localhost:9000"))))
                 .build();

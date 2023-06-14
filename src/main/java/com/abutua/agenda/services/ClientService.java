@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.abutua.agenda.dto.ClientDTO;
-import com.abutua.agenda.dto.ClientSaveDTO;
+import com.abutua.agenda.dto.ClientResponseDTO;
+import com.abutua.agenda.dto.ClientRequestDTO;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.repositories.ClientRepository;
 import com.abutua.agenda.services.exceptions.DatabaseException;
@@ -23,13 +23,13 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Page<ClientDTO> findByNameContaining(String name, int limit, int page) {
+    public Page<ClientResponseDTO> findByNameContaining(String name, int limit, int page) {
        var pageable = PageRequest.of(page, limit);
        Page<Client> pageClient = clientRepository.findByNameContainingIgnoreCase(name, pageable);
        return   pageClient.map(t -> t.toDTO());
     }
 
-    public ClientDTO getById(long id) {
+    public ClientResponseDTO getById(long id) {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Cliente com id={" + id + "} não encontrado."));
@@ -49,7 +49,7 @@ public class ClientService {
         }
     }
 
-    public void update(long id, ClientSaveDTO clientSaveDTO) {
+    public void update(long id, ClientRequestDTO clientSaveDTO) {
         try {
             var client = clientRepository.getReferenceById(id);
 
@@ -65,7 +65,7 @@ public class ClientService {
         } 
     }
 
-    public ClientDTO save(ClientSaveDTO clientSaveDTO) {
+    public ClientResponseDTO save(ClientRequestDTO clientSaveDTO) {
         Client client = clientRepository.save(clientSaveDTO.toEntity());
         return client.toDTO();
     }

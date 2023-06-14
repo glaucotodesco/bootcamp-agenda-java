@@ -4,7 +4,7 @@ package com.abutua.agenda.entites;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.abutua.agenda.dto.AppointmentDTO;
+import com.abutua.agenda.dto.AppointmentResponseDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -117,8 +117,8 @@ public class Appointment {
         this.comments = comments;
     }
 
-    public AppointmentDTO toDTO() {
-        return new AppointmentDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comments);
+    public AppointmentResponseDTO toDTO() {
+        return new AppointmentResponseDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comments);
     }
     public Area getArea() {
         return area;

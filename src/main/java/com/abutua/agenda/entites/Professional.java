@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.abutua.agenda.dto.AreaDTO;
-import com.abutua.agenda.dto.ProfessionalDTO;
-import com.abutua.agenda.dto.ProfessionalWithAreaDTO;
-import com.abutua.agenda.dto.WorkScheduleDTO;
-import com.abutua.agenda.dto.WorkScheduleItemDTO;
+import com.abutua.agenda.dto.AreaResponseDTO;
+import com.abutua.agenda.dto.ProfessionalResponseDTO;
+import com.abutua.agenda.dto.ProfessionalWithAreasResponseDTO;
+import com.abutua.agenda.dto.WorkScheduleResponseDTO;
+import com.abutua.agenda.dto.WorkScheduleItemResponseDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +31,7 @@ import jakarta.persistence.Table;
 public class Professional extends Person{
   
     @Column(nullable = false)
-    private Boolean active;
+    private boolean active;
 
     @OneToMany(mappedBy = "professional")    
     private List<Appointment> appointments = new ArrayList<Appointment>();
@@ -68,11 +68,11 @@ public class Professional extends Person{
         this.appointments.add(appointment);
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -93,22 +93,22 @@ public class Professional extends Person{
         return "Professional [active=" + active + "]";
     }
 
-    public ProfessionalDTO toDTO() {
-        return new ProfessionalDTO(getId(),getName(),getPhone(), getActive());    
+    public ProfessionalResponseDTO toDTO() {
+        return new ProfessionalResponseDTO(getId(),getName(),getPhone(), getActive());    
     }
 
-    public ProfessionalWithAreaDTO toDTOWithAreas() {
-        List<AreaDTO> areas = this.areas.stream()
-                         .map( a -> new AreaDTO(a.getId(), a.getName()))
+    public ProfessionalWithAreasResponseDTO toDTOWithAreas() {
+        List<AreaResponseDTO> areas = this.areas.stream()
+                         .map( a -> new AreaResponseDTO(a.getId(), a.getName()))
                          .collect(Collectors.toList());
         
-        ProfessionalWithAreaDTO dto = new ProfessionalWithAreaDTO(getId(),getName(),getPhone(),active,areas);
+        ProfessionalWithAreasResponseDTO dto = new ProfessionalWithAreasResponseDTO(getId(),getName(),getPhone(),active,areas);
         return dto;
     }
    
-    public WorkScheduleDTO toWorkScheduledto() {
-        List<WorkScheduleItemDTO> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
-        return new WorkScheduleDTO(getId(), getName(),workScheduleList);
+    public WorkScheduleResponseDTO toWorkScheduledto() {
+        List<WorkScheduleItemResponseDTO> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
+        return new WorkScheduleResponseDTO(getId(), getName(),workScheduleList);
     }
 
 

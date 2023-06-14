@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import com.abutua.agenda.entites.Appointment;
 import com.abutua.agenda.entites.AppointmentStatus;
+import com.abutua.agenda.entites.AppointmentType;
 import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.entites.Client;
 import com.abutua.agenda.entites.Professional;
@@ -11,7 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
-public record AppointmentSaveDTO(
+public record AppointmentRequestDTO(
         @FutureOrPresent(message = "A data deve ser maior ou igual a data corrente.") 
         LocalDate date,
         
@@ -21,19 +22,19 @@ public record AppointmentSaveDTO(
         
         @NotNull(message = "Area não pode ser nula.")
         @Valid 
-        AreaDTO area,
+        IntegerIdDTO area,
         
         @NotNull(message = "Cliente não pode ser nulo.") 
         @Valid 
-        ClientDTO client,
+        LongIdDTO client,
         
         @NotNull(message = "Profissonal não pode ser nulo.") 
         @Valid 
-        ProfessionalDTO professional,
+        LongIdDTO professional,
         
         @NotNull(message = "Tipo do atendimento não pode ser nulo.") 
         @Valid 
-        AppointmentTypeDTO type,
+        IntegerIdDTO type,
         
         String comments
 
@@ -46,7 +47,7 @@ public record AppointmentSaveDTO(
         appointment.setStartTime(startTime);
         appointment.setEndTime(endTime);
         appointment.setComments(comments);
-        appointment.setType(type.toEntity());
+        appointment.setType(new AppointmentType(type.id()));
         appointment.setStatus(AppointmentStatus.OPEN);
         appointment.setClient(new Client(client.id()));
         appointment.setProfessional(new Professional(professional.id()));

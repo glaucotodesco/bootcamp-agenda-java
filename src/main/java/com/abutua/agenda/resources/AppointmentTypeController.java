@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.abutua.agenda.dto.AppointmentTypeDTO;
+import com.abutua.agenda.dto.AppointmentTypeResponseDTO;
 import com.abutua.agenda.services.AppointmentService;
 
 @RestController
@@ -21,7 +21,7 @@ public class AppointmentTypeController {
     private AppointmentService appointmentService;
 
     @GetMapping
-    public ResponseEntity<List<AppointmentTypeDTO>> getAppointmentTypes(){
+    public ResponseEntity<List<AppointmentTypeResponseDTO>> getAppointmentTypes(){
         return ResponseEntity.ok().body(appointmentService.getAllTypes());
     }
     

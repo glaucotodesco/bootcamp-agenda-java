@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.abutua.agenda.dto.AreaDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalDTO;
-import com.abutua.agenda.dto.ProfessionalDTO;
+import com.abutua.agenda.dto.AreaResponseDTO;
+import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
+import com.abutua.agenda.dto.ProfessionalResponseDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,20 +62,20 @@ public class Area implements Serializable {
         this.name = name;
     }
 
-    public AreaWithProfessionalDTO toDTOWithProfessionals() {
-        List<ProfessionalDTO> professionals = this.professionals.stream()
-                .map(p -> new ProfessionalDTO(p.getId(), p.getName(), p.getPhone(), p.getActive()))
+    public AreaWithProfessionalsResponseDTO toDTOWithProfessionals() {
+        List<ProfessionalResponseDTO> professionals = this.professionals.stream()
+                .map(p -> new ProfessionalResponseDTO(p.getId(), p.getName(), p.getPhone(), p.getActive()))
                 .collect(Collectors.toList());
 
-        return new AreaWithProfessionalDTO(id, name, professionals);
+        return new AreaWithProfessionalsResponseDTO(id, name, professionals);
     }
 
     public Set<Professional> getProfessionals() {
         return professionals;
     }
 
-    public AreaDTO toDTO() {
-        AreaDTO dto = new AreaDTO(id, name);
+    public AreaResponseDTO toDTO() {
+        AreaResponseDTO dto = new AreaResponseDTO(id, name);
         return dto;
     }
 

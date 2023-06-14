@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.abutua.agenda.dto.AreaDTO;
-import com.abutua.agenda.dto.AreaSaveDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalDTO;
-import com.abutua.agenda.dto.ProfessionalDTO;
+import com.abutua.agenda.dto.AreaResponseDTO;
+import com.abutua.agenda.dto.AreaRequestDTO;
+import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
+import com.abutua.agenda.dto.ProfessionalResponseDTO;
 import com.abutua.agenda.entites.Area;
 import com.abutua.agenda.repositories.AreaRepository;
 import com.abutua.agenda.repositories.ProfessionalRepository;
@@ -28,7 +28,7 @@ public class AreaService {
     @Autowired
     private ProfessionalRepository professionalRepository;
 
-    public AreaWithProfessionalDTO getById(int id) {
+    public AreaWithProfessionalsResponseDTO getById(int id) {
 
         var area = areaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area com id={" + id + "} não encontrada."));
@@ -36,14 +36,14 @@ public class AreaService {
         return area.toDTOWithProfessionals();
     }
 
-    public List<AreaDTO> getAll() {
+    public List<AreaResponseDTO> getAll() {
         return areaRepository.findAll()
                 .stream()
                 .map(a -> a.toDTO())
                 .collect(Collectors.toList());
     }
 
-    public AreaDTO save(AreaSaveDTO areaSavedto) {
+    public AreaResponseDTO save(AreaRequestDTO areaSavedto) {
         Area area;
 
         try {
@@ -68,7 +68,7 @@ public class AreaService {
         }
     }
 
-    public void update(int id, AreaSaveDTO areaSavedto) {
+    public void update(int id, AreaRequestDTO areaSavedto) {
         try {
             var area = areaRepository.getReferenceById(id);
 
@@ -91,7 +91,7 @@ public class AreaService {
         }
     }
 
-    public List<ProfessionalDTO> getProfessionalsByArea(int id) {
+    public List<ProfessionalResponseDTO> getProfessionalsByArea(int id) {
         return areaRepository.findProfessionalsByAreaId(id).stream()
                 .map(p -> p.toDTO())
                 .collect(Collectors.toList());
