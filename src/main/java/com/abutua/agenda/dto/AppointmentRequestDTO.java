@@ -2,12 +2,14 @@ package com.abutua.agenda.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.abutua.agenda.entites.Appointment;
-import com.abutua.agenda.entites.AppointmentStatus;
-import com.abutua.agenda.entites.AppointmentType;
-import com.abutua.agenda.entites.Area;
-import com.abutua.agenda.entites.Client;
-import com.abutua.agenda.entites.Professional;
+
+import com.abutua.agenda.domain.entites.Appointment;
+import com.abutua.agenda.domain.entites.AppointmentStatus;
+import com.abutua.agenda.domain.entites.AppointmentType;
+import com.abutua.agenda.domain.entites.Area;
+import com.abutua.agenda.domain.entites.Client;
+import com.abutua.agenda.domain.entites.Professional;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;

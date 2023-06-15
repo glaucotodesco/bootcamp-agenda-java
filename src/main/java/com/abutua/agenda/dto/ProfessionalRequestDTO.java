@@ -2,8 +2,9 @@ package com.abutua.agenda.dto;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import com.abutua.agenda.entites.Area;
-import com.abutua.agenda.entites.Professional;
+
+import com.abutua.agenda.domain.entites.Area;
+import com.abutua.agenda.domain.entites.Professional;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

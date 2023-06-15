@@ -1,7 +1,6 @@
 package com.abutua.agenda.dto;
 
-import com.abutua.agenda.entites.AppointmentType;
-
+import com.abutua.agenda.domain.entites.AppointmentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

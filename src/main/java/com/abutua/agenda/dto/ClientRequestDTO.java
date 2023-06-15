@@ -1,7 +1,9 @@
 package com.abutua.agenda.dto;
 
 import java.time.LocalDate;
-import com.abutua.agenda.entites.Client;
+
+import com.abutua.agenda.domain.entites.Client;
+
 import jakarta.validation.constraints.NotBlank;
 
 public record ClientRequestDTO(
