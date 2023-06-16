@@ -1,10 +1,10 @@
 package com.abutua.agenda.dto;
 
-import java.util.List;
+import java.util.Set;
 
 public record AreaWithProfessionalsResponseDTO(
         int id,
         String name,
-        List<ProfessionalResponseDTO> professionals) {
+        Set<ProfessionalResponseDTO> professionals) {
 
 }

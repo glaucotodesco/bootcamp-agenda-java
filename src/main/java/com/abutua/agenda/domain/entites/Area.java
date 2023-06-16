@@ -2,14 +2,7 @@ package com.abutua.agenda.domain.entites;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.abutua.agenda.dto.AreaResponseDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,23 +55,12 @@ public class Area implements Serializable {
         this.name = name;
     }
 
-    public AreaWithProfessionalsResponseDTO toDTOWithProfessionals() {
-        List<ProfessionalResponseDTO> professionals = this.professionals.stream()
-                .map(p -> new ProfessionalResponseDTO(p.getId(), p.getName(), p.getPhone(), p.getActive()))
-                .collect(Collectors.toList());
-
-        return new AreaWithProfessionalsResponseDTO(id, name, professionals);
-    }
-
+   
     public Set<Professional> getProfessionals() {
         return professionals;
     }
 
-    public AreaResponseDTO toDTO() {
-        AreaResponseDTO dto = new AreaResponseDTO(id, name);
-        return dto;
-    }
-
+  
     @Override
     public String toString() {
         return "Area [id=" + id + ", name=" + name + "]";
@@ -107,6 +89,10 @@ public class Area implements Serializable {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public void addProfessional(Professional professional) {
+        this.professionals.add(professional);
     }
 
 }

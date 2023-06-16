@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.agenda.domain.entites.Area;
+import com.abutua.agenda.domain.mappers.AreaMapper;
+import com.abutua.agenda.domain.mappers.ProfessionalMapper;
 import com.abutua.agenda.domain.repositories.AreaRepository;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
@@ -30,31 +32,29 @@ public class AreaService {
     private ProfessionalRepository professionalRepository;
 
     public AreaWithProfessionalsResponseDTO getById(int id) {
-
         var area = areaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area com id={" + id + "} não encontrada."));
 
-        return area.toDTOWithProfessionals();
+        return AreaMapper.toResponseAreaWithProfessionalDTO(area);
     }
 
     public List<AreaResponseDTO> getAll() {
-        return areaRepository.findAll()
-                .stream()
-                .map(a -> a.toDTO())
-                .collect(Collectors.toList());
+        return AreaMapper.toListResponseAreaDTO(areaRepository.findAll());
     }
 
-    public AreaResponseDTO save(AreaRequestDTO areaSavedto) {
-        Area area;
+    public AreaResponseDTO save(AreaRequestDTO areaRequestDTO) {
+
+        Area area = AreaMapper.areaFromDTO(areaRequestDTO);
 
         try {
-            area = areaRepository.save(areaSavedto.toEntity());
+            area = areaRepository.save(area);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Não existe o professional informado.", HttpStatus.CONFLICT);
         } catch (InvalidDataAccessApiUsageException e) {
             throw new DatabaseException("Professional com id é requerido", HttpStatus.BAD_REQUEST);
         }
-        return area.toDTO();
+
+        return AreaMapper.toResponseAreaDTO(area);
     }
 
     public void deleteById(int id) {
@@ -69,18 +69,16 @@ public class AreaService {
         }
     }
 
-    public void update(int id, AreaRequestDTO areaSavedto) {
+    public void update(int id, AreaRequestDTO areaRequestDTO) {
         try {
             var area = areaRepository.getReferenceById(id);
 
-            var professionals = professionalRepository.findAllById(areaSavedto.getProfessionalsId());
+            var professionals = professionalRepository.findAllById(areaRequestDTO.getProfessionalsId());
 
-            if (professionals.size() != areaSavedto.professionals().size()) {
+            if (professionals.size() != areaRequestDTO.professionals().size()) {
                 throw new DatabaseException("Profissional não cadastrado", HttpStatus.CONFLICT);
             } else {
-                area.setName(areaSavedto.name());
-                area.getProfessionals().clear();
-                area.getProfessionals().addAll(areaSavedto.toEntity().getProfessionals());
+                AreaMapper.updateArea(area, areaRequestDTO);
                 areaRepository.save(area);
             }
         } catch (DataIntegrityViolationException e) {
@@ -92,9 +90,11 @@ public class AreaService {
         }
     }
 
-    public List<ProfessionalResponseDTO> getProfessionalsByArea(int id) {
-        return areaRepository.findProfessionalsByAreaId(id).stream()
-                .map(p -> p.toDTO())
+    public List<ProfessionalResponseDTO> getProfessionalsByArea(int areaId) {
+        var professionalsByArea = areaRepository.findProfessionalsByAreaId(areaId);
+
+        return professionalsByArea.stream()
+                .map(p -> ProfessionalMapper.toResponseProfessionalDTO(p))
                 .collect(Collectors.toList());
     }
 

@@ -4,6 +4,7 @@ package com.abutua.agenda.domain.entites;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.abutua.agenda.domain.mappers.AreaMapper;
 import com.abutua.agenda.dto.AppointmentResponseDTO;
 
 import jakarta.persistence.Column;
@@ -118,7 +119,7 @@ public class Appointment {
     }
 
     public AppointmentResponseDTO toDTO() {
-        return new AppointmentResponseDTO(id,date,startTime,endTime,status,client.toDTO(),area.toDTO(),professional.toDTO(),type.toDTO(),comments);
+        return new AppointmentResponseDTO(id,date,startTime,endTime,status,client.toDTO(),AreaMapper.toResponseAreaDTO(area),professional.toDTO(),type.toDTO(),comments);
     }
     
     public Area getArea() {

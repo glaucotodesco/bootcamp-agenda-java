@@ -68,7 +68,9 @@ public class Professional extends Person{
         this.appointments.add(appointment);
     }
 
-    public boolean getActive() {
+   
+
+    public boolean isActive() {
         return active;
     }
 
@@ -94,7 +96,7 @@ public class Professional extends Person{
     }
 
     public ProfessionalResponseDTO toDTO() {
-        return new ProfessionalResponseDTO(getId(),getName(),getPhone(), getActive());    
+        return new ProfessionalResponseDTO(getId(),getName(),getPhone(), isActive());    
     }
 
     public ProfessionalWithAreasResponseDTO toDTOWithAreas() {

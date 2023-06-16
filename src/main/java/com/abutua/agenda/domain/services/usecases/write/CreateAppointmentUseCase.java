@@ -135,7 +135,7 @@ public class CreateAppointmentUseCase {
     }
 
     private void checkIfProfessionalIsActiveOrThrowsException(Professional professional) {
-        if (!professional.getActive()) {
+        if (!professional.isActive()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Professional não está ativo.");
         }
     }
