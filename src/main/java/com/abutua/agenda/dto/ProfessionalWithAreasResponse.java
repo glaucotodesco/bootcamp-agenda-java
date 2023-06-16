@@ -2,11 +2,11 @@ package com.abutua.agenda.dto;
 
 import java.util.List;
 
-public record ProfessionalWithAreasResponseDTO(
+public record ProfessionalWithAreasResponse(
         long id,
         String name,
         String phone,
         boolean active,
-        List<AreaResponseDTO> areas) {
+        List<AreaResponse> areas) {
 
 }

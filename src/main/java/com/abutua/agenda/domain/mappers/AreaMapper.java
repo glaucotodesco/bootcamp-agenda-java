@@ -9,16 +9,16 @@ import org.springframework.util.StringUtils;
 
 import com.abutua.agenda.domain.entites.Area;
 import com.abutua.agenda.domain.entites.Professional;
-import com.abutua.agenda.dto.AreaRequestDTO;
-import com.abutua.agenda.dto.AreaResponseDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
+import com.abutua.agenda.dto.AreaRequest;
+import com.abutua.agenda.dto.AreaResponse;
+import com.abutua.agenda.dto.AreaWithProfessionalsResponse;
+import com.abutua.agenda.dto.ProfessionalResponse;
 
 
 
 public class AreaMapper {
 
-    public static Area areaFromDTO(AreaRequestDTO areaRequest) {
+    public static Area areaFromDTO(AreaRequest areaRequest) {
 
         Area area = new Area(areaRequest.name());
         areaRequest.professionals()
@@ -29,17 +29,17 @@ public class AreaMapper {
         return area;
     }
 
-    public static AreaResponseDTO toResponseAreaDTO(Area area) {
-        return new AreaResponseDTO(area.getId(), area.getName());
+    public static AreaResponse toResponseAreaDTO(Area area) {
+        return new AreaResponse(area.getId(), area.getName());
     }
 
-    public static List<AreaResponseDTO> toListResponseAreaDTO(List<Area> areas) {
+    public static List<AreaResponse> toListResponseAreaDTO(List<Area> areas) {
         return areas.stream()
                 .map(a -> toResponseAreaDTO(a))
                 .collect(Collectors.toList());
     }
 
-    public static void updateArea(Area area, AreaRequestDTO areaResponseDTO){
+    public static void updateArea(Area area, AreaRequest areaResponseDTO){
         final String name = StringUtils.hasText(areaResponseDTO.name()) ? areaResponseDTO.name() : area.getName();
         area.setName(name);
         area.getProfessionals().clear();
@@ -49,14 +49,14 @@ public class AreaMapper {
                 .forEach(area.getProfessionals()::add);
     }
 
-    public static AreaWithProfessionalsResponseDTO toResponseAreaWithProfessionalDTO(Area area) {
-        Set<ProfessionalResponseDTO> professionals = new HashSet<ProfessionalResponseDTO>();
+    public static AreaWithProfessionalsResponse toResponseAreaWithProfessionalDTO(Area area) {
+        Set<ProfessionalResponse> professionals = new HashSet<ProfessionalResponse>();
 
         area.getProfessionals()
                 .stream()
                 .map(p -> ProfessionalMapper.toResponseProfessionalDTO(p))
                 .forEach(professionals::add);
 
-        return new AreaWithProfessionalsResponseDTO(area.getId(), area.getName(), professionals);
+        return new AreaWithProfessionalsResponse(area.getId(), area.getName(), professionals);
     }
 }

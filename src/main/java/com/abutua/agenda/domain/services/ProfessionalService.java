@@ -16,12 +16,12 @@ import com.abutua.agenda.domain.repositories.ProfessionalRepository;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
 import com.abutua.agenda.domain.services.usecases.read.SearchProfessionalAvailabilityDaysUseCase;
 import com.abutua.agenda.domain.services.usecases.read.SearchProfessionalAvailabilityTimesUseCase;
-import com.abutua.agenda.dto.ProfessionalAvailabilityDaysResponseDTO;
-import com.abutua.agenda.dto.ProfessionalRequestDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
-import com.abutua.agenda.dto.ProfessionalWithAreasResponseDTO;
-import com.abutua.agenda.dto.TimeSlotResponseDTO;
-import com.abutua.agenda.dto.WorkScheduleResponseDTO;
+import com.abutua.agenda.dto.ProfessionalAvailabilityDaysResponse;
+import com.abutua.agenda.dto.ProfessionalRequest;
+import com.abutua.agenda.dto.ProfessionalResponse;
+import com.abutua.agenda.dto.ProfessionalWithAreasResponse;
+import com.abutua.agenda.dto.TimeSlotResponse;
+import com.abutua.agenda.dto.WorkScheduleResponse;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -41,21 +41,21 @@ public class ProfessionalService {
     private SearchProfessionalAvailabilityDaysUseCase listProfessionalAvailabilityUseCase;
 
     
-    public ProfessionalWithAreasResponseDTO getById(long id) {
+    public ProfessionalWithAreasResponse getById(long id) {
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id = {"+ id + "} não encontrado"));
 
         return professional.toDTOWithAreas();
     }
 
-    public List<ProfessionalResponseDTO> getAll() {
+    public List<ProfessionalResponse> getAll() {
         return professionalRepository.findAll()
                 .stream()
                 .map(p -> p.toDTO())
                 .collect(Collectors.toList());
     }
 
-    public ProfessionalResponseDTO save(ProfessionalRequestDTO professionalSavedto) {
+    public ProfessionalResponse save(ProfessionalRequest professionalSavedto) {
         Professional professional;
         try {
             professional = professionalRepository.save(professionalSavedto.toEntity());
@@ -80,7 +80,7 @@ public class ProfessionalService {
         }
     }
 
-    public void update(long id, ProfessionalRequestDTO professionalSavedto) {
+    public void update(long id, ProfessionalRequest professionalSavedto) {
         try {
             var professional = professionalRepository.getReferenceById(id);
 
@@ -106,7 +106,7 @@ public class ProfessionalService {
         }
     }
 
-    public WorkScheduleResponseDTO getWorkSchedule(long id) {
+    public WorkScheduleResponse getWorkSchedule(long id) {
 
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "Profissional com id = {"+ id + "} não encontrado"));
@@ -114,13 +114,13 @@ public class ProfessionalService {
         return professional.toWorkScheduledto();
     }
 
-    public ProfessionalAvailabilityDaysResponseDTO getAvailableDaysInMonth(long professionalId, int month, int year) {
+    public ProfessionalAvailabilityDaysResponse getAvailableDaysInMonth(long professionalId, int month, int year) {
         List<Integer> availiabilyDays = listProfessionalAvailabilityUseCase.executeUseCase(professionalId, month, year);
-        ProfessionalAvailabilityDaysResponseDTO dto = new ProfessionalAvailabilityDaysResponseDTO(month, year, availiabilyDays);
+        ProfessionalAvailabilityDaysResponse dto = new ProfessionalAvailabilityDaysResponse(month, year, availiabilyDays);
         return dto;
     }
 
-    public List<TimeSlotResponseDTO> getAvailableTimeSlots(LocalDate date, Long id) {
+    public List<TimeSlotResponse> getAvailableTimeSlots(LocalDate date, Long id) {
         return listProfessionalAvailabilityTimesUseCase.executeUseCase(date, id);
     }
 

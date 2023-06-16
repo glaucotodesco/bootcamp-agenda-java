@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.agenda.domain.services.AreaService;
-import com.abutua.agenda.dto.AreaRequestDTO;
-import com.abutua.agenda.dto.AreaResponseDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
+import com.abutua.agenda.dto.AreaRequest;
+import com.abutua.agenda.dto.AreaResponse;
+import com.abutua.agenda.dto.AreaWithProfessionalsResponse;
+import com.abutua.agenda.dto.ProfessionalResponse;
 
 
 @RestController
@@ -35,19 +35,19 @@ public class AreaController {
 
     
     @GetMapping("{id}")
-    public ResponseEntity<AreaWithProfessionalsResponseDTO> getArea(@PathVariable int id) {
-        AreaWithProfessionalsResponseDTO areadto = areaService.getById(id);
+    public ResponseEntity<AreaWithProfessionalsResponse> getArea(@PathVariable int id) {
+        AreaWithProfessionalsResponse areadto = areaService.getById(id);
         return ResponseEntity.ok(areadto);
     }
 
     @GetMapping("{id}/professionals")
-    public ResponseEntity<List<ProfessionalResponseDTO>> getProfessionalsByArea(@PathVariable int id) {
+    public ResponseEntity<List<ProfessionalResponse>> getProfessionalsByArea(@PathVariable int id) {
         return ResponseEntity.ok(areaService.getProfessionalsByArea(id));
     }
 
 
     @GetMapping
-    public ResponseEntity<List<AreaResponseDTO>> getAreas() {
+    public ResponseEntity<List<AreaResponse>> getAreas() {
         return ResponseEntity.ok(areaService.getAll());
     }
 
@@ -60,14 +60,14 @@ public class AreaController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Void> updateArea(@PathVariable int id, @Validated @RequestBody AreaRequestDTO areaSavedto) {
+    public ResponseEntity<Void> updateArea(@PathVariable int id, @Validated @RequestBody AreaRequest areaSavedto) {
         areaService.update(id, areaSavedto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<AreaResponseDTO> saveArea(@Validated @RequestBody AreaRequestDTO areaSavedto) {
+    public ResponseEntity<AreaResponse> saveArea(@Validated @RequestBody AreaRequest areaSavedto) {
         var areadto = areaService.save(areaSavedto);
 
         URI location = ServletUriComponentsBuilder

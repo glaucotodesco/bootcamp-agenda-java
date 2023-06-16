@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abutua.agenda.domain.services.AppointmentService;
-import com.abutua.agenda.dto.AppointmentTypeResponseDTO;
+import com.abutua.agenda.dto.AppointmentTypeResponse;
 
 @RestController
 @CrossOrigin
@@ -21,7 +21,7 @@ public class AppointmentTypeController {
     private AppointmentService appointmentService;
 
     @GetMapping
-    public ResponseEntity<List<AppointmentTypeResponseDTO>> getAppointmentTypes(){
+    public ResponseEntity<List<AppointmentTypeResponse>> getAppointmentTypes(){
         return ResponseEntity.ok().body(appointmentService.getAllTypes());
     }
     

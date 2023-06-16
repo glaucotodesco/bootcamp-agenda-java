@@ -3,7 +3,7 @@ package com.abutua.agenda.domain.entites;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-import com.abutua.agenda.dto.WorkScheduleItemResponseDTO;
+import com.abutua.agenda.dto.WorkScheduleItemResponse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -91,8 +91,8 @@ public class WorkScheduleItem {
         this.endTime = endTime;
     }
 
-    public WorkScheduleItemResponseDTO toDTO(){
-        return new WorkScheduleItemResponseDTO(id,dayOfWeek, startTime, endTime);
+    public WorkScheduleItemResponse toDTO(){
+        return new WorkScheduleItemResponse(id,dayOfWeek, startTime, endTime);
         
     }
 

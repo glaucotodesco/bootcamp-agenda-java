@@ -8,16 +8,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
-public record AppointmentResponseDTO(
+public record AppointmentResponse(
         long id,
         LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
         AppointmentStatus status,
-        ClientResponseDTO client,
-        AreaResponseDTO area,
-        ProfessionalResponseDTO professional,
-        AppointmentTypeResponseDTO type,
+        ClientResponse client,
+        AreaResponse area,
+        ProfessionalResponse professional,
+        AppointmentTypeResponse type,
         String comments) {
 
 }

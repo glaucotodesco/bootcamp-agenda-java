@@ -15,10 +15,10 @@ import com.abutua.agenda.domain.mappers.ProfessionalMapper;
 import com.abutua.agenda.domain.repositories.AreaRepository;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
-import com.abutua.agenda.dto.AreaRequestDTO;
-import com.abutua.agenda.dto.AreaResponseDTO;
-import com.abutua.agenda.dto.AreaWithProfessionalsResponseDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
+import com.abutua.agenda.dto.AreaRequest;
+import com.abutua.agenda.dto.AreaResponse;
+import com.abutua.agenda.dto.AreaWithProfessionalsResponse;
+import com.abutua.agenda.dto.ProfessionalResponse;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -31,18 +31,18 @@ public class AreaService {
     @Autowired
     private ProfessionalRepository professionalRepository;
 
-    public AreaWithProfessionalsResponseDTO getById(int id) {
+    public AreaWithProfessionalsResponse getById(int id) {
         var area = areaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Area com id={" + id + "} não encontrada."));
 
         return AreaMapper.toResponseAreaWithProfessionalDTO(area);
     }
 
-    public List<AreaResponseDTO> getAll() {
+    public List<AreaResponse> getAll() {
         return AreaMapper.toListResponseAreaDTO(areaRepository.findAll());
     }
 
-    public AreaResponseDTO save(AreaRequestDTO areaRequestDTO) {
+    public AreaResponse save(AreaRequest areaRequestDTO) {
 
         Area area = AreaMapper.areaFromDTO(areaRequestDTO);
 
@@ -69,7 +69,7 @@ public class AreaService {
         }
     }
 
-    public void update(int id, AreaRequestDTO areaRequestDTO) {
+    public void update(int id, AreaRequest areaRequestDTO) {
         try {
             var area = areaRepository.getReferenceById(id);
 
@@ -90,7 +90,7 @@ public class AreaService {
         }
     }
 
-    public List<ProfessionalResponseDTO> getProfessionalsByArea(int areaId) {
+    public List<ProfessionalResponse> getProfessionalsByArea(int areaId) {
         var professionalsByArea = areaRepository.findProfessionalsByAreaId(areaId);
 
         return professionalsByArea.stream()

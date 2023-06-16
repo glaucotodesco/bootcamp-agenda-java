@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import jakarta.validation.constraints.NotBlank;
 
-public record AreaRequestDTO(
+public record AreaRequest(
         
         @NotBlank(message = "Nome requirido")
         String name,

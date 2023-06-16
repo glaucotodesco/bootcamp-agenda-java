@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.abutua.agenda.dto.AreaResponseDTO;
-import com.abutua.agenda.dto.ProfessionalResponseDTO;
-import com.abutua.agenda.dto.ProfessionalWithAreasResponseDTO;
-import com.abutua.agenda.dto.WorkScheduleItemResponseDTO;
-import com.abutua.agenda.dto.WorkScheduleResponseDTO;
+import com.abutua.agenda.dto.AreaResponse;
+import com.abutua.agenda.dto.ProfessionalResponse;
+import com.abutua.agenda.dto.ProfessionalWithAreasResponse;
+import com.abutua.agenda.dto.WorkScheduleItemResponse;
+import com.abutua.agenda.dto.WorkScheduleResponse;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -95,22 +95,22 @@ public class Professional extends Person{
         return "Professional [active=" + active + "]";
     }
 
-    public ProfessionalResponseDTO toDTO() {
-        return new ProfessionalResponseDTO(getId(),getName(),getPhone(), isActive());    
+    public ProfessionalResponse toDTO() {
+        return new ProfessionalResponse(getId(),getName(),getPhone(), isActive());    
     }
 
-    public ProfessionalWithAreasResponseDTO toDTOWithAreas() {
-        List<AreaResponseDTO> areas = this.areas.stream()
-                         .map( a -> new AreaResponseDTO(a.getId(), a.getName()))
+    public ProfessionalWithAreasResponse toDTOWithAreas() {
+        List<AreaResponse> areas = this.areas.stream()
+                         .map( a -> new AreaResponse(a.getId(), a.getName()))
                          .collect(Collectors.toList());
         
-        ProfessionalWithAreasResponseDTO dto = new ProfessionalWithAreasResponseDTO(getId(),getName(),getPhone(),active,areas);
+        ProfessionalWithAreasResponse dto = new ProfessionalWithAreasResponse(getId(),getName(),getPhone(),active,areas);
         return dto;
     }
    
-    public WorkScheduleResponseDTO toWorkScheduledto() {
-        List<WorkScheduleItemResponseDTO> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
-        return new WorkScheduleResponseDTO(getId(), getName(),workScheduleList);
+    public WorkScheduleResponse toWorkScheduledto() {
+        List<WorkScheduleItemResponse> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
+        return new WorkScheduleResponse(getId(), getName(),workScheduleList);
     }
 
 

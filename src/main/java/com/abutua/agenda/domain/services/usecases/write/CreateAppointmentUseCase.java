@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.abutua.agenda.domain.entites.Appointment;
 import com.abutua.agenda.domain.entites.Client;
 import com.abutua.agenda.domain.entites.Professional;
+import com.abutua.agenda.domain.mappers.AppointmentMapper;
 import com.abutua.agenda.domain.repositories.AppointmentRepository;
 import com.abutua.agenda.domain.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.domain.repositories.AreaRepository;
@@ -19,8 +20,8 @@ import com.abutua.agenda.domain.repositories.ClientRepository;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
 import com.abutua.agenda.domain.services.usecases.read.SearchProfessionalAvailabilityTimesUseCase;
 
-import com.abutua.agenda.dto.AppointmentRequestDTO;
-import com.abutua.agenda.dto.TimeSlotResponseDTO;
+import com.abutua.agenda.dto.AppointmentRequest;
+import com.abutua.agenda.dto.TimeSlotResponse;
 
 
  // @formatter:off
@@ -46,42 +47,43 @@ public class CreateAppointmentUseCase {
     private SearchProfessionalAvailabilityTimesUseCase listProfessionalAvailabilityTimesUseCase;
 
     
-    public Appointment executeUseCase(AppointmentRequestDTO appointmentSaveDAO) {
+    public Appointment executeUseCase(AppointmentRequest appointmentRequest) {
         
-        checkIfAppointmentTypeExistsOrThrowsException(appointmentSaveDAO.type().id());
+        checkIfAppointmentTypeExistsOrThrowsException(appointmentRequest.type().id());
 
-        Client client = getClientIfExistsOrThrowsException(appointmentSaveDAO.client().id());
+        Client client = getClientIfExistsOrThrowsException(appointmentRequest.client().id());
         
         checkIfClientHasDateAndTimeIsAvailableOrThrowsException(
                                                              client,
-                                                             appointmentSaveDAO.date(),
-                                                             appointmentSaveDAO.startTime(),
-                                                             appointmentSaveDAO.endTime()
+                                                             appointmentRequest.date(),
+                                                             appointmentRequest.startTime(),
+                                                             appointmentRequest.endTime()
                                                              );
 
-        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentSaveDAO.professional().id());
+        Professional professional = getProfessionalIfExistsOrThrowsException(appointmentRequest.professional().id());
 
-        checkIfAreaExistsForProfessioanlOrThrowsException(professional.getId(),appointmentSaveDAO.area().id());
+        checkIfAreaExistsForProfessioanlOrThrowsException(professional.getId(),appointmentRequest.area().id());
   
         checkIfProfessionalIsActiveOrThrowsException(professional);
 
         checkIfProfessionalHasDateAndTimeIsAvaliableOrThrowsException(professional, 
-                                                                    appointmentSaveDAO.date(),
-                                                                    appointmentSaveDAO.startTime(),
-                                                                    appointmentSaveDAO.endTime()
+                                                                    appointmentRequest.date(),
+                                                                    appointmentRequest.startTime(),
+                                                                    appointmentRequest.endTime()
                                                                    );
 
         checkProfessionalAvaliableScheduleOrThrowsException(professional, 
-                                                            appointmentSaveDAO.date(),
-                                                            appointmentSaveDAO.startTime(), 
-                                                            appointmentSaveDAO.endTime()
+                                                            appointmentRequest.date(),
+                                                            appointmentRequest.startTime(), 
+                                                            appointmentRequest.endTime()
                                                            );
 
-         checkIfAppointmentIsNowOrFutureOrThrowsException(appointmentSaveDAO.date(),
-                                                            appointmentSaveDAO.startTime()
+        checkIfAppointmentIsNowOrFutureOrThrowsException(appointmentRequest.date(),
+                                                            appointmentRequest.startTime()
                                                             );
-                                                           
-        return appointmentRepository.save(appointmentSaveDAO.toEntity());
+
+        
+        return appointmentRepository.save(AppointmentMapper.appointmentFromDTO(appointmentRequest));
     }
 
 
@@ -109,7 +111,7 @@ public class CreateAppointmentUseCase {
                                                                      LocalTime startTime, 
                                                                      LocalTime endTime) {
 
-        List<TimeSlotResponseDTO> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
+        List<TimeSlotResponse> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
 
         if (slots.isEmpty()) {
             // The professional does not work in the day of week

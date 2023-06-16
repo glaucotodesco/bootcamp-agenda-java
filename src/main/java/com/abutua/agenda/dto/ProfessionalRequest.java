@@ -9,7 +9,7 @@ import com.abutua.agenda.domain.entites.Professional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record ProfessionalRequestDTO(
+public record ProfessionalRequest(
         
         @NotBlank(message = "Nome requirido.") 
         String name,
@@ -19,7 +19,7 @@ public record ProfessionalRequestDTO(
         
         boolean active,
         
-        Set<AreaResponseDTO> areas) {
+        Set<AreaResponse> areas) {
 
     public Professional toEntity() {
         Professional professional = new Professional(name, phone, active);

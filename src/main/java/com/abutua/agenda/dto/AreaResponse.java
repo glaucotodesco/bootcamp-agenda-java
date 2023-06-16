@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 
 @JsonInclude(Include.NON_NULL)
-public record AreaResponseDTO(
+public record AreaResponse(
           int id,
           String name) {
 }

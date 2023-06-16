@@ -6,7 +6,7 @@ import com.abutua.agenda.domain.entites.Client;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ClientRequestDTO(
+public record ClientRequest(
         
         @NotBlank(message = "Nome requirido")
         String name,

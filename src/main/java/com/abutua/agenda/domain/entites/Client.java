@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.abutua.agenda.dto.ClientResponseDTO;
+import com.abutua.agenda.dto.ClientResponse;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -55,8 +55,8 @@ public class Client extends Person {
         this.appointments.add(appointment);
     }
     
-    public ClientResponseDTO toDTO(){
-        return new ClientResponseDTO(getId(),getName(),getPhone(),dateOfBirth);
+    public ClientResponse toDTO(){
+        return new ClientResponse(getId(),getName(),getPhone(),dateOfBirth);
     }
          
 }
