@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.abutua.agenda.domain.entites.Appointment;
+import com.abutua.agenda.domain.entites.AppointmentStatus;
+import com.abutua.agenda.domain.entites.AppointmentType;
 import com.abutua.agenda.domain.entites.WorkScheduleItem;
 import com.abutua.agenda.domain.repositories.AppointmentRepository;
 import com.abutua.agenda.domain.repositories.WorkScheduleItemRepository;
@@ -80,7 +82,10 @@ public class SearchProfessionalAvailabilityTimesUseCase {
     private boolean isSlotUsed(List<Appointment> appointments,  LocalTime slotStartTime,  LocalTime slotEndTime) {
        return appointments.stream()
                             .anyMatch(appointment -> appointment.getStartTime().isBefore(slotEndTime) && 
-                                                     appointment.getEndTime().isAfter(slotStartTime));
+                                                     appointment.getEndTime().isAfter(slotStartTime)  &&
+                                                     (appointment.getStatus().equals(AppointmentStatus.OPEN) ||
+                                                     appointment.getStatus().equals(AppointmentStatus.PRESENT))
+                                                    );
     }
 
     private boolean isTimeInvalidIfDateIsToday(LocalTime slotStartTime, LocalDate date) {

@@ -55,8 +55,7 @@ public class SearchProfessionalAvailabilityDaysUseCase {
         List<ProfessionalWeekDaysSlot> professionalWeekDaysSlots = getProfessionalWorkWeedDays(professional);
 
         // Quais atendimentos estao agendados para o profissional no mes/ano
-        List<ProfessionalScheduleDays> schedule = countAppointmentsByDayForProfessionalInMonth(month, year,
-                professional);
+        List<ProfessionalScheduleDays> schedule = countAppointmentsByDayForProfessionalInMonth(month, year, professional);
 
         // Quais dias na agenda do profissional estão disponíveis
         return createAvailableDaysList(month, year, professionalWeekDaysSlots, schedule);
@@ -65,12 +64,8 @@ public class SearchProfessionalAvailabilityDaysUseCase {
 
 
     /******************************** Private Methods *********************************/
-    private List<ProfessionalScheduleDays> countAppointmentsByDayForProfessionalInMonth(int month, int year,
-            Professional professional) {
-
-        List<ProfessionalScheduleDays> schedule = appointmentRepository
-                .countAppointmentsByDayForProfessionalInMonthAndYear(professional.getId(), month, year);
-        return schedule;
+    private List<ProfessionalScheduleDays> countAppointmentsByDayForProfessionalInMonth(int month, int year,  Professional professional) {
+      return appointmentRepository.countAppointmentsByDayForProfessionalInMonthAndYear(professional.getId(), month, year);
     }
 
     private List<ProfessionalWeekDaysSlot> getProfessionalWorkWeedDays(Professional professional) {
@@ -142,8 +137,7 @@ public class SearchProfessionalAvailabilityDaysUseCase {
     }
 
 
-    private boolean isAvaliableSlots(Optional<ProfessionalWeekDaysSlot> slotsInWeekDay,
-            Optional<ProfessionalScheduleDays> day) {
+    private boolean isAvaliableSlots(Optional<ProfessionalWeekDaysSlot> slotsInWeekDay,   Optional<ProfessionalScheduleDays> day) {
         return day.get().getTotal() < slotsInWeekDay.get().getTotalSlots();
     }
 

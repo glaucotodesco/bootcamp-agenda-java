@@ -130,7 +130,7 @@ public class CreateAppointmentUseCase {
     private void checkIfProfessionalHasDateAndTimeIsAvaliableOrThrowsException(Professional professional, LocalDate date,
             LocalTime startTime, LocalTime endTime) {
 
-        if (appointmentRepository.existsAppointmentForProfessional(professional, date, startTime, endTime)) {
+        if (appointmentRepository.existsOpenOrPresentAppointmentForProfessional(professional, date, startTime, endTime)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "O profesional já possui um agendamento para a data e horário selecionado.");
         }
@@ -149,7 +149,7 @@ public class CreateAppointmentUseCase {
 
     private void checkIfClientHasDateAndTimeIsAvailableOrThrowsException(Client client, LocalDate date,
             LocalTime startTime, LocalTime endTime) {
-        if (appointmentRepository.existsAppointmentForClient(client, date, startTime, endTime)) {
+        if (appointmentRepository.existsOpenOrPresentAppointmentForClient(client, date, startTime, endTime)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Cliente já possui um agendamento para o dia e horário selecionado.");
         }
