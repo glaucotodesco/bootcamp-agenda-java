@@ -19,7 +19,6 @@ import com.abutua.agenda.dto.ProfessionalResponse;
 public class AreaMapper {
 
     public static Area areaFromDTO(AreaRequest areaRequest) {
-
         Area area = new Area(areaRequest.name());
         areaRequest.professionals()
                 .stream()
@@ -51,7 +50,6 @@ public class AreaMapper {
 
     public static AreaWithProfessionalsResponse toResponseAreaWithProfessionalDTO(Area area) {
         Set<ProfessionalResponse> professionals = new HashSet<ProfessionalResponse>();
-
         area.getProfessionals()
                 .stream()
                 .map(p -> ProfessionalMapper.toResponseProfessionalDTO(p))

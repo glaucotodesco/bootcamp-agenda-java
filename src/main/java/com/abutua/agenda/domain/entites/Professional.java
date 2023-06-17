@@ -6,13 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.abutua.agenda.dto.AreaResponse;
-import com.abutua.agenda.dto.ProfessionalResponse;
-import com.abutua.agenda.dto.ProfessionalWithAreasResponse;
-import com.abutua.agenda.dto.WorkScheduleItemResponse;
-import com.abutua.agenda.dto.WorkScheduleResponse;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -90,29 +83,13 @@ public class Professional extends Person{
         this.workSchedule.add(new WorkScheduleItem(dayOfWeek,timeStart, timeEnd));
     }
 
+    public List<WorkScheduleItem> getWorkSchedule() {
+        return workSchedule;
+    }
+
     @Override
     public String toString() {
         return "Professional [active=" + active + "]";
     }
-
-    public ProfessionalResponse toDTO() {
-        return new ProfessionalResponse(getId(),getName(),getPhone(), isActive());    
-    }
-
-    public ProfessionalWithAreasResponse toDTOWithAreas() {
-        List<AreaResponse> areas = this.areas.stream()
-                         .map( a -> new AreaResponse(a.getId(), a.getName()))
-                         .collect(Collectors.toList());
-        
-        ProfessionalWithAreasResponse dto = new ProfessionalWithAreasResponse(getId(),getName(),getPhone(),active,areas);
-        return dto;
-    }
    
-    public WorkScheduleResponse toWorkScheduledto() {
-        List<WorkScheduleItemResponse> workScheduleList = workSchedule.stream().map( wsi -> wsi.toDTO()).collect(Collectors.toList());
-        return new WorkScheduleResponse(getId(), getName(),workScheduleList);
-    }
-
-
-    
 }

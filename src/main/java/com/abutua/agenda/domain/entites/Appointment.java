@@ -4,9 +4,6 @@ package com.abutua.agenda.domain.entites;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.abutua.agenda.domain.mappers.AreaMapper;
-import com.abutua.agenda.dto.AppointmentResponse;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -118,8 +115,7 @@ public class Appointment {
         this.comments = comments;
     }
 
-  
-    
+     
     public Area getArea() {
         return area;
     }

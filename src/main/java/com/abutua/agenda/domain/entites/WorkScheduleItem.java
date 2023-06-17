@@ -3,8 +3,6 @@ package com.abutua.agenda.domain.entites;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-import com.abutua.agenda.dto.WorkScheduleItemResponse;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -91,11 +89,6 @@ public class WorkScheduleItem {
         this.endTime = endTime;
     }
 
-    public WorkScheduleItemResponse toDTO(){
-        return new WorkScheduleItemResponse(id,dayOfWeek, startTime, endTime);
-        
-    }
-
     public Integer getSlots() {
         return slots;
     }
@@ -103,7 +96,16 @@ public class WorkScheduleItem {
     public void setSlots(Integer slots) {
         this.slots = slots;
     }
-    
+
+    public Integer getSlotSize() {
+        return slotSize;
+    }
+
+
+    public void setSlotSize(Integer slotSize) {
+        this.slotSize = slotSize;
+    }
+
     @Override
     public String toString() {
         return "WorkSchedule [id=" + id + ", dayOfWeek=" + dayOfWeek + ", startTime=" + startTime + ", endTime=" + endTime
@@ -136,15 +138,7 @@ public class WorkScheduleItem {
     }
 
 
-    public Integer getSlotSize() {
-        return slotSize;
-    }
-
-
-    public void setSlotSize(Integer slotSize) {
-        this.slotSize = slotSize;
-    }
-
+   
     
    
 }

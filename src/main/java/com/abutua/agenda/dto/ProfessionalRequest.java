@@ -3,9 +3,6 @@ package com.abutua.agenda.dto;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.abutua.agenda.domain.entites.Area;
-import com.abutua.agenda.domain.entites.Professional;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -20,16 +17,6 @@ public record ProfessionalRequest(
         boolean active,
         
         Set<AreaResponse> areas) {
-
-    public Professional toEntity() {
-        Professional professional = new Professional(name, phone, active);
-
-        professional.getAreas().addAll(areas
-                .stream()
-                .map(a -> new Area(a.id()))
-                .collect(Collectors.toList()));
-        return professional;
-    }
 
     public Iterable<Integer> getAreasId() {
         return areas.stream().map(a -> Integer.valueOf(a.id())).collect(Collectors.toList());

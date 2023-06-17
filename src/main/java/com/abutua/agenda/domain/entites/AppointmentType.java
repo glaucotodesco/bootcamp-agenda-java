@@ -1,7 +1,5 @@
 package com.abutua.agenda.domain.entites;
 
-import com.abutua.agenda.dto.AppointmentTypeResponse;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,10 +50,6 @@ public class AppointmentType {
     @Override
     public String toString() {
         return "AppointmentType [id=" + id + ", type=" + type + "]";
-    }
-
-    public AppointmentTypeResponse toDTO(){
-        return new AppointmentTypeResponse(id, type);
     }
 
     @Override

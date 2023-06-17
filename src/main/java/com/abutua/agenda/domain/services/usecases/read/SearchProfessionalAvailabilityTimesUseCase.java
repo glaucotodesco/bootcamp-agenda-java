@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.abutua.agenda.domain.entites.Appointment;
 import com.abutua.agenda.domain.entites.AppointmentStatus;
-import com.abutua.agenda.domain.entites.AppointmentType;
 import com.abutua.agenda.domain.entites.WorkScheduleItem;
 import com.abutua.agenda.domain.repositories.AppointmentRepository;
 import com.abutua.agenda.domain.repositories.WorkScheduleItemRepository;

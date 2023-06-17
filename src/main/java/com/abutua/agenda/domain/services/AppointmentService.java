@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.abutua.agenda.domain.mappers.AppointmentMapper;
+import com.abutua.agenda.domain.mappers.AppointmentTypeMapper;
 import com.abutua.agenda.domain.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.domain.services.usecases.write.CreateAppointmentUseCase;
 import com.abutua.agenda.dto.AppointmentRequest;
@@ -26,7 +27,7 @@ public class AppointmentService {
     public List<AppointmentTypeResponse> getAllTypes() {
         return appointmentTypeRepository.findAll()
                 .stream()
-                .map(a -> a.toDTO())
+                .map(a -> AppointmentTypeMapper.toAppointmentTypeResponseDTO(a))
                 .collect(Collectors.toList());
     }
 

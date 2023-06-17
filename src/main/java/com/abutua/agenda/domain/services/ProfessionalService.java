@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.agenda.domain.entites.Professional;
+import com.abutua.agenda.domain.mappers.ProfessionalMapper;
+import com.abutua.agenda.domain.mappers.WorkScheduleMapper;
 import com.abutua.agenda.domain.repositories.AreaRepository;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
@@ -45,27 +47,27 @@ public class ProfessionalService {
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id = {"+ id + "} não encontrado"));
 
-        return professional.toDTOWithAreas();
+        return ProfessionalMapper.toResponseProfessionalWithAreasDTO(professional);
     }
 
     public List<ProfessionalResponse> getAll() {
         return professionalRepository.findAll()
                 .stream()
-                .map(p -> p.toDTO())
+                .map(p -> ProfessionalMapper.toResponseProfessionalDTO(p))
                 .collect(Collectors.toList());
     }
 
-    public ProfessionalResponse save(ProfessionalRequest professionalSavedto) {
+    public ProfessionalResponse save(ProfessionalRequest professionalRequest) {
         Professional professional;
         try {
-            professional = professionalRepository.save(professionalSavedto.toEntity());
+            professional = professionalRepository.save(ProfessionalMapper.professionalFromDTO(professionalRequest));
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Erro ao salvar. Verifique se a área é válida.",
                     HttpStatus.CONFLICT);
         } catch (InvalidDataAccessApiUsageException e) {
             throw new DatabaseException("Profissional é requirido", HttpStatus.BAD_REQUEST);
         }
-        return professional.toDTO();
+        return ProfessionalMapper.toResponseProfessionalDTO(professional);
     }
 
     public void deleteById(long id) {
@@ -80,20 +82,16 @@ public class ProfessionalService {
         }
     }
 
-    public void update(long id, ProfessionalRequest professionalSavedto) {
+    public void update(long id, ProfessionalRequest professionalRequest) {
         try {
             var professional = professionalRepository.getReferenceById(id);
 
-            var areas = areaRepository.findAllById(professionalSavedto.getAreasId());
+            var areas = areaRepository.findAllById(professionalRequest.getAreasId());
 
-            if (areas.size() != professionalSavedto.areas().size()) {
+            if (areas.size() != professionalRequest.areas().size()) {
                 throw new DatabaseException("Área com id={"+ id +"} não existe", HttpStatus.CONFLICT);
             } else {
-                professional.setName(professionalSavedto.name());
-                professional.setPhone(professionalSavedto.phone());
-                professional.setActive(professionalSavedto.active());
-                professional.getAreas().clear();
-                professional.getAreas().addAll(professionalSavedto.toEntity().getAreas());
+                ProfessionalMapper.updateProfessional(professional, professionalRequest);
                 professionalRepository.save(professional);
             }
         } catch (EntityNotFoundException e) {
@@ -111,7 +109,7 @@ public class ProfessionalService {
         Professional professional = professionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "Profissional com id = {"+ id + "} não encontrado"));
 
-        return professional.toWorkScheduledto();
+        return WorkScheduleMapper.toWorkScheduledDTO(professional);
     }
 
     public ProfessionalAvailabilityDaysResponse getAvailableDaysInMonth(long professionalId, int month, int year) {

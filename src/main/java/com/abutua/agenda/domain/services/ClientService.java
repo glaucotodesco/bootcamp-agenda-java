@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.abutua.agenda.domain.entites.Client;
+import com.abutua.agenda.domain.mappers.ClientMapper;
 import com.abutua.agenda.domain.repositories.ClientRepository;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
 import com.abutua.agenda.dto.ClientRequest;
@@ -26,7 +27,7 @@ public class ClientService {
     public Page<ClientResponse> findByNameContaining(String name, int limit, int page) {
        var pageable = PageRequest.of(page, limit);
        Page<Client> pageClient = clientRepository.findByNameContainingIgnoreCase(name, pageable);
-       return   pageClient.map(t -> t.toDTO());
+       return   pageClient.map(c -> ClientMapper.toClientResponseDTO(c));
     }
 
     public ClientResponse getById(long id) {
@@ -34,7 +35,7 @@ public class ClientService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Cliente com id={" + id + "} não encontrado."));
 
-        return client.toDTO();
+        return ClientMapper.toClientResponseDTO(client);
     }
 
     public void deleteById(long id) {
@@ -65,9 +66,9 @@ public class ClientService {
         } 
     }
 
-    public ClientResponse save(ClientRequest clientSaveDTO) {
-        Client client = clientRepository.save(clientSaveDTO.toEntity());
-        return client.toDTO();
+    public ClientResponse save(ClientRequest clientRequest) {
+        Client client = clientRepository.save(ClientMapper.clientFromDTO(clientRequest));
+        return ClientMapper.toClientResponseDTO(client);
     }
 
 }

@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.abutua.agenda.dto.ClientResponse;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -55,8 +53,6 @@ public class Client extends Person {
         this.appointments.add(appointment);
     }
     
-    public ClientResponse toDTO(){
-        return new ClientResponse(getId(),getName(),getPhone(),dateOfBirth);
-    }
+   
          
 }

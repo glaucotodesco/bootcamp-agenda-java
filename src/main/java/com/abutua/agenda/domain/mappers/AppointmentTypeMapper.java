@@ -8,5 +8,6 @@ public class AppointmentTypeMapper {
     public static AppointmentTypeResponse toAppointmentTypeResponseDTO(AppointmentType type) {
         return new AppointmentTypeResponse(type.getId(), type.getType());
     }
-    
+
+
 }
