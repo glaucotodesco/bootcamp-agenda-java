@@ -111,20 +111,20 @@ public class CreateAppointmentUseCase {
                                                                      LocalTime startTime, 
                                                                      LocalTime endTime) {
 
-        List<TimeSlotResponse> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
+        // List<TimeSlotResponse> slots = listProfessionalAvailabilityTimesUseCase.executeUseCase(date, professional.getId());
 
-        if (slots.isEmpty()) {
-            // The professional does not work in the day of week
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"O professional não trabalha no dia da semana selecionado.");
-        } else {
-            // The start and end time belongs a valid slot?
-            var slot = slots.stream().filter(s -> s.startTime().equals(startTime) &&  s.endTime().equals(endTime))
-                                                   .findFirst();
+        // if (slots.isEmpty()) {
+        //     // The professional does not work in the day of week
+        //     throw new ResponseStatusException(HttpStatus.FORBIDDEN,"O professional não trabalha no dia da semana selecionado.");
+        // } else {
+        //     // The start and end time belongs a valid slot?
+        //     var slot = slots.stream().filter(s -> s.startTime().equals(startTime) &&  s.endTime().equals(endTime))
+        //                                            .findFirst();
 
-            if(slot.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "O horário selecionado não corresponde a um horário disponível.");
-            }         
-        }
+        //     if(slot.isEmpty()){
+        //         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "O horário selecionado não corresponde a um horário disponível.");
+        //     }         
+        // }
     }
 
     private void checkIfProfessionalHasDateAndTimeIsAvaliableOrThrowsException(Professional professional, LocalDate date,

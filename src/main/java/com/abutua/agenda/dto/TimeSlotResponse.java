@@ -1,9 +1,9 @@
 package com.abutua.agenda.dto;
 
-import java.time.LocalTime;
+import java.time.OffsetTime;
 
-public record TimeSlotResponse(
-        LocalTime startTime,
-        LocalTime endTime,
-        boolean available) {
+public interface TimeSlotResponse {
+    OffsetTime getStartTime();
+    OffsetTime getEndTime();
+    boolean isAvailable();
 }

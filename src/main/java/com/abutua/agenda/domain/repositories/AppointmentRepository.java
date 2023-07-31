@@ -1,5 +1,6 @@
 package com.abutua.agenda.domain.repositories;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.abutua.agenda.domain.entites.Client;
 import com.abutua.agenda.domain.entites.Professional;
 import com.abutua.agenda.domain.entites.ProfessionalScheduleDays;
 import com.abutua.agenda.domain.entites.ProfessionalScheduleDays2;
+import com.abutua.agenda.dto.TimeSlotResponse;
 
 /*
 
@@ -68,11 +70,68 @@ LEFT JOIN TBL_APPOINTMENT a ON a.professional_id = 3
 WHERE ID IS NULL
 GROUP BY work_day_available
 ORDER BY work_day_available;
+
+
+
+
+WITH RECURSIVE WorkSchedule (_start_time, _start_time_plus_inc, _slot_size, _end_time, _day_of_week) AS (
+    SELECT
+        start_time,
+        DATEADD(MINUTE, slot_size, start_time) AS _start_time_plus_inc,
+        slot_size,
+        end_time,
+        day_of_week
+    FROM
+        TBL_WORK_SCHEDULE_ITEM
+    WHERE
+        professional_id = 3 AND
+        day_of_week = 1
+
+    UNION ALL
+
+    SELECT
+        DATEADD(MINUTE, _slot_size, _start_time),
+        DATEADD(MINUTE, _slot_size, _start_time_plus_inc),
+        _slot_size,
+        _end_time,
+        _day_of_week
+    FROM
+        WorkSchedule
+    WHERE
+        _start_time < DATEADD(MINUTE, -_slot_size, _end_time)
+)
+Select DISTINCT _start_time, _start_time_plus_inc, CASE 
+                                                        WHEN 
+                                                            date IS NULL THEN true 
+                                                        ELSE false
+                                                    END
+FROM WorkSchedule 
+
+LEFT JOIN TBL_APPOINTMENT a ON
+           a.professional_id = 3 AND
+           a.date = '2023-08-07'  AND
+           DAY_OF_WEEK(a.date) = _day_of_week + 1 AND
+           a.start_time < _start_time_plus_inc  AND 
+           a.end_time > start_time  AND 
+          (a.status = 'OPEN' OR a.status = 'PRESENT' )
+
+ORDER BY _START_TIME 
+    
+
+
+
+
+
+
+
+
+
 */
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query(value = " WITH RECURSIVE WorkSchedule (_start_time, _start_time_plus_inc, _slot_size, _end_time, _day_of_week) AS ( " +
+    @Query(value = " WITH RECURSIVE WorkSchedule (_start_time, _start_time_plus_inc, _slot_size, _end_time, _day_of_week) AS ( "
+            +
             "    SELECT " +
             "        start_time, " +
             "        DATEADD(MINUTE, slot_size, start_time) AS _start_time_plus_inc, " +
@@ -127,6 +186,50 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Integer> getAvailabilyDays(long professionalId, LocalDate start, LocalDate end);
 
     List<Appointment> findByProfessionalIdAndDate(Long professionalId, LocalDate date);
+
+    @Query( value =
+    "WITH RECURSIVE WorkSchedule (_start_time, _start_time_plus_inc, _slot_size, _end_time, _day_of_week) AS ( " +
+                   "    SELECT " +
+                   "        start_time, " +
+                   "        DATEADD(MINUTE, slot_size, start_time) AS _start_time_plus_inc, " +
+                   "        slot_size, " +
+                   "        end_time, " +
+                   "        day_of_week " +
+                   "    FROM " +
+                   "        TBL_WORK_SCHEDULE_ITEM " +
+                   "    WHERE " +
+                   "        professional_id = :professionalId AND " +
+                   "        day_of_week = :dayOfWeek " +
+                   "    UNION ALL " +
+                   "    SELECT " +
+                   "        DATEADD(MINUTE, _slot_size, _start_time), " +
+                   "        DATEADD(MINUTE, _slot_size, _start_time_plus_inc), " +
+                   "        _slot_size, " +
+                   "        _end_time, " +
+                   "        _day_of_week " +
+                   "    FROM " +
+                   "        WorkSchedule " +
+                   "    WHERE " +
+                   "        _start_time < DATEADD(MINUTE, -_slot_size, _end_time) " +
+                   ") " +
+                   "SELECT DISTINCT _start_time as startTime, _start_time_plus_inc AS endTime, CASE " +
+                   "                                                        WHEN " +
+                   "                                                            a.date IS NULL THEN true " +
+                   "                                                        ELSE false " +
+                   "                                                      END AS available " +
+                   "FROM WorkSchedule " +
+                   "LEFT JOIN TBL_APPOINTMENT a ON " +
+                   "           a.professional_id = :professionalId AND " +
+                   "           a.date = :date AND " +
+                   "           a.start_time < _start_time_plus_inc  AND " +
+                   "           a.end_time > start_time  AND " +
+                   "          (a.status = 'OPEN' OR a.status = 'PRESENT' ) " +
+                   "ORDER BY _start_time",
+    nativeQuery = true
+    )
+    List<TimeSlotResponse> findWorkScheduleFromProfessionalIdByDate(long professionalId, LocalDate date, int dayOfWeek);
+
+
 
     @Query("SELECT COUNT(a) > 0 FROM Appointment a " +
             "WHERE a.professional = :professional " +

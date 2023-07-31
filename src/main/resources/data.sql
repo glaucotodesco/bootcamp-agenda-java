@@ -67,6 +67,6 @@ INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_
 INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,0,TIME WITH TIME ZONE '17:00:00-03',TIME WITH TIME ZONE '21:00:00-03', 8, 30);
 
 INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,1,TIME WITH TIME ZONE '11:00:00-03',TIME WITH TIME ZONE '15:00:00-03', 8, 30);
-INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,1,TIME WITH TIME ZONE '17:00:00-03',TIME WITH TIME ZONE '21:00:00-03', 8, 30);
+
 
 
