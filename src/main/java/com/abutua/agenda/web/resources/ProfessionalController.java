@@ -49,10 +49,9 @@ public class ProfessionalController {
         return ResponseEntity.ok(workScheduledto);
     }
 
-
     
     @GetMapping("{id}/availability-days")
-    public ResponseEntity<ProfessionalAvailabilityDaysResponse> getProfessinalAvailabitiyDays(@PathVariable long id, @RequestParam int month, @RequestParam int year) {
+    public ResponseEntity<List<Integer>> getProfessinalAvailabitiyDays(@PathVariable long id, @RequestParam int month, @RequestParam int year) {
         return ResponseEntity.ok(professionalService.getAvailableDaysInMonth(id,month,year));
     }
 

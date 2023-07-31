@@ -24,6 +24,7 @@ import com.abutua.agenda.dto.ProfessionalResponse;
 import com.abutua.agenda.dto.ProfessionalWithAreasResponse;
 import com.abutua.agenda.dto.TimeSlotResponse;
 import com.abutua.agenda.dto.WorkScheduleResponse;
+import com.abutua.agenda.web.resources.exceptions.ParameterException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -42,10 +43,10 @@ public class ProfessionalService {
     @Autowired
     private SearchProfessionalAvailabilityDaysUseCase listProfessionalAvailabilityUseCase;
 
-    
     public ProfessionalWithAreasResponse getById(long id) {
         Professional professional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional com id = {"+ id + "} não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Profissional com id = {" + id + "} não encontrado"));
 
         return ProfessionalMapper.toResponseProfessionalWithAreasDTO(professional);
     }
@@ -75,7 +76,7 @@ public class ProfessionalService {
             if (professionalRepository.existsById(id))
                 professionalRepository.deleteById(id);
             else {
-                throw new EntityNotFoundException("Profissional com id = {"+ id + "} não encontrado");
+                throw new EntityNotFoundException("Profissional com id = {" + id + "} não encontrado");
             }
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Erro ao remover o professional do banco de dados", HttpStatus.BAD_REQUEST);
@@ -89,7 +90,7 @@ public class ProfessionalService {
             var areas = areaRepository.findAllById(professionalRequest.getAreasId());
 
             if (areas.size() != professionalRequest.areas().size()) {
-                throw new DatabaseException("Área com id={"+ id +"} não existe", HttpStatus.CONFLICT);
+                throw new DatabaseException("Área com id={" + id + "} não existe", HttpStatus.CONFLICT);
             } else {
                 ProfessionalMapper.updateProfessional(professional, professionalRequest);
                 professionalRepository.save(professional);
@@ -107,19 +108,53 @@ public class ProfessionalService {
     public WorkScheduleResponse getWorkSchedule(long id) {
 
         Professional professional = professionalRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "Profissional com id = {"+ id + "} não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Profissional com id = {" + id + "} não encontrado"));
 
         return WorkScheduleMapper.toWorkScheduledDTO(professional);
     }
 
-    public ProfessionalAvailabilityDaysResponse getAvailableDaysInMonth(long professionalId, int month, int year) {
-        List<Integer> availiabilyDays = listProfessionalAvailabilityUseCase.executeUseCase(professionalId, month, year);
-        ProfessionalAvailabilityDaysResponse dto = new ProfessionalAvailabilityDaysResponse(month, year, availiabilyDays);
-        return dto;
+    public List<Integer> getAvailableDaysInMonth(long professionalId, int month, int year) {
+
+        checkIfMonthIsValidOrThrowsException(month);
+        checkIfYearIsValidOrThrowsException(year);
+        checkIfMonthAndYearIsValidOrThrowsException(month, year);
+        checkProfessionalExistsOrThrowsException(professionalId);
+
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+
+        return listProfessionalAvailabilityUseCase.executeUseCase(professionalId, start, end);
     }
 
     public List<TimeSlotResponse> getAvailableTimeSlots(LocalDate date, Long id) {
         return listProfessionalAvailabilityTimesUseCase.executeUseCase(date, id);
+    }
+
+    private void checkIfMonthAndYearIsValidOrThrowsException(int month, int year) {
+        if (month < LocalDate.now().getMonthValue() && year == LocalDate.now().getYear()) {
+            throw new ParameterException(
+                    "Valor para o mês inválido. Mês e ano deve ser maior ou igual a data corrente.");
+        }
+    }
+
+    private void checkIfYearIsValidOrThrowsException(int year) {
+        if (year < LocalDate.now().getYear()) {
+            throw new ParameterException("Valor para o ano inválido. O ano deve ser maior ou igual ao ano corrente.");
+        }
+    }
+
+    private void checkIfMonthIsValidOrThrowsException(int month) {
+        if (month < 1 || month > 12) {
+            throw new ParameterException("Valor para o mês inválido.");
+        }
+    }
+
+    private void checkProfessionalExistsOrThrowsException(long professionalId) {
+        
+        if(!professionalRepository.existsById(professionalId))
+               throw  new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Profissional com id ={" + professionalId + "} não encontrado.");
     }
 
 }

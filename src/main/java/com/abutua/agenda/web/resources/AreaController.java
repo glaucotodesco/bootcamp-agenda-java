@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,21 +52,21 @@ public class AreaController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> removeArea(@PathVariable int id) {
         areaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> updateArea(@PathVariable int id, @Validated @RequestBody AreaRequest areaSavedto) {
         areaService.update(id, areaSavedto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<AreaResponse> saveArea(@Validated @RequestBody AreaRequest areaSavedto) {
         var areadto = areaService.save(areaSavedto);
 

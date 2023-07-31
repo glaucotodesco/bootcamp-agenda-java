@@ -41,6 +41,8 @@ public class Professional extends Person{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "professional")
     private List<WorkScheduleItem> workSchedule = new ArrayList<WorkScheduleItem>();
 
+    
+
     public Professional(Long id){
         super(id);
     }
