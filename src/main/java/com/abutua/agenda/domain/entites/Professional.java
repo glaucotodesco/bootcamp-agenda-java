@@ -81,8 +81,8 @@ public class Professional extends Person{
         this.areas.add(area);
     }
 
-    public void addWorkScheduleItem(DayOfWeek dayOfWeek, LocalTime timeStart, LocalTime timeEnd) {
-        this.workSchedule.add(new WorkScheduleItem(dayOfWeek,timeStart, timeEnd));
+    public void addWorkScheduleItem(DayOfWeek dayOfWeek, LocalTime timeStart, LocalTime timeEnd, int slotSize, int slots) {
+        this.workSchedule.add(new WorkScheduleItem(dayOfWeek,timeStart, timeEnd, slotSize, slots));
     }
 
     public List<WorkScheduleItem> getWorkSchedule() {

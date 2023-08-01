@@ -37,21 +37,22 @@ INSERT INTO TBL_PROFESSIONAL VALUES(FALSE, 4);
 INSERT INTO TBL_PROFESSIONAL VALUES(TRUE, 5);   
 
 
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '11:00:00-03', TIME WITH TIME ZONE '11:30:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '08:00:00-03', TIME WITH TIME ZONE '08:30:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '08:30:00-03', TIME WITH TIME ZONE '09:00:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '09:00:00-03', TIME WITH TIME ZONE '09:30:00-03', 1, 3, 1,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '09:30:00-03', TIME WITH TIME ZONE '10:00:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '10:00:00-03', TIME WITH TIME ZONE '10:30:00-03', 1, 3, 1,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '10:30:00-03', TIME WITH TIME ZONE '11:00:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '11:00:00-03', TIME WITH TIME ZONE '11:30:00-03', 1, 3, 1,'OPEN',1);
 INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '11:30:00-03', TIME WITH TIME ZONE '12:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '12:00:00-03', TIME WITH TIME ZONE '12:30:00-03', 1, 3, 1,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '12:30:00-03', TIME WITH TIME ZONE '13:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '13:00:00-03', TIME WITH TIME ZONE '13:30:00-03', 1, 3, 1,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '13:30:00-03', TIME WITH TIME ZONE '14:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '14:00:00-03', TIME WITH TIME ZONE '14:30:00-03', 1, 3, 1,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '14:00:00-03', TIME WITH TIME ZONE '14:30:00-03', 2, 3, 2,'OPEN',1);
 INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '14:30:00-03', TIME WITH TIME ZONE '15:00:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '15:00:00-03', TIME WITH TIME ZONE '15:30:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '15:30:00-03', TIME WITH TIME ZONE '16:00:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '16:00:00-03', TIME WITH TIME ZONE '16:30:00-03', 2, 3, 2,'OPEN',1);
+INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '16:30:00-03', TIME WITH TIME ZONE '17:00:00-03', 2, 3, 2,'OPEN',1);
 INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '17:00:00-03', TIME WITH TIME ZONE '17:30:00-03', 2, 3, 2,'OPEN',1);
 INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '17:30:00-03', TIME WITH TIME ZONE '18:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '18:00:00-03', TIME WITH TIME ZONE '18:30:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '18:30:00-03', TIME WITH TIME ZONE '19:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '19:00:00-03', TIME WITH TIME ZONE '19:30:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '19:30:00-03', TIME WITH TIME ZONE '20:00:00-03', 2, 3, 2,'OPEN',1);
-INSERT INTO TBL_APPOINTMENT (date, start_Time, end_Time,client_id,professional_id,appointment_type_id, status,area_id) VALUES (TIMESTAMP WITH TIME ZONE '2023-08-07 00:00:00-03', TIME WITH TIME ZONE '20:15:00-03', TIME WITH TIME ZONE '20:31:00-03', 2, 3, 2,'OPEN',1);
 
 
 
@@ -63,10 +64,10 @@ INSERT INTO TBL_AREA_PROFESSIONAL VALUES(2, 4);
 INSERT INTO TBL_AREA_PROFESSIONAL VALUES(1, 5);
 
 
-INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,0,TIME WITH TIME ZONE '11:00:00-03',TIME WITH TIME ZONE '15:00:00-03', 8, 30);
-INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,0,TIME WITH TIME ZONE '17:00:00-03',TIME WITH TIME ZONE '21:00:00-03', 8, 30);
+INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,2,TIME WITH TIME ZONE '08:00:00-03',TIME WITH TIME ZONE '12:00:00-03', 8, 30);
+INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,2,TIME WITH TIME ZONE '14:00:00-03',TIME WITH TIME ZONE '18:00:00-03', 8, 30);
 
-INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,1,TIME WITH TIME ZONE '11:00:00-03',TIME WITH TIME ZONE '15:00:00-03', 8, 30);
+INSERT INTO TBL_WORK_SCHEDULE_ITEM (professional_id, day_Of_Week,start_Time,end_Time, slots, slot_size) VALUES (3,3,TIME WITH TIME ZONE '08:00:00-03',TIME WITH TIME ZONE '12:00:00-03', 8, 30);
 
 
 

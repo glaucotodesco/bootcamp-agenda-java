@@ -1,20 +1,19 @@
 package com.abutua.agenda.domain.repositories;
 
-import java.time.DayOfWeek;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 
 import com.abutua.agenda.domain.entites.Appointment;
 import com.abutua.agenda.domain.entites.Client;
 import com.abutua.agenda.domain.entites.Professional;
-import com.abutua.agenda.domain.entites.ProfessionalScheduleDays;
-import com.abutua.agenda.domain.entites.ProfessionalScheduleDays2;
-import com.abutua.agenda.dto.TimeSlotResponse;
+import com.abutua.agenda.dto.TimeSlotOffSet;
+
 
 /*
 
@@ -171,9 +170,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "    ) " +
             "    WHERE " +
             "        cont <= DATEDIFF('DAY', :start, :end) " +
-            ") ON DAY_OF_WEEK(work_day_available) = _day_of_week + 2 " +
+            ") ON DAY_OF_WEEK(work_day_available) = _day_of_week " +
             "LEFT JOIN TBL_APPOINTMENT a ON a.professional_id = :professionalId " +
-            "                            AND DAY_OF_WEEK(a.date) = _day_of_week + 2 " +
+            "                            AND DAY_OF_WEEK(a.date) = _day_of_week " +
             "                            AND a.start_time < _start_time_plus_inc " +
             "                            AND a.end_time > start_time " +
             "                            AND a.date = work_day_available " +
@@ -227,7 +226,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
                    "ORDER BY _start_time",
     nativeQuery = true
     )
-    List<TimeSlotResponse> findWorkScheduleFromProfessionalIdByDate(long professionalId, LocalDate date, int dayOfWeek);
+    List<TimeSlotOffSet> findWorkScheduleFromProfessionalIdByDate(long professionalId, LocalDate date, int dayOfWeek);
 
 
 

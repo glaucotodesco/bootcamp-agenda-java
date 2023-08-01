@@ -3,7 +3,10 @@ package com.abutua.agenda.domain.entites;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+import com.abutua.agenda.domain.entites.converters.DayOfWeekIntegerConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +24,7 @@ public class WorkScheduleItem {
     private Long id;
 
     @Column(nullable = false)
+    @Convert(converter = DayOfWeekIntegerConverter.class)
     private DayOfWeek dayOfWeek;
     
     @Column( columnDefinition = "TIME WITH TIME ZONE")
@@ -58,10 +62,12 @@ public class WorkScheduleItem {
     }
 
     
-    public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
+    public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, int slotSize, int slots) {
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.slotSize = slotSize;
+        this.slots = slots;
     }
 
     public Long getId() {

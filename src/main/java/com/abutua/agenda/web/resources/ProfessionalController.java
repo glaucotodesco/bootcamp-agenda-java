@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.agenda.domain.services.ProfessionalService;
-import com.abutua.agenda.dto.ProfessionalAvailabilityDaysResponse;
 import com.abutua.agenda.dto.ProfessionalRequest;
 import com.abutua.agenda.dto.ProfessionalResponse;
 import com.abutua.agenda.dto.ProfessionalWithAreasResponse;

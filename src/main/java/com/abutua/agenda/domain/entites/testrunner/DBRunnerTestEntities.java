@@ -78,10 +78,10 @@ public class DBRunnerTestEntities implements ApplicationRunner {
         p1.addArea(a2);
         p2.addArea(a2);
 
-        p1.addWorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"));
-        p1.addWorkScheduleItem(DayOfWeek.THURSDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"));
-        p1.addWorkScheduleItem(DayOfWeek.WEDNESDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"));
-        p2.addWorkScheduleItem(DayOfWeek.WEDNESDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"));
+        p1.addWorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"),30,8);
+        p1.addWorkScheduleItem(DayOfWeek.THURSDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"), 30, 8);
+        p1.addWorkScheduleItem(DayOfWeek.WEDNESDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"), 30, 8);
+        p2.addWorkScheduleItem(DayOfWeek.TUESDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"), 30, 8);
 
         professionalRepository.save(p1);
         professionalRepository.save(p2);
@@ -93,12 +93,12 @@ public class DBRunnerTestEntities implements ApplicationRunner {
         p1 = professionalRepository.getReferenceById(3L);
         
 
-        WorkScheduleItem wsi1 = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"));
+        WorkScheduleItem wsi1 = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"), LocalTime.parse("12:00:00"), 30, 8);
         wsi1.setProfessional(professionalRepository.findById(3L).get());
         wsi1.setSlotSize(30);
         wsi1.setSlots(8);
 
-        WorkScheduleItem wsi2 = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"));
+        WorkScheduleItem wsi2 = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("14:00:00"), LocalTime.parse("18:00:00"), 30, 8);
         wsi2.setProfessional(professionalRepository.findById(3L).get());
         wsi2.setSlotSize(30);
         wsi2.setSlots(8);
@@ -135,6 +135,10 @@ public class DBRunnerTestEntities implements ApplicationRunner {
         ap2.setComments("Parcelar em 3x");
 
         appointmentRepository.save(ap2);
+
+        var wsi = this.workScheduleItemRepository.findById(1L);
+        System.out.println(wsi.get().getDayOfWeek());
+        System.out.println(wsi.get().getDayOfWeek().getValue());
 
 
     
